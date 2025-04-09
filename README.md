@@ -4,14 +4,6 @@ Welcome to the official devlog repository for **Starborn Traders**, a text-based
 
 This repo serves as a **transparent and chronological development journal**, documenting daily milestones, challenges, reflections, and implementation notes throughout the project lifecycle.
 
-## 📅 Devlog Index
-
-| Date | Entry |
-|------|-------|
-| 2025-04-07 | [Day 1 – Initial Refactor & Test Suite Setup](2025-04-07.md) |
-| 2025-04-08 | *(Pending – will be added at the end of today)* |
-
-> Each log is written manually by the developer and reflects actual work completed, decisions made, and goals for the future. Minor use of AI tools like `Cursor`, `Claude`, and `Gemini` may support debugging and ideation but are not used for full code generation.
 
 ## 🔍 Purpose
 
