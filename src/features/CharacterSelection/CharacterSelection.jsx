@@ -78,7 +78,7 @@ const CharacterSelection = ({ onSelectionComplete, showPreview, hidePreview, pre
     const handlePreviousCharacter = () => navigateCharacter('previous');
 
     return (
-        <div className="flex flex-col items-center justify-center container mx-auto px-4 py-8 text-center relative text-white">
+        <div className="flex flex-col items-center justify-center w-full h-screen px-4 py-8 text-center relative text-white bg-transparent">
             <div className="w-full flex flex-col items-center"> 
                 <h2 className="text-3xl font-bold mb-2 text-teal-300">SELECT YOUR CHARACTER</h2>
                 <p className="text-lg text-slate-400 mb-8">Choose the person you'll embody in your journey through the cosmos.</p>

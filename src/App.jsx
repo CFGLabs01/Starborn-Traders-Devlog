@@ -198,7 +198,7 @@ function App() {
               shadows
             >
               {/* Ensure canvas background color is set */}
-              <color attach="background" args={['#101015']} /> {/* Or '#000000' for pure black */}
+              {/* <color attach="background" args={['#101015']} /> */}{/* Or '#000000' for pure black */}
               
               {/* Layer 1: More distant, smaller, slower stars */}
               <DreiStars radius={150} depth={80} count={2000} factor={3.5} saturation={0} fade speed={0.1} />
