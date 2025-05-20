@@ -1,0 +1,29 @@
+/* Basic Starfield Background using pure CSS */
+/* Adapted from: https://codepen.io/WebDevelopWolf/pen/Exgqpo */
+
+.starfield-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000 url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAASFBMVEX///////////////////////////////////////////////////////////////////////////////////+V4P3hAAAAF3RSTlMAChQVFhgeISEqLjA0ODs+QktQVldncoOAhJKjptJZAAAAm0lEQVR42u2SyQ6DMAwEl//J7e7e/1MnaaHMUEIqrZRABIGCwECpgZYDAgKCFRhQ9HRP7+8P5oHjp1xK+Q5RCEFRZWlkYo0mBCFr0YJsGkRAlCTKgiQYEISsQXsYkECQJFpU4EkGBCFrUEYGJBCkSQqV4EkGBCErUEYGJBCkSROK4UUGBCFrUF4GFhBkSQ6V+JEDASpQkZ2BhQRJMqXZvIkDAStaVLdAYREEgTQI1z3+L9gub7/5e0gAAAAASUVORK5CYII=') repeat;
+  background-size: 32px 32px;
+  animation: stars-move 60s linear infinite;
+  z-index: 0;
+}
+
+#stars, #stars2, #stars3 {
+  /* Remove previous styles if they existed */
+  /* These divs are not strictly needed for this pure CSS version */
+  display: none; 
+}
+
+@keyframes stars-move {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 0 -10000px; /* Adjust for desired speed */
+  }
+} 

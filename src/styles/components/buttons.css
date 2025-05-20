@@ -1,0 +1,179 @@
+/* === Base Button Reset (from base.css, keep for context) === */
+/*
+button {
+  font-family: var(--font-primary); 
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background: none;
+  color: inherit; 
+}
+*/
+
+/* === General Button Styling === */
+.button {
+  display: inline-flex; /* Use flex for icon alignment */
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--border-radius-base, 8px);
+  font-family: var(--font-display); /* Titles/Buttons use Audiowide */
+  font-size: 1rem; 
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  border: 1px solid transparent; /* Base border */
+  transition: all var(--transition-fast);
+  position: relative; /* For pseudo-elements */
+  overflow: hidden; /* For effects */
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  filter: grayscale(60%);
+}
+
+/* --- Primary Button (Restore original for e.g., Start Game) --- */
+.button--primary {
+  padding: var(--spacing-md) var(--spacing-xl); 
+  font-size: var(--font-size-xl, 1.5rem); 
+  min-width: 200px; 
+  background: linear-gradient(135deg, rgba(var(--rgb-space-deep, 4, 26, 49), 0.7), rgba(var(--rgb-space-medium, 19, 62, 124), 0.7)); 
+  color: var(--color-text-primary);
+  /* border-color: var(--color-space-accent); */ /* Remove specific border color if adding border below */
+  border: 1px solid var(--color-space-accent); /* Add standard border */
+  border-radius: 9999px; /* Pill shape */
+  box-shadow: 0 0 10px var(--glow-secondary);
+}
+
+/* Optional radial glow effect for primary button */
+/* This might need theme variables like --glow-gradient if it uses them */
+.button--primary::before {
+  content: '';
+  position: absolute;
+  top: 50%; 
+  left: 50%;
+  width: 0%; /* Start small */
+  padding-bottom: 0%; /* Maintain aspect ratio */
+  background: radial-gradient(circle, rgba(var(--rgb-space-accent), 0.3) 0%, rgba(var(--rgb-space-accent), 0) 70%); /* Example glow gradient */
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: width 0.4s ease, padding-bottom 0.4s ease, opacity 0.4s ease;
+  z-index: 0;
+}
+
+.button--primary:hover::before {
+  width: 250%; /* Expand size */
+  padding-bottom: 250%;
+  opacity: 1;
+}
+
+.button--primary > * { /* Ensure button content is above pseudo-element */
+  position: relative;
+  z-index: 1;
+}
+
+/* --- Confirm Button (Use same style base as primary, smaller size) --- */
+.button--confirm {
+  padding: var(--spacing-sm) var(--spacing-lg); /* Increased padding for a taller button: sm=8px, lg=24px */
+  /* Use dark blue gradient */
+  background: linear-gradient(135deg, rgba(var(--rgb-space-deep, 4, 26, 49), 0.7), rgba(var(--rgb-space-medium, 19, 62, 124), 0.7)); 
+  /* Use light text for contrast */
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-space-accent); /* Add border */
+  border-radius: 9999px; /* Pill shape */
+  font-size: 0.9rem; 
+  font-weight: bold;
+  box-shadow: var(--shadow-md); /* Use simpler shadow */
+  min-width: auto; /* Allow button to size to content or specified width */
+  height: 40px; /* Explicit height for consistency */
+  line-height: 1; /* Helps center text/icons if display is flex */
+}
+
+/* New class for Navigation Arrow Icon buttons on selection screens */
+.button--icon-navarrow {
+  composes: button--confirm; /* Inherit base confirm styles - if CSS modules were used. For plain CSS, copy relevant properties or ensure specificity */
+  /* For plain CSS, re-declare shared properties from .button--confirm if not using composes */
+  background: linear-gradient(135deg, rgba(var(--rgb-space-deep, 4, 26, 49), 0.7), rgba(var(--rgb-space-medium, 19, 62, 124), 0.7)); 
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-space-accent);
+  border-radius: 9999px; 
+  font-weight: bold;
+  box-shadow: var(--shadow-md);
+  height: 40px; /* Match confirm button height */
+  width: 40px;  /* Make it square for a circular look with rounded-full */
+  padding: 0;   /* Remove padding if icon itself is centered */
+  font-size: 1.2rem; /* Adjust icon size if NavigationArrowIcon uses font size */
+  /* Ensure icon is centered if it's a child */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- Hover/Active States (Apply to both?) --- */
+/* Let's define a common hover/active for primary/confirm */
+.button--primary:hover:not(:disabled),
+.button--confirm:hover:not(:disabled),
+.button--icon-navarrow:hover:not(:disabled) { /* Add new class here */
+  filter: brightness(1.1);
+  border-color: rgba(var(--rgb-space-accent), 0.8);
+  box-shadow: var(--shadow-lg); 
+  transform: translateY(-1px); /* Add slight lift */
+}
+
+.button--primary:active:not(:disabled),
+.button--confirm:active:not(:disabled),
+.button--icon-navarrow:active:not(:disabled) { /* Add new class here */
+  filter: brightness(0.9);
+  box-shadow: var(--shadow-inner); /* Use inset shadow */
+  transform: translateY(0); /* Remove lift */
+}
+
+/* REMOVED specific hover/active for confirm */
+/* REMOVED primary glow effect for now */
+
+/* --- Icon Button (Base) --- */
+.button--icon {
+  padding: var(--spacing-xs); /* Smaller padding */
+  width: 35px; /* Fixed size */
+  height: 35px;
+  border-radius: 50%;
+  font-size: 1.2rem; /* Adjust icon size via font-size */
+  line-height: 1; /* Ensure icon centers vertically */
+}
+
+/* --- Transparent Icon Button (e.g., Audio Toggle) --- */
+.button--transparent {
+  background: transparent;
+  border-color: transparent;
+  color: var(--color-text-secondary);
+  opacity: 0.7;
+}
+
+.button--transparent:hover {
+  opacity: 1;
+  color: var(--color-text-primary);
+  transform: scale(1.1); /* Add slight scale on hover */
+}
+
+/* --- Close Button (Specific Icon Button) --- */
+.button--close {
+  position: absolute; /* Position relative to parent */
+  top: var(--spacing-sm);
+  right: var(--spacing-sm);
+  background: rgba(var(--rgb-rich-black, 2,6,23), 0.3);
+  border: none;
+  color: var(--color-text-dim);
+  font-size: 1.5rem;
+  z-index: var(--z-modal); /* Ensure it's above modal content */
+}
+
+.button--close:hover {
+  background: rgba(var(--rgb-dark-cyan), 0.3);
+  color: var(--color-text-accent);
+  opacity: 1; /* Ensure full opacity on hover */
+  transform: scale(1.05); /* Slight scale */
+} 

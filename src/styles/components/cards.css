@@ -1,0 +1,157 @@
+/* === Card Component Styles === */
+
+/* --- Base Character Card --- */
+.character-card {
+  position: relative;
+  background: linear-gradient(160deg, 
+    rgba(var(--rgb-space-medium, 19, 62, 124), 0.3), 
+    rgba(var(--rgb-space-deep, 4, 26, 49), 0.5)
+  );
+  border-radius: var(--border-radius-lg, 16px);
+  border: 1px solid rgba(var(--rgb-border-secondary, 0, 212, 255), 0.2);
+  padding: var(--spacing-md);
+  overflow: hidden; /* Contain pseudo-elements */
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm), 0 0 8px rgba(var(--rgb-border-secondary, 0, 212, 255), 0.15);
+}
+
+.character-card:hover {
+  /* transform: translateY(-8px) scale(1.02); */ /* Removed transform */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(var(--rgb-space-accent), 0.3);
+  border-color: rgba(var(--rgb-border-secondary), 0.5);
+}
+
+.character-card.selected {
+  border-color: var(--color-space-accent);
+  box-shadow: 0 0 20px var(--glow-secondary); 
+  /* transform: scale(1.03); */ /* Removed transform */
+}
+
+/* --- Card Glow Effect --- */
+.character-glow {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, transparent 30%, rgba(var(--faction-glow-rgb), 0.3) 50%, rgba(var(--faction-glow-rgb), 0) 70%);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+  pointer-events: none; 
+  z-index: 0;
+  animation: rotateGlow 20s linear infinite paused; /* Paused initially */
+}
+
+.character-card:hover .character-glow {
+  opacity: 0.6; 
+  animation-play-state: running;
+}
+
+/* Faction Glow Colors (Define RGB vars in theme.css if preferred) */
+.glow-trade { --faction-glow-rgb: 42, 157, 143; } /* --color-faction-trade */
+.glow-pirates { --faction-glow-rgb: 231, 111, 81; } /* --color-faction-pirates */
+.glow-military { --faction-glow-rgb: 157, 78, 221; } /* --color-faction-military */
+.glow-science { --faction-glow-rgb: 0, 180, 216; } /* --color-faction-science */
+.glow-diplomats { --faction-glow-rgb: 244, 162, 97; } /* --color-faction-diplomats */
+/* Add other factions as needed */
+
+/* --- Card Image --- */
+.character-image-container {
+  width: 100%;
+  aspect-ratio: 4 / 3; /* Maintain aspect ratio */
+  margin-bottom: var(--spacing-md);
+  border-radius: var(--border-radius-base);
+  overflow: hidden;
+  position: relative; /* For z-index */
+  z-index: 1;
+  background-color: rgba(var(--rgb-rich-black), 0.3);
+}
+
+.character-image {
+  width: 100%;
+  height: 100%;
+  background-size: contain; /* Changed from cover */
+  background-position: center;
+  background-repeat: no-repeat; /* Added no-repeat */
+  transition: transform var(--transition-medium);
+}
+
+.character-card:hover .character-image {
+  /* transform: scale(1.05); */ /* Removed transform */
+}
+
+/* --- Card Content --- */
+.card-content {
+  position: relative; /* For z-index */
+  z-index: 1;
+}
+
+.character-name {
+  font-family: var(--font-display);
+  font-size: 1.4rem; /* Slightly larger */
+  margin-bottom: var(--spacing-xs);
+  color: var(--color-text-primary);
+}
+
+.faction-badge {
+  /* Uses global styles from base.css */
+  margin-bottom: var(--spacing-sm);
+}
+
+.character-short-bio {
+  font-family: var(--font-primary); /* Ensure Goldman */
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-md);
+  line-height: 1.5;
+  height: 4.5em; /* Limit to ~3 lines */
+  overflow: hidden;
+}
+
+/* --- Skills Section --- */
+.skills-container {
+  margin-top: var(--spacing-md);
+  border-top: 1px solid rgba(var(--rgb-border-secondary), 0.1);
+  padding-top: var(--spacing-md);
+}
+
+.skill-bar {
+  margin-bottom: var(--spacing-xs);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.skill-name {
+  font-family: var(--font-primary);
+  font-size: 0.8rem;
+  color: var(--color-text-dim);
+  width: 80px; /* Fixed width for alignment */
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.skill-bar-container {
+  flex-grow: 1;
+  height: 8px;
+  background-color: rgba(var(--rgb-rich-black), 0.4);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.skill-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(to right, var(--skill-color-start), var(--skill-color-end));
+  transition: width var(--transition-medium);
+  box-shadow: inset 0 0 3px rgba(0,0,0,0.5);
+}
+
+/* Faction Skill Bar Colors */
+.skill-trade { --skill-color-start: #1a7d71; --skill-color-end: var(--color-faction-trade); }
+.skill-pirates { --skill-color-start: #b85940; --skill-color-end: var(--color-faction-pirates); }
+.skill-military { --skill-color-start: #7e3bad; --skill-color-end: var(--color-faction-military); }
+.skill-science { --skill-color-start: #008ca8; --skill-color-end: var(--color-faction-science); }
+.skill-diplomats { --skill-color-start: #c3814d; --skill-color-end: var(--color-faction-diplomats); }
+/* Add others */ 

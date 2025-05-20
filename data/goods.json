@@ -1,0 +1,331 @@
+{
+  "Basic Wiring Harness": {
+    "description": "Pre-assembled bundles of conductive wiring with simple connectors. Speeds up assembly of basic electronic devices.",
+    "rarity": "common",
+    "base_value": 50,
+    "tags": ["component", "electronics", "wiring"],
+    "category": "Manufactured Components"
+  },
+  "Standard Servo Motor": {
+    "description": "A common electro-mechanical actuator used in robotics, automated doors, and simple machinery.",
+    "rarity": "common",
+    "base_value": 60,
+    "tags": ["component", "mechanical", "robotics"],
+    "category": "Manufactured Components"
+  },
+  "Hydraulic Piston (Small)": {
+    "description": "A basic hydraulic piston for providing linear force in small-scale applications like landing gear or sample collectors.",
+    "rarity": "common",
+    "base_value": 55,
+    "tags": ["component", "mechanical", "hydraulics"],
+    "category": "Manufactured Components"
+  },
+  "Magnetic Containment Ring": {
+    "description": "A simple ring emitter generating a weak magnetic field. Used in basic shielding or material handling.",
+    "rarity": "common",
+    "base_value": 70,
+    "tags": ["component", "magnetic", "shielding"],
+    "category": "Manufactured Components"
+  },
+  "Basic CPU Core": {
+    "description": "A low-power central processing unit manufactured from silicon wafers. Suitable for simple automation and control systems.",
+    "rarity": "common",
+    "base_value": 80,
+    "tags": ["component", "electronics", "cpu"],
+    "category": "Manufactured Components"
+  },
+  "Pressurized Tank (Standard)": {
+    "description": "A reinforced container for storing gases or liquids under pressure. Standard fitting for life support and fuel systems.",
+    "rarity": "common",
+    "base_value": 40,
+    "tags": ["component", "storage", "life_support", "fuel_system"],
+    "category": "Manufactured Components"
+  },
+  "Composite Panels": {
+    "description": "Lightweight but durable panels made from polymer resins reinforced with basic fibers. Common internal hull material.",
+    "rarity": "common",
+    "base_value": 35,
+    "tags": ["component", "construction_material", "polymer"],
+    "category": "Manufactured Components"
+  },
+  "Heat Sink Assembly": {
+    "description": "A standard assembly of fins and coolant pipes designed to dissipate waste heat from machinery.",
+    "rarity": "common",
+    "base_value": 45,
+    "tags": ["component", "cooling", "mechanical"],
+    "category": "Manufactured Components"
+  },
+  "Advanced Alloy Frame": {
+    "description": "A structural frame built from plasteel or titanium alloys, offering a good balance of strength and weight for machinery or small vessels.",
+    "rarity": "uncommon",
+    "base_value": 100,
+    "tags": ["component", "construction_material", "metal", "frame"],
+    "category": "Manufactured Components"
+  },
+  "Shield Emitter Node (Basic)": {
+    "description": "A component that projects a weak defensive energy field. Requires significant power.",
+    "rarity": "uncommon",
+    "base_value": 150,
+    "tags": ["component", "shielding", "defense", "energy_weapon_component"],
+    "category": "Manufactured Components"
+  },
+  "Sensor Array (Type C)": {
+    "description": "A standard commercial-grade sensor package capable of detecting nearby ships and basic astronomical phenomena.",
+    "rarity": "uncommon",
+    "base_value": 180,
+    "tags": ["component", "electronics", "sensor"],
+    "category": "Manufactured Components"
+  },
+  "Navigation Computer (Mk I)": {
+    "description": "A dedicated computer for calculating jump vectors and managing sublight navigation. Basic model.",
+    "rarity": "uncommon",
+    "base_value": 200,
+    "tags": ["component", "electronics", "computer", "navigation"],
+    "category": "Manufactured Components"
+  },
+  "Plasma Injector Nozzle": {
+    "description": "A component designed to safely inject controlled bursts of plasma into reactors or weapon chambers.",
+    "rarity": "rare",
+    "base_value": 250,
+    "tags": ["component", "plasma", "energy_related", "weapon_component", "reactor_component"],
+    "category": "Manufactured Components"
+  },
+  "Nanomesh Weaving Loom": {
+    "description": "Specialized machinery required to produce Woven Carbon Nanomesh from raw nanotubes.",
+    "rarity": "rare",
+    "base_value": 300,
+    "tags": ["component", "machinery", "nanomaterial"],
+    "category": "Manufactured Components"
+  },
+  "Laser Focusing Crystal Array": {
+    "description": "An array of purified crystals used to amplify and focus energy beams for industrial cutting or laser weaponry.",
+    "rarity": "rare",
+    "base_value": 280,
+    "tags": ["component", "crystal", "laser", "weapon_component", "industrial"],
+    "category": "Manufactured Components"
+  },
+  "Cryo-Cooling System": {
+    "description": "An advanced cooling unit utilizing cryo-stabilized gases to manage extreme temperatures in reactors or sensitive equipment.",
+    "rarity": "rare",
+    "base_value": 220,
+    "tags": ["component", "cooling", "machinery"],
+    "category": "Manufactured Components"
+  },
+  "Targeting Computer (Mk II)": {
+    "description": "An upgraded targeting computer offering improved accuracy and multi-target tracking for ship weapons.",
+    "rarity": "rare",
+    "base_value": 350,
+    "tags": ["component", "electronics", "computer", "targeting", "weapon_component"],
+    "category": "Manufactured Components"
+  },
+  "Heavy Shield Generator Node": {
+    "description": "A powerful shield node capable of sustaining a strong energy field, suitable for larger vessels or stations.",
+    "rarity": "epic",
+    "base_value": 600,
+    "tags": ["component", "shielding", "defense", "heavy"],
+    "category": "Manufactured Components"
+  },
+  "Precursor Interface Module": {
+    "description": "A complex device assembled from Precursor artifacts, seemingly designed to interact with their technology. Function mostly unknown.",
+    "rarity": "epic",
+    "base_value": 750,
+    "tags": ["component", "precursor", "electronics", "artifact"],
+    "category": "Manufactured Components"
+  },
+  "Advanced Sensor Suite (Type A)": {
+    "description": "Top-tier sensor package with long range, detailed scanning capabilities, and stealth detection features.",
+    "rarity": "epic",
+    "base_value": 800,
+    "tags": ["component", "electronics", "sensor", "advanced"],
+    "category": "Manufactured Components"
+  },
+  "Automated Mining Drone": {
+    "description": "A self-contained drone equipped for basic asteroid mining operations. Can be deployed from a mothership.",
+    "rarity": "uncommon",
+    "base_value": 250,
+    "tags": ["drone", "mining", "robotics", "equipment"],
+    "category": "Manufactured Components"
+  },
+  "Repair Nanite Swarm": {
+    "description": "A canister containing microscopic robots programmed for basic hull and system repairs. Consumed on use.",
+    "rarity": "rare",
+    "base_value": 150,
+    "tags": ["nanites", "repair", "consumable"],
+    "category": "Manufactured Components"
+  },
+  "Jump Drive Coolant Pump": {
+    "description": "A specialized pump required for circulating coolant through hyperspace jump drives during operation.",
+    "rarity": "uncommon",
+    "base_value": 130,
+    "tags": ["component", "cooling", "jump_drive", "mechanical"],
+    "category": "Manufactured Components"
+  },
+  "Atmospheric Processor Unit": {
+    "description": "A device that filters and processes ambient atmosphere or gas stores to produce breathable air. Essential for life support.",
+    "rarity": "uncommon",
+    "base_value": 160,
+    "tags": ["component", "life_support", "machinery"],
+    "category": "Manufactured Components"
+  },
+  "Cargo Bay Expansion Module": {
+    "description": "A modular unit that can be fitted to increase a ship's cargo capacity. Requires installation.",
+    "rarity": "rare",
+    "base_value": 500,
+    "tags": ["module", "ship_upgrade", "cargo"],
+    "category": "Manufactured Components"
+  },
+  "Gravity Plating Emitter": {
+    "description": "Generates localized artificial gravity fields. Standard equipment for any habitable vessel or station.",
+    "rarity": "uncommon",
+    "base_value": 190,
+    "tags": ["component", "gravity", "electronics"],
+    "category": "Manufactured Components"
+  },
+  "Medical Bay Auto-Doc": {
+    "description": "An automated medical diagnostic and treatment unit. Can handle common injuries and illnesses.",
+    "rarity": "rare",
+    "base_value": 450,
+    "tags": ["component", "medical", "robotics", "life_support"],
+    "category": "Manufactured Components"
+  },
+  "Encrypted Datacore (Tier 1)": {
+    "description": "A secure data storage device containing low-level corporate or military intelligence. Often sought after by information brokers.",
+    "rarity": "uncommon",
+    "base_value": 200,
+    "tags": ["data", "storage", "electronics", "mission_item", "intel"],
+    "category": "Tech Components"
+  },
+  "AI Assistant Core (Basic)": {
+    "description": "A simple artificial intelligence core capable of managing ship subsystems or basic automation tasks. Limited personality.",
+    "rarity": "uncommon",
+    "base_value": 300,
+    "tags": ["component", "electronics", "ai", "computer"],
+    "category": "Tech Components"
+  },
+  "Quantum Entanglement Communicator": {
+    "description": "Allows instantaneous communication across vast distances, bypassing lightspeed limitations. Requires paired units.",
+    "rarity": "rare",
+    "base_value": 1000,
+    "tags": ["component", "electronics", "communication", "quantum"],
+    "category": "Tech Components"
+  },
+  "Phase Cloaking Device Component": {
+    "description": "A key component for a device that temporarily shifts a vessel out of normal spacetime, rendering it invisible. Highly illegal in most systems.",
+    "rarity": "epic",
+    "base_value": 2500,
+    "tags": ["component", "stealth", "illegal", "exotic_tech"],
+    "category": "Tech Components"
+  },
+  "Sentient AI Matrix": {
+    "description": "An advanced AI core exhibiting signs of true sentience and independent thought. Extremely rare and controversial.",
+    "rarity": "epic",
+    "base_value": 5000,
+    "tags": ["component", "electronics", "ai", "sentient", "computer"],
+    "category": "Tech Components"
+  },
+  "Singularity Jump Drive Core": {
+    "description": "The heart of a top-tier FTL drive, manipulating micro-singularities to traverse interstellar space rapidly.",
+    "rarity": "legendary",
+    "base_value": 10000,
+    "tags": ["component", "jump_drive", "singularity", "propulsion", "exotic_tech"],
+    "category": "Tech Components"
+  },
+  "Neural Lace Interface": {
+    "description": "Allows direct mind-machine connection for enhanced control or data access. Requires surgical implantation.",
+    "rarity": "rare",
+    "base_value": 800,
+    "tags": ["component", "electronics", "cybernetics", "interface"],
+    "category": "Tech Components"
+  },
+  "Advanced CPU Cluster": {
+    "description": "A high-performance computing cluster used for complex simulations, advanced AI, or breaking encryption.",
+    "rarity": "rare",
+    "base_value": 600,
+    "tags": ["component", "electronics", "cpu", "computer", "advanced"],
+    "category": "Tech Components"
+  },
+  "Hardlight Projector Module": {
+    "description": "Generates stable, tangible constructs of light. Used in advanced shielding, holographic interfaces, or specialized tools.",
+    "rarity": "epic",
+    "base_value": 1500,
+    "tags": ["component", "hardlight", "shielding", "interface", "exotic_tech"],
+    "category": "Tech Components"
+  },
+  "Encrypted Datacore (Tier 3)": {
+    "description": "A heavily secured datacore containing highly sensitive faction secrets or classified research data.",
+    "rarity": "epic",
+    "base_value": 1200,
+    "tags": ["data", "storage", "electronics", "mission_item", "intel", "classified"],
+    "category": "Tech Components"
+  },
+  "Energy-to-Matter Converter Blueprint": {
+    "description": "Fragmentary blueprints for a theoretical device capable of converting pure energy into basic matter. Requires immense power.",
+    "rarity": "legendary",
+    "base_value": 8000,
+    "tags": ["blueprint", "data", "exotic_tech", "experimental"],
+    "category": "Tech Components"
+  },
+  "Subspace Sensor Node": {
+    "description": "Detects anomalies and energy signatures that propagate through subspace, offering unique FTL tracking capabilities.",
+    "rarity": "epic",
+    "base_value": 1800,
+    "tags": ["component", "electronics", "sensor", "subspace", "ftl"],
+    "category": "Tech Components"
+  },
+  "Void Crystal Fragment": {
+    "description": "A small, unstable shard of Void Crystal. Emits strange energies and distorts local reality slightly. Handle with extreme caution.",
+    "rarity": "rare",
+    "base_value": 180,
+    "tags": ["crystal", "exotic", "unstable", "energy_related"],
+    "category": "Exotic/Anomalous"
+  },
+  "Temporal Distortion Field Emitter (Damaged)": {
+    "description": "A broken piece of technology that flickers with localized time slips. Unusable in its current state, possibly dangerous.",
+    "rarity": "epic",
+    "base_value": 300,
+    "tags": ["artifact", "damaged", "temporal", "exotic_tech", "dangerous"],
+    "category": "Exotic/Anomalous"
+  },
+  "Unknown Biological Sample": {
+    "description": "A sealed container holding an uncatalogued biological entity or substance. Could be valuable research or a deadly biohazard.",
+    "rarity": "rare",
+    "base_value": 250,
+    "tags": ["biological", "unknown", "sample", "research_material", "biohazard"],
+    "category": "Exotic/Anomalous"
+  },
+  "Warp Field Stabilizer (Fragment)": {
+    "description": "Part of a device intended to stabilize hyperspace or warp travel. Seems based on principles unknown to current science.",
+    "rarity": "epic",
+    "base_value": 400,
+    "tags": ["artifact", "component", "warp", "ftl", "exotic_tech"],
+    "category": "Exotic/Anomalous"
+  },
+  "Echoes of Sentience": {
+    "description": "A strange energy pattern captured within a data crystal, exhibiting fleeting moments of awareness. Not true AI, something else.",
+    "rarity": "legendary",
+    "base_value": 2000,
+    "tags": ["data", "energy_pattern", "sentience", "exotic", "unknown"],
+    "category": "Exotic/Anomalous"
+  },
+  "Genesis Seed (Dormant)": {
+    "description": "An artifact resembling a metallic seed pulsating with latent energy. Believed by some cults to hold the key to creating life or worlds.",
+    "rarity": "legendary",
+    "base_value": 15000,
+    "tags": ["artifact", "biological", "energy_source", "terraforming", "legendary"],
+    "category": "Exotic/Anomalous"
+  },
+  "Anomalous Energy Signature Data": {
+    "description": "Sensor logs capturing readings of an energy source that defies known physics. Valuable to researchers and fringe scientists.",
+    "rarity": "rare",
+    "base_value": 350,
+    "tags": ["data", "energy_pattern", "research_material", "anomaly"],
+    "category": "Exotic/Anomalous"
+  },
+  "Chunk of Frozen Time": {
+    "description": "A bizarre, shimmering object where time seems locally stopped. Touching it causes unpredictable temporal effects.",
+    "rarity": "legendary",
+    "base_value": 5000,
+    "tags": ["artifact", "temporal", "exotic", "dangerous", "anomaly"],
+    "category": "Exotic/Anomalous"
+  }
+}

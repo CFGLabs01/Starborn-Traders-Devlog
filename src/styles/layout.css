@@ -1,0 +1,263 @@
+/* === Layout Styles === */
+
+/* Placeholder for general app layout, containers etc. */
+/* Example: 
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+*/
+
+/* --- Styles for Future Game HUD --- */
+
+/* Style for the main game interaction area */
+#central-viewport {
+  /* Add other relevant layout/positioning rules here */
+  color: rgba(var(--rgb-text-primary, 224, 242, 247), 0.8); /* 80% opacity text */
+}
+
+/* Optional global brightener for HUD panels */
+.hud-panel {
+  /* Should be applied to panel components within the HUD */
+  /* Add other common panel styles here (padding, background etc.) */
+  filter: brightness(1.1);
+}
+
+/* --- Styles migrated from TitleScreen.module.css --- */
+
+.title-screen-container {
+  position: relative;
+  width: 100%;
+  height: 100vh; /* Full viewport height */
+  display: flex;
+  flex-direction: column; /* Stack content and footer */
+  align-items: center;
+  justify-content: center; /* Center main content vertically */
+  overflow: hidden; /* Prevent content overflow */
+  padding: var(--spacing-lg);
+}
+
+.content-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Center items within this container */
+  text-align: center;
+  z-index: var(--z-content); /* Ensure content is above background */
+  flex-grow: 1; /* Allow content to take available space */
+}
+
+.logo-container {
+  margin-bottom: var(--spacing-xxl);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main-logo {
+  max-width: 80%; /* Responsive */
+  width: clamp(300px, 60vw, 600px); /* Control size better */
+  height: auto;
+  margin-bottom: var(--spacing-md);
+}
+
+.sub-logo {
+  max-width: 30%; /* Reduced size */
+  width: clamp(100px, 25vw, 200px); /* Control size better */
+  height: auto;
+  opacity: 0.8;
+}
+
+.button-container {
+  /* Container for the start button */
+  margin-top: var(--spacing-lg); /* Add some space above button */
+}
+
+/* --- Styles migrated from CharacterSelection.module.css --- */
+
+.selection-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-md) var(--spacing-lg); /* Reduced vertical padding */
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+.header-container {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+  max-width: 800px;
+}
+
+.selection-title {
+  font-family: var(--font-display); /* Uses Audiowide */
+  font-size: var(--font-size-xxl); /* Adjusted in theme.css */
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-sm);
+  text-shadow: 0 0 10px var(--glow-secondary); /* Use theme glow */
+}
+
+.selection-subtitle {
+  font-family: var(--font-primary); /* Use Goldman (body font) */
+  font-size: var(--font-size-lg); /* Adjusted in theme.css */
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-base);
+}
+
+.characters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid */
+  gap: var(--spacing-lg);
+  width: 100%;
+  max-width: 1200px; /* Limit max width */
+  margin-bottom: var(--spacing-xl);
+}
+
+/* --- Character Details Modal Layout (Inside .popup-panel-content) --- */
+
+/* Remove .modal-backdrop and .details-modal rules, handled by panels.css now */
+
+.modal-layout {
+  display: grid;
+  /* Prevent columns from overflowing their container */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); 
+  gap: var(--spacing-xl);
+  height: 100%; /* Allow grid to fill the scrollable container */
+}
+
+/* Styles specific to the columns if needed */
+.modal-left {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  /* Ensure this column takes full height */
+  height: 100%; 
+  min-height: 0; /* Allow shrinking if needed */
+}
+
+.modal-right {
+  display: flex; /* Use flex for content wrapper */
+  flex-direction: column; /* Stack content wrapper */
+  /* Styles for the portrait background */
+  background-size: 85% 85%; /* Adjusted size */
+  background-position: center bottom; /* Position at bottom */
+  background-repeat: no-repeat;
+  position: relative; /* For positioning content on top */
+  overflow: hidden; /* Hide potential background overflow */
+  border-radius: var(--border-radius-base); /* Slight rounding */
+}
+
+/* Wrapper for text content inside modal-right */
+.modal-right-content {
+  position: relative; /* Sit on top of parent's background */
+  z-index: 1; /* Ensure it's above pseudo-elements or background */
+  padding: var(--spacing-md); /* Add padding around text */
+  background-color: rgba(var(--rgb-space-deep, 4, 26, 49), 0.75); /* Increased opacity */
+  border-radius: var(--border-radius-sm);
+  flex-grow: 1; /* Allow it to fill space */
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* Allow only text content to scroll if needed */
+  height: 100%; /* Try to take full height */
+}
+
+
+/* Ensure text elements within modal-right wrap correctly */
+.modal-right-content h2, 
+.modal-right-content h3, 
+.modal-right-content p,
+.modal-right-content li {
+  overflow-wrap: break-word;
+  word-wrap: break-word; /* Older browsers */
+  word-break: break-word; /* Allow breaking mid-word if necessary */
+  margin-bottom: var(--spacing-sm); /* Reduce bottom margin */
+  color: var(--color-text-primary); /* Ensure text is light */
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.7); /* Improve legibility */
+  position: relative; /* Ensure they stack correctly */
+  z-index: 2; /* Above background overlay */
+}
+
+.modal-right-content h3 {
+  margin-top: var(--spacing-md); /* Add space above subheadings */
+  border-top: 1px solid var(--border-secondary);
+  padding-top: var(--spacing-sm);
+  color: var(--color-text-secondary); /* Dimmer headings */
+}
+
+.modal-right-content strong {
+  color: var(--color-text-primary); /* Ensure strong text is bright */
+}
+
+/* Removed .details-header & .details-image rules */
+
+.model-viewer-container {
+  flex-grow: 1; /* Allow viewer to take remaining space */
+  min-height: 0; /* Important for flex item shrinking/growing */
+  height: 100%; /* Ensure it takes full height within modal-left */
+  background-color: rgba(var(--rgb-rich-black), 0.2);
+  border-radius: var(--border-radius-base);
+  overflow: hidden; /* Ensure canvas doesn't overflow */
+}
+
+.model-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--color-text-dim);
+}
+
+.details-header-info {
+  /* Container for name, faction, origin, ship */
+}
+.details-name {
+  font-size: var(--font-size-xl);
+  margin-bottom: var(--spacing-xs);
+}
+.details-faction-badge { /* Remove this if using global .faction-badge */ }
+.details-origin,
+.details-ship {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.details-bio, .details-skills, .details-special {
+  /* Containers for sections */
+}
+
+.details-skills-grid {
+  /* Styles for the skill bars grid if needed */
+}
+.details-skill-item {
+  /* Styles for individual skill items */
+}
+.details-skill-name { /* ... */ }
+.details-skill-bar-container { /* ... */ }
+.details-skill-bar-fill { /* ... */ }
+.details-skill-value { /* ... */ }
+
+.details-special ul {
+  list-style: none; /* Remove default bullets */
+  padding-left: 0;
+}
+.details-special li {
+  margin-bottom: var(--spacing-xs);
+}
+
+
+/* --- Footer (Shared) --- */
+
+.footer {
+  position: fixed; /* Keep footer at the bottom */
+  bottom: 0;
+  right: 0; 
+  padding: var(--spacing-md) var(--spacing-lg);
+  z-index: var(--z-navigation); /* Ensure footer is accessible */
+}
+
+.audio-toggle {
+  /* Specific styles for the audio toggle if needed beyond button--icon */
+}

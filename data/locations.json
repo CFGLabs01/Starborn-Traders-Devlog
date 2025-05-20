@@ -1,0 +1,80 @@
+{
+  "Aetheria": {
+    "name": "Aetheria",
+    "description": "A mysterious location, perhaps shrouded in nebula or ancient secrets.",
+    "market": false,
+    "shipyard": false,
+    "connections": [],
+    "travel_cost": 100,
+    "type": "Nebula System",
+    "faction": { "symbol": "Unknown" },
+    "traits": [ { "name": "Enigmatic" } ],
+    "x": 150, 
+    "y": -200 
+  },
+  "Cosmic Core": {
+    "name": "Cosmic Core",
+    "description": "A central hub teeming with activity, likely a major trade or political center.",
+    "market": true,
+    "shipyard": true,
+    "connections": [],
+    "travel_cost": 20,
+    "type": "Core World",
+    "faction": { "symbol": "Consortium" },
+    "traits": [ { "name": "High Traffic" }, { "name": "Developed" } ],
+    "x": 0,
+    "y": 0
+  },
+  "Outlaw's Haven": {
+    "name": "Outlaw's Haven",
+    "description": "A shadowy refuge on the fringes, known for its black markets and questionable clientele.",
+    "market": true,
+    "shipyard": false,
+    "connections": [],
+    "travel_cost": 80,
+    "type": "Asteroid Base",
+    "faction": { "symbol": "Pirates" },
+    "traits": [ { "name": "Black Market" }, { "name": "Dangerous" } ],
+    "x": -300,
+    "y": 450
+  },
+  "Quantara": {
+    "name": "Quantara",
+    "description": "Likely a world known for its technological advancements or scientific pursuits.",
+    "market": true,
+    "shipyard": true,
+    "connections": [],
+    "travel_cost": 60,
+    "type": "Tech World",
+    "faction": { "symbol": "Science Guild" },
+    "traits": [ { "name": "High Tech" }, { "name": "Research Facilities" } ],
+    "x": 500,
+    "y": 100
+  },
+  "Frontier's Edge": {
+    "name": "Frontier's Edge",
+    "description": "A rugged, barely-tamed system on the edge of explored space. Resources are scarce, but opportunities exist for the bold.",
+    "market": false,
+    "shipyard": false,
+    "connections": [],
+    "travel_cost": 120,
+    "type": "Frontier World",
+    "faction": { "symbol": "Independent" },
+    "traits": [ { "name": "Untamed" }, { "name": "Low Infrastructure" } ],
+    "x": -600,
+    "y": -300 
+  },
+  "Sovereign Reach": {
+    "name": "Sovereign Reach",
+    "description": "A heavily fortified system, the heart of a major political or military power. Access may be restricted.",
+    "market": true,
+    "shipyard": true,
+    "connections": [],
+    "travel_cost": 90,
+    "type": "Fortress World",
+    "faction": { "symbol": "Military Alliance" },
+    "traits": [ { "name": "High Security" }, { "name": "Restricted Access" } ],
+    "x": 200,
+    "y": 600
+  }
+} 

@@ -1,0 +1,199 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Goldman:wght@400;700&display=swap');
+
+/* === Base Styles === */
+
+/* Apply border-box sizing globally */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Set base font size and line height */
+html {
+  font-size: var(--font-size-base, 16px);
+}
+
+body {
+  font-family: var(--font-primary, 'Goldman', sans-serif); /* Use Goldman as default body font */
+  color: var(--color-text-primary);
+  background-image: linear-gradient(to bottom, #010409, #020817); /* Dark blue gradient */
+  line-height: var(--line-height-base, 1.6);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* Basic heading styles */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display, 'Audiowide', sans-serif); /* Use Audiowide for headings */
+  color: var(--color-text-primary); 
+  line-height: var(--line-height-heading, 1.3);
+  margin-bottom: var(--spacing-md);
+}
+
+h1 { font-size: var(--font-size-xxl); }
+h2 { font-size: var(--font-size-xl); }
+h3 { font-size: var(--font-size-lg); }
+
+/* Basic paragraph style */
+p {
+  margin-bottom: var(--spacing-md);
+  /* Font family inherits from body */
+}
+
+/* Basic link style */
+a {
+  color: var(--color-text-accent);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-space-bright);
+  text-decoration: underline;
+}
+
+/* Basic image style */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block; /* Remove bottom space */
+}
+
+/* Basic list style */
+ul, ol {
+  padding-left: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+}
+
+/* Basic button reset (more specific styles in buttons.css) */
+button {
+  font-family: inherit; /* Inherit from body or apply specific font */
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background: none;
+  color: inherit; 
+}
+
+/* Basic form element styling (customize as needed) */
+input, textarea, select {
+  font-family: var(--font-primary);
+  padding: var(--spacing-sm);
+  border: 1px solid var(--color-border-medium);
+  background-color: rgba(var(--rgb-space-deep), 0.5);
+  color: var(--color-text-primary);
+  border-radius: var(--border-radius-sm);
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--color-border-strong);
+  box-shadow: 0 0 5px var(--glow-secondary);
+}
+
+/* StatBar Fill Style */
+.stat-bar-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 9999px; /* rounded-full */
+  transition: width 0.5s ease-out; /* transition-width duration-500 ease-out */
+  /* Apply gradient using CSS variables */
+  background-image: linear-gradient(to right, var(--start-color, #888), var(--end-color, #555)); /* Added fallback colors */
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+  position: relative; /* Establish stacking context */
+  z-index: var(--z-base); /* Use theme variable */
+}
+
+/* === Typography (Redundant rules removed, rely on base element styles) === */
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+/* === Custom Scrollbar === */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(var(--rgb-midnight-green), 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(var(--rgb-dark-cyan), 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--rgb-dark-cyan), 0.7);
+}
+
+/* === Utility Classes === */
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-accent { color: var(--color-text-accent); }
+.text-success { color: var(--color-success); }
+.text-warning { color: var(--color-warning); }
+.text-danger { color: var(--color-danger); }
+.text-dim { color: var(--color-text-dim); }
+
+.space-gradient-text {
+  background: linear-gradient(to right, var(--color-text-secondary), var(--color-space-accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+}
+
+/* Generic Faction Badge Styling (can be moved to components/badges.css later if needed) */
+.faction-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.faction-badge--trade { background-color: rgba(42, 157, 143, 0.2); color: var(--color-faction-trade); border: 1px solid rgba(42, 157, 143, 0.5); box-shadow: 0 0 6px rgba(42, 157, 143, 0.4); }
+.faction-badge--pirates { background-color: rgba(231, 111, 81, 0.2); color: var(--color-faction-pirates); border: 1px solid rgba(231, 111, 81, 0.5); box-shadow: 0 0 6px rgba(231, 111, 81, 0.4); }
+.faction-badge--military { background-color: rgba(157, 78, 221, 0.2); color: var(--color-faction-military); border: 1px solid rgba(157, 78, 221, 0.5); box-shadow: 0 0 6px rgba(157, 78, 221, 0.4); }
+.faction-badge--science { background-color: rgba(0, 180, 216, 0.2); color: var(--color-faction-science); border: 1px solid rgba(0, 180, 216, 0.5); box-shadow: 0 0 6px rgba(0, 180, 216, 0.4); }
+.faction-badge--diplomats { background-color: rgba(244, 162, 97, 0.2); color: var(--color-faction-diplomats); border: 1px solid rgba(244, 162, 97, 0.5); box-shadow: 0 0 6px rgba(244, 162, 97, 0.4); }
+.faction-badge--explorer { background-color: rgba(17, 138, 178, 0.2); color: var(--color-info, #118ab2); border: 1px solid rgba(17, 138, 178, 0.5); box-shadow: 0 0 6px rgba(17, 138, 178, 0.4); }
+
+/* Basic Animations (can be expanded) */
+@keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
+@keyframes glow { 0% { box-shadow: 0 0 5px rgba(0, 212, 255, 0.3); } 50% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.6); } 100% { box-shadow: 0 0 5px rgba(0, 212, 255, 0.3); } }
+@keyframes rotateGlow { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+/* Basic Responsive Placeholder */
+/* More specific responsive styles should go in their respective component files */
+@media (max-width: 768px) {
+  html, body {
+    font-size: 14px;
+  }
+}
+
+/* HUD Blurring Styles - Keep global for now */
+.hud { 
+  transition: filter 0.4s ease-in-out;
+}
+.hud.hud--selection-active {
+  filter: blur(5px);
+}
+.hud:not(.hud--selection-active) {
+  filter: none;
+} 

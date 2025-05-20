@@ -1,0 +1,23 @@
+{
+  "Shuttle": {
+    "name": "Shuttle",
+    "description": "A basic, reliable short-range vessel. Standard starter ship.",
+    "cargo_capacity": 50,
+    "cost": 0,
+    "fuel_capacity": 100
+  },
+  "Explorer": {
+    "name": "Explorer",
+    "description": "A nimble ship with enhanced sensors, suitable for survey missions.",
+    "cargo_capacity": 75,
+    "cost": 8000,
+    "fuel_capacity": 150
+  },
+  "Freighter": {
+    "name": "Freighter",
+    "description": "A large-capacity hauler designed for bulk transport.",
+    "cargo_capacity": 200,
+    "cost": 25000,
+    "fuel_capacity": 120
+  }
+} 

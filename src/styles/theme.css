@@ -1,0 +1,86 @@
+:root {
+  /* Core Fonts */
+  --font-primary: 'Goldman', sans-serif; /* Use Goldman for body */
+  --font-display: 'Audiowide', sans-serif; /* Use Audiowide for titles */
+  --font-mono: monospace; /* Generic mono */
+  
+  /* Spacing System */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 48px;
+  
+  /* Color System - Main Palette */
+  --color-space-dark: #020c1b;
+  --color-space-deep: #041a31;
+  --color-space-medium: #133e7c;
+  --color-space-bright: #2a9d8f;
+  --color-space-accent: #00d4ff;
+
+  /* Palette RGB tuples for reuse in gradients (as suggested in roadmap) */
+  --rgb-midnight-green:  0,95,115;
+  --rgb-dark-cyan:       10,147,150;
+  --rgb-tiffany-blue:    148,210,189;
+  --rgb-vanilla:         233,216,166;
+  --rgb-rich-black:      2,6,23; /* Added for modal backdrop and other dark elements */
+  
+  /* Text Colors */
+  --color-text-primary: #e0f2fe;
+  --color-text-secondary: #90e0ef;
+  --color-text-dim: #64748b;
+  --color-text-accent: #00d4ff;
+  
+  /* Faction Colors */
+  --color-faction-trade: #2a9d8f;
+  --color-faction-pirates: #e76f51;
+  --color-faction-military: #9d4edd;
+  --color-faction-science: #00b4d8;
+  --color-faction-diplomats: #f4a261;
+  
+  /* UI Elements */
+  --color-primary: #2a9d8f;
+  --color-secondary: #133e7c;
+  --color-accent-yellow: #e9c46a;
+  --color-accent-orange: #f4a261;
+  --color-accent-red: #e76f51;
+  --color-success: #06d6a0;
+  --color-warning: #ffb703;
+  --color-danger: #ef476f;
+  --color-info: #118ab2;
+  
+  /* Panel Backgrounds */
+  --panel-bg-dark: rgba(2, 12, 27, 0.9);
+  --panel-bg-medium: rgba(19, 62, 124, 0.7);
+  --panel-bg-light: rgba(42, 157, 143, 0.4);
+  
+  /* Borders */
+  --border-primary: rgba(42, 157, 143, 0.4);
+  --border-secondary: rgba(0, 212, 255, 0.3);
+  --border-hover: rgba(42, 157, 143, 0.8);
+  
+  /* Shadows */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.5);
+  --shadow-inner: inset 0 1px 4px rgba(255, 255, 255, 0.1);
+  --glow-primary: 0 0 15px rgba(42, 157, 143, 0.5);
+  --glow-secondary: 0 0 20px rgba(0, 212, 255, 0.4);
+  
+  /* Animations */
+  --transition-fast: 0.2s ease;
+  --transition-medium: 0.4s ease;
+  --transition-slow: 0.7s ease;
+  
+  /* Z-index layers */
+  --z-background: -10; /* Adjusted for starfield */
+  --z-base: 0;
+  --z-content: 1;
+  --z-panels: 10;
+  --z-navigation: 20;
+  --z-overlay: 30;
+  --z-modal: 100; /* Needs to be above backdrop */
+  --z-modal-backdrop: 90;
+  --z-tooltip: 150;
+} 

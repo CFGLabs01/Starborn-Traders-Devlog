@@ -1,0 +1,159 @@
+[
+  
+  {
+    "id": "aeon-runner-base", "name": "Aeon Runner", "versionName": "Aeon Runner",
+    "description": "Reliable base model interceptor.", "image": "/assets/ships/Aeon Runner.png",
+    "stats": { "thrustEfficiency": 8.5, "hullIntegrity": 5.0, "agility": 8.7, "coreSystemsLoad": 6.5, "firepowerVectoring": 5.5 },
+    "details": { "fuselage": "Elongated hexagonal prism", "cockpit": "Stretched sphere dome", "wings": "Dual triangle fins", "engine": "Dual cylinders" }
+  },
+  {
+    "id": "aeon-runner-v2", "name": "Aeon Runner", "versionName": "Aeon Runner Mk.II",
+    "description": "First upgrade package applied.", "image": "/assets/ships/aeon-runner-v2.png",
+    "stats": { "thrustEfficiency": 8.8, "hullIntegrity": 5.3, "agility": 9.0, "coreSystemsLoad": 6.8, "firepowerVectoring": 5.7 },
+    "details": { "fuselage": "Hexagonal prism, bevelled and stretched", "cockpit": "Raised dome with glyphs", "wings": "Fins with micro-fins", "engine": "Enhanced dual cylinders" }
+  },
+  {
+    "id": "aeon-runner-v3", "name": "Aeon Runner", "versionName": "Aeon Runner Mk.III",
+    "description": "Second upgrade package applied.", "image": "/assets/ships/aeon-runner-v3.png",
+    "stats": { "thrustEfficiency": 9.1, "hullIntegrity": 5.5, "agility": 9.2, "coreSystemsLoad": 7.0, "firepowerVectoring": 6.0 },
+    "details": { "fuselage": "Curved top, hexagonal base with edge outlines", "cockpit": "Octagonal dome", "wings": "Forked fins with extrusions", "engine": "Cylinders + conduits" }
+  },
+  {
+    "id": "aeon-runner-v4", "name": "Aeon Runner", "versionName": "Aeon Runner Mk.IV",
+    "description": "Third upgrade package applied.", "image": "/assets/ships/aeon-runner-v4.png",
+    "stats": { "thrustEfficiency": 9.4, "hullIntegrity": 5.8, "agility": 9.5, "coreSystemsLoad": 7.3, "firepowerVectoring": 6.2 },
+    "details": { "fuselage": "Longer prism with armor ribs", "cockpit": "Crystal dome with reflection", "wings": "Serrated angled fins", "engine": "Layered exhaust trails" }
+  },
+  {
+    "id": "aeon-runner-v5", "name": "Aeon Runner", "versionName": "Aeon Runner Mk.V",
+    "description": "Fourth upgrade package applied.", "image": "/assets/ships/aeon-runner-v5.png",
+    "stats": { "thrustEfficiency": 9.7, "hullIntegrity": 6.0, "agility": 9.8, "coreSystemsLoad": 7.5, "firepowerVectoring": 6.5 },
+    "details": { "fuselage": "Panel-textured prism, layered armor", "cockpit": "Clear dome with interior light", "wings": "Glowing channeled fins", "engine": "Torus glow ring exhaust" }
+  },
+  {
+    "id": "nova-fang-base", "name": "Nova Fang", "versionName": "Nova Fang",
+    "description": "Aggressive base model fighter.", "image": "/assets/ships/Nova Fang.png",
+    "stats": { "thrustEfficiency": 8.0, "hullIntegrity": 6.5, "agility": 7.5, "coreSystemsLoad": 6.0, "firepowerVectoring": 8.5 },
+    "details": { "fuselage": "Fang-shaped triangle extrusion", "cockpit": "Octahedral capsule", "wings": "Stub wings", "engine": "Triple rear engines" }
+  },
+   {
+    "id": "nova-fang-v2", "name": "Nova Fang", "versionName": "Nova Fang Mk.II",
+    "description": "First upgrade package applied.", "image": "/assets/ships/nova-fang-v2.png",
+    "stats": { "thrustEfficiency": 8.3, "hullIntegrity": 6.8, "agility": 7.8, "coreSystemsLoad": 6.3, "firepowerVectoring": 8.8 },
+    "details": { "fuselage": "Fang with downward curve and etching", "cockpit": "Rimmed capsule with glow", "wings": "Extended razor-tips", "engine": "Rear nozzles + flap" }
+  },
+  {
+    "id": "nova-fang-v3", "name": "Nova Fang", "versionName": "Nova Fang Mk.III",
+    "description": "Second upgrade package applied.", "image": "/assets/ships/nova-fang-v3.png",
+    "stats": { "thrustEfficiency": 8.6, "hullIntegrity": 7.0, "agility": 8.0, "coreSystemsLoad": 6.6, "firepowerVectoring": 9.0 },
+    "details": { "fuselage": "Beveled fang with armor extrusions", "cockpit": "Sharp capsule", "wings": "Swept-diamond blades", "engine": "SpriteTrail engines" }
+  },
+   {
+    "id": "nova-fang-v4", "name": "Nova Fang", "versionName": "Nova Fang Mk.IV",
+    "description": "Third upgrade package applied.", "image": "/assets/ships/nova-fang-v4.png",
+    "stats": { "thrustEfficiency": 8.8, "hullIntegrity": 7.3, "agility": 8.3, "coreSystemsLoad": 6.8, "firepowerVectoring": 9.3 },
+    "details": { "fuselage": "Angled triangle with side panels", "cockpit": "Capsule with antenna fins", "wings": "Double layer with shocks", "engine": "Multi-array boosts" }
+  },
+   {
+    "id": "nova-fang-v5", "name": "Nova Fang", "versionName": "Nova Fang Mk.V",
+    "description": "Fourth upgrade package applied.", "image": "/assets/ships/nova-fang-v5.png",
+    "stats": { "thrustEfficiency": 9.0, "hullIntegrity": 7.5, "agility": 8.5, "coreSystemsLoad": 7.0, "firepowerVectoring": 9.5 },
+    "details": { "fuselage": "Dual-blade winged triangle", "cockpit": "Lathed tapered glass dome", "wings": "Blade wings with glow veins", "engine": "Five V-cluster engines" }
+  },
+  {
+    "id": "titan-hauler-base", "name": "Titan Hauler", "versionName": "Titan Hauler",
+    "description": "Sturdy base model freighter.", "image": "/assets/ships/titan-hauler-base.png",
+    "stats": { "thrustEfficiency": 6.0, "hullIntegrity": 8.0, "agility": 4.5, "coreSystemsLoad": 7.5, "firepowerVectoring": 6.0 },
+    "details": {}
+  },
+   {
+    "id": "solis-warden-base", "name": "Solis Warden", "versionName": "Solis Warden",
+    "description": "Balanced base model cruiser.", "image": "/assets/ships/Solis Warden.png",
+    "stats": { "thrustEfficiency": 7.0, "hullIntegrity": 7.5, "agility": 7.0, "coreSystemsLoad": 8.0, "firepowerVectoring": 7.0 },
+    "details": { "fuselage": "Saucer dome", "cockpit": "Vertical-scaled sphere", "wings": "Underside torus rings", "engine": "3 cylinder nozzles" }
+  },
+   {
+    "id": "solis-warden-v2", "name": "Solis Warden", "versionName": "Solis Warden Mk.II",
+    "description": "First upgrade package applied.", "image": "/assets/ships/solis-warden-v2.png",
+    "stats": { "thrustEfficiency": 7.3, "hullIntegrity": 7.8, "agility": 7.3, "coreSystemsLoad": 8.3, "firepowerVectoring": 7.3 },
+    "details": { "fuselage": "Expanded dome with ring ridges", "cockpit": "Hex cap with gold band", "wings": "Triple stabilizer rings", "engine": "Trail cones with glow" }
+  },
+  {
+    "id": "solis-warden-v3", "name": "Solis Warden", "versionName": "Solis Warden Mk.III",
+    "description": "Second upgrade package applied.", "image": "/assets/ships/solis-warden-v3.png",
+    "stats": { "thrustEfficiency": 7.5, "hullIntegrity": 8.0, "agility": 7.6, "coreSystemsLoad": 8.6, "firepowerVectoring": 7.5 },
+    "details": { "fuselage": "Dome with armor ribs and antenna", "cockpit": "Faceted dome + antenna", "wings": "Ribbed stabilizers", "engine": "Multilayer thrusts" }
+  },
+  {
+    "id": "solis-warden-v4", "name": "Solis Warden", "versionName": "Solis Warden Mk.IV",
+    "description": "Third upgrade package applied.", "image": "/assets/ships/solis-warden-v4.png",
+    "stats": { "thrustEfficiency": 7.8, "hullIntegrity": 8.3, "agility": 7.8, "coreSystemsLoad": 8.8, "firepowerVectoring": 7.8 },
+    "details": { "fuselage": "Dome + floating ring", "cockpit": "Pentagonal top with shimmer", "wings": "Floating rings with struts", "engine": "Exhaust pads under hull" }
+  },
+  {
+    "id": "solis-warden-v5", "name": "Solis Warden", "versionName": "Solis Warden Mk.V",
+    "description": "Fourth upgrade package applied.", "image": "/assets/ships/solis-warden-v5.png",
+    "stats": { "thrustEfficiency": 8.0, "hullIntegrity": 8.5, "agility": 8.0, "coreSystemsLoad": 9.0, "firepowerVectoring": 8.0 },
+    "details": { "fuselage": "Concentric panel armored dome", "cockpit": "Beacon with bloom", "wings": "Glowing glyph pads", "engine": "Solar shimmer array" }
+  },
+  {
+    "id": "obsidian-wyrm-base", "name": "Obsidian Wyrm", "versionName": "Obsidian Wyrm",
+    "description": "Heavy base model gunship.", "image": "/assets/ships/Obsidian Wyrn.png",
+    "stats": { "thrustEfficiency": 6.5, "hullIntegrity": 9.0, "agility": 4.0, "coreSystemsLoad": 7.0, "firepowerVectoring": 8.0 },
+    "details": { "fuselage": "Segmented box spine", "cockpit": "Box with beveled crest", "wings": "None (armor panels)", "engine": "Twin cylinder blocks" }
+  },
+  {
+    "id": "obsidian-wyrm-v2", "name": "Obsidian Wyrm", "versionName": "Obsidian Wyrm Mk.II",
+    "description": "First upgrade package applied.", "image": "/assets/ships/obsidian-wyrm-v2.png",
+    "stats": { "thrustEfficiency": 6.8, "hullIntegrity": 9.3, "agility": 4.3, "coreSystemsLoad": 7.3, "firepowerVectoring": 8.3 },
+    "details": { "fuselage": "Box spine with top ridges", "cockpit": "Extended crest with fins", "wings": "Tail stabilizer plates", "engine": "Expanded blocks + vents" }
+  },
+  {
+    "id": "obsidian-wyrm-v3", "name": "Obsidian Wyrm", "versionName": "Obsidian Wyrm Mk.III",
+    "description": "Second upgrade package applied.", "image": "/assets/ships/obsidian-wyrm-v3.png",
+    "stats": { "thrustEfficiency": 7.0, "hullIntegrity": 9.5, "agility": 4.6, "coreSystemsLoad": 7.6, "firepowerVectoring": 8.6 },
+    "details": { "fuselage": "Box chain with angled tail", "cockpit": "Swept cockpit arc", "wings": "Angle-mounted tail fins", "engine": "Layered exhausts + heat bar" }
+  },
+  {
+    "id": "obsidian-wyrm-v4", "name": "Obsidian Wyrm", "versionName": "Obsidian Wyrm Mk.IV",
+    "description": "Third upgrade package applied.", "image": "/assets/ships/obsidian-wyrm-v4.png",
+    "stats": { "thrustEfficiency": 7.3, "hullIntegrity": 9.7, "agility": 4.8, "coreSystemsLoad": 7.8, "firepowerVectoring": 8.8 },
+    "details": { "fuselage": "Segmented ridge with belts", "cockpit": "Clawed cockpit with ridges", "wings": "Armor belts, no wings", "engine": "Glow shimmer trails" }
+  },
+  {
+    "id": "obsidian-wyrm-v5", "name": "Obsidian Wyrm", "versionName": "Obsidian Wyrm Mk.V",
+    "description": "Fourth upgrade package applied.", "image": "/assets/ships/obsidian-wyrm-v5.png",
+    "stats": { "thrustEfficiency": 7.5, "hullIntegrity": 10.0, "agility": 5.0, "coreSystemsLoad": 8.0, "firepowerVectoring": 9.0 },
+    "details": { "fuselage": "Extended ridge with blade tail", "cockpit": "Dome + orb emitter", "wings": "Dragon-style tail", "engine": "Four exhausts, flame trail" }
+  },
+   {
+    "id": "vantar-nomad-base", "name": "Vantar Nomad", "versionName": "Vantar Nomad",
+    "description": "Versatile base model explorer.", "image": "/assets/ships/Vantar Nomad.png",
+    "stats": { "thrustEfficiency": 4.6, "hullIntegrity": 7.8, "agility": 3.2, "coreSystemsLoad": 6.5, "firepowerVectoring": 1.0 },
+    "details": { "fuselage": "Blocky oval frame", "cockpit": "Short dome midship", "wings": "None (bulk freighter)", "engine": "Basic dual engines" }
+  },
+   {
+    "id": "vantar-nomad-v2", "name": "Vantar Nomad", "versionName": "Vantar Nomad Mk.II",
+    "description": "First upgrade package applied.", "image": "/assets/ships/vantar-nomad-v2.png",
+    "stats": { "thrustEfficiency": 5.1, "hullIntegrity": 8.3, "agility": 3.5, "coreSystemsLoad": 6.9, "firepowerVectoring": 1.4 },
+    "details": { "fuselage": "Lengthened capsule with ribs", "cockpit": "Inset dome with panel glow", "wings": "Mini stabilizers", "engine": "Engine cones with glow" }
+  },
+  {
+    "id": "vantar-nomad-v3", "name": "Vantar Nomad", "versionName": "Vantar Nomad Mk.III",
+    "description": "Second upgrade package applied.", "image": "/assets/ships/vantar-nomad-v3.png",
+    "stats": { "thrustEfficiency": 5.5, "hullIntegrity": 8.7, "agility": 3.8, "coreSystemsLoad": 7.3, "firepowerVectoring": 1.9 },
+    "details": { "fuselage": "Reinforced hauler with struts", "cockpit": "Lensed cockpit with golden edge", "wings": "Retractable pods", "engine": "Engine boxes with trailing mist" }
+  },
+  {
+    "id": "vantar-nomad-v4", "name": "Vantar Nomad", "versionName": "Vantar Nomad Mk.IV",
+    "description": "Third upgrade package applied.", "image": "/assets/ships/vantar-nomad-v4.png",
+    "stats": { "thrustEfficiency": 5.9, "hullIntegrity": 9.1, "agility": 4.0, "coreSystemsLoad": 7.7, "firepowerVectoring": 2.3 },
+    "details": { "fuselage": "Hexagonal core with rings", "cockpit": "Faceted glass shield", "wings": "Cargo net fins", "engine": "4-wide ventral boosters" }
+  },
+  {
+    "id": "vantar-nomad-v5", "name": "Vantar Nomad", "versionName": "Vantar Nomad Mk.V",
+    "description": "Fourth upgrade package applied.", "image": "/assets/ships/vantar-nomad-v5.png",
+    "stats": { "thrustEfficiency": 6.2, "hullIntegrity": 9.4, "agility": 4.3, "coreSystemsLoad": 8.1, "firepowerVectoring": 2.7 },
+    "details": { "fuselage": "Segmented hull with hover pods", "cockpit": "Multi-eye cockpit with trails", "wings": "Hover disks and stabilizer blades", "engine": "Magnetic ring thrusters" }
+  }
+] 

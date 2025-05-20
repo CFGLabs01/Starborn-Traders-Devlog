@@ -1,0 +1,56 @@
+{
+  "Basic Alloy Ingot": {
+    "ingredients": {
+      "Base Metallic Ore": 2,
+      "Scrap Metal": 1
+    },
+    "quantity_produced": 1,
+    "build_time": 1
+  },
+  "Processed Silicon Wafer": {
+    "ingredients": {
+      "Silicon Chunks": 3
+    },
+    "quantity_produced": 1,
+    "build_time": 1
+  },
+  "Standard Polymer Resin": {
+    "ingredients": {
+      "Hydrocarbon Gas": 4
+    },
+    "quantity_produced": 2,
+    "build_time": 1
+  },
+  "Conductive Wiring Bundle": {
+    "ingredients": {
+      "Scrap Metal": 1,
+      "Base Metallic Ore": 1
+    },
+    "quantity_produced": 1,
+    "build_time": 1
+  },
+  "Tempered Plasteel Sheet": {
+    "ingredients": {
+      "Basic Alloy Ingot": 1,
+      "Standard Polymer Resin": 1
+    },
+    "quantity_produced": 1,
+    "build_time": 2
+  },
+  "Basic Wiring Harness": {
+    "ingredients": {
+      "Conductive Wiring Bundle": 2,
+      "Standard Polymer Resin": 1
+    },
+    "quantity_produced": 1,
+    "build_time": 1
+  },
+  "Standard Servo Motor": {
+    "ingredients": {
+       "Basic Alloy Ingot": 1,
+       "Conductive Wiring Bundle": 1
+    },
+    "quantity_produced": 1,
+    "build_time": 2
+  }
+} 

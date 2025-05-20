@@ -1,0 +1,190 @@
+/* src/styles/sharedSelection.css */
+
+/* General Selection Screen Container */
+.selection-screen-container {
+  min-height: 100vh; /* Ensure it takes full viewport height */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-lg) var(--spacing-md); /* Standard padding */
+  /* Background is handled globally by App.jsx starfield */
+  position: relative; /* Added relative positioning */
+  z-index: 1; /* Above global background */
+  color: var(--color-text-primary);
+}
+
+.selection-header {
+  text-align: center;
+  /* Apply button-like styling */
+  padding: var(--spacing-md) var(--spacing-xl); /* Button padding */
+  margin-bottom: var(--spacing-xl); /* Increase bottom margin */
+  background: linear-gradient(135deg, rgba(var(--rgb-space-deep), 0.7), rgba(var(--rgb-space-medium), 0.7)); /* Button gradient */
+  /* border: 1px solid var(--color-space-accent); /* Old border */
+  border: 2px solid var(--color-space-accent); /* Thicker border */
+  border-radius: var(--border-radius-lg, 12px); /* Rounded corners */
+  /* box-shadow: 0 0 10px var(--glow-secondary); /* Old shadow */
+  box-shadow: 
+    0 0 10px var(--glow-secondary), /* Outer glow */
+    inset 0 1px 3px rgba(0, 0, 0, 0.5); /* Inner shadow for depth */
+  max-width: 800px; /* Limit width */
+  width: calc(100% - (2 * var(--spacing-md))); /* Adjust width based on container padding */
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast); /* Added transition */
+}
+
+/* Optional: Slight hover effect for header */
+.selection-header:hover {
+  border-color: var(--color-accent-yellow); /* Example: Change border color on hover */
+  box-shadow: 
+    0 0 15px var(--glow-secondary), /* Enhance outer glow */
+    inset 0 1px 3px rgba(0, 0, 0, 0.6); /* Slightly deepen inner shadow */
+}
+
+.selection-title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-xl); /* Match button font size */
+  color: var(--color-text-primary); /* Ensure contrast */
+  text-shadow: none; /* Remove previous shadow */
+  margin-bottom: var(--spacing-sm); /* Smaller margin */
+  text-transform: uppercase; /* Match button */
+  letter-spacing: 1.5px; /* Match button (slightly increased for title) */
+}
+
+.selection-subtitle {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary); /* Keep secondary color, should contrast ok */
+  max-width: 600px;
+  margin: 0 auto;
+  margin-top: var(--spacing-xs); /* Add slight top margin */
+}
+
+/* Selection Grid */
+.selection-grid {
+  display: grid !important; 
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); /* Increased min width */
+  gap: var(--spacing-md);
+  width: 100%;
+  max-width: 1200px; 
+  padding: var(--spacing-md);
+  position: relative; 
+  z-index: var(--z-base, 0);
+}
+
+/* Base Selection Card */
+.selection-card {
+  /* background-image: radial-gradient(ellipse at center, 
+    rgba(var(--rgb-space-accent, 0, 212, 255), 0.1) 0%, 
+    rgba(var(--rgb-dark-cyan, 10, 147, 150), 0.3) 100%
+  ); /* Old gradient */
+  background-image: radial-gradient(ellipse at center, 
+    rgba(var(--rgb-dark-cyan, 10, 147, 150), 0.5) 0%, /* Darker cyan center, more opaque */
+    rgba(var(--rgb-space-accent, 0, 212, 255), 0.05) 80%, /* Lighter accent edge, very transparent */
+    rgba(0,0,0,0) 100% /* Fade to fully transparent at edge */
+  ); 
+  /* border: 1px solid rgba(var(--rgb-dark-cyan, 10, 147, 150), 0.4); /* Old border */
+  border: 2px solid rgba(var(--rgb-dark-cyan, 10, 147, 150), 0.4); /* Thicker border */
+  border-radius: var(--border-radius-lg, 12px); 
+  padding: var(--spacing-md);
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast), background-image var(--transition-fast);
+  display: flex; 
+  flex-direction: column;
+  position: relative;
+  overflow: hidden; 
+  /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), 0 0 5px rgba(var(--rgb-space-accent), 0.1); /* Old shadow */
+  box-shadow: 
+    0 4px 10px rgba(0, 0, 0, 0.4), /* Outer shadow */
+    inset 0 1px 2px rgba(0, 0, 0, 0.5); /* Inner shadow for depth */
+}
+
+.selection-card:hover {
+  transform: translateY(-6px) scale(1.04); /* Enhanced transform */
+  /* border-color: rgba(var(--rgb-space-accent, 0, 212, 255), 0.6); /* Old hover border */
+  border-color: rgba(var(--rgb-space-accent, 0, 212, 255), 0.8); /* Brighter hover border */
+  /* Optionally enhance the gradient on hover */
+  background-image: radial-gradient(ellipse at center, 
+    rgba(var(--rgb-dark-cyan, 10, 147, 150), 0.6) 0%, /* Slightly brighter center */
+    rgba(var(--rgb-space-accent, 0, 212, 255), 0.1) 80%, /* Brighter edge */
+    rgba(0,0,0,0) 100%);
+  /* box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 15px var(--glow-accent); /* Old hover shadow */
+  box-shadow: 
+    0 10px 25px rgba(0, 0, 0, 0.5), /* Enhanced outer shadow */
+    0 0 20px var(--glow-accent), /* Existing glow */
+    inset 0 1px 2px rgba(0, 0, 0, 0.4); /* Slightly adjust inner shadow */
+}
+
+/* Modal Overlay / Backdrop */
+/*
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(var(--rgb-rich-black), 0.2); // Significantly reduced opacity 
+  backdrop-filter: blur(5px); // Restore blur effect 
+  z-index: var(--z-modal-backdrop); 
+  display: flex;
+  align-items: center; 
+  justify-content: center; 
+  padding: var(--spacing-xl); 
+}
+*/
+
+/* Base Modal Panel */
+.modal-panel {
+  background-color: transparent; 
+  border-width: 0; /* REMOVED border */
+  border-style: none;
+  /* border-color: var(--color-space-accent); REMOVED border */
+  border-radius: 4rem; /* MORE rounded corners (64px) */
+  padding: 0; 
+  position: relative; 
+  z-index: var(--z-modal); 
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px var(--glow-secondary);
+  width: 90%; 
+  max-width: 900px; 
+  max-height: 80vh; 
+  overflow: visible; /* CHANGED from hidden to visible */
+  color: var(--color-text-primary);
+}
+
+/* Pseudo-element for Hex Pattern Background */
+.modal-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit; /* Match panel rounding */
+  /* Tiled Hexagon SVG - Changed fill to midnight_green, adjusted opacity */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='34.5' viewBox='0 0 30 34.5'%3E%3Cpath d='M15 0l15 8.66v17.32L15 34.5 0 25.98V8.66L15 0z M6.34 12.07l-1.73.99v5.19l1.73.99L15 24.42l8.66-5.19 1.73-.99v-5.19l-1.73-.99L15 6.93l-8.66 5.14z' fill='%23005f73' fill-opacity='0.15'/%3E%3C/svg%3E"); 
+  background-size: 35px 40px; /* Slightly larger hex */
+  /* REMOVED mix-blend-mode: overlay; */
+  opacity: 0.7; /* Adjust overall opacity */
+  z-index: -2; /* Behind gradient and content */
+}
+
+/* Pseudo-element for Radial Transparency Overlay */
+.modal-panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit; /* Match panel rounding */
+  /* Radial Gradient: Transparent center -> Opaque rich_black edges */
+  /* Adjusted fade point */
+  background-image: radial-gradient(
+    circle at center, 
+    rgba(0, 18, 25, 0) 0%,   /* rich_black transparent center */
+    rgba(0, 18, 25, 1) 85%  /* rich_black opaque edges - Starts later */
+  );
+  pointer-events: none; 
+  z-index: -1; 
+}
+
+/* Ensure modal content is above pseudo-elements and has padding */
+/* Add top padding to account for new absolute title container */
+.modal-panel-content {
+  position: relative;
+  z-index: 1; /* Above pseudo-elements */
+  height: 100%;
+  max-height: 80vh; /* Match panel max-height */
+  overflow-y: auto;
+  padding: var(--spacing-xl); /* Keep existing side/bottom padding */
+  padding-top: 5rem; /* Increased top padding significantly */
+} 

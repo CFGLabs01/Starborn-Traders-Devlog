@@ -1,0 +1,233 @@
+{
+    "Scrap Metal": {
+      "description": "Fragments of hulls, machinery, and forgotten satellites. Ubiquitous and versatile, if low quality. Essential for basic repairs and rudimentary construction.",
+      "rarity": "common",
+      "base_value": 5,
+      "tags": ["scrap", "metal", "basic_material"],
+      "category": "Raw Materials"
+    },
+    "Silicon Chunks": {
+      "description": "Raw, unrefined silicon harvested from asteroids or planetary crusts. Foundation for basic electronics and glass production.",
+      "rarity": "common",
+      "base_value": 8,
+      "tags": ["ore", "mineral", "basic_material"],
+      "category": "Raw Materials"
+    },
+    "Hydrocarbon Gas": {
+      "description": "Commonly found gases trapped in asteroid fields or vented from gas giants. Used primarily for basic fuel and polymer synthesis.",
+      "rarity": "common",
+      "base_value": 6,
+      "tags": ["gas", "fuel_source", "basic_material"],
+      "category": "Raw Materials"
+    },
+    "Base Metallic Ore": {
+      "description": "A generic mix of common metallic ores like iron and nickel. Requires significant refining but is readily available.",
+      "rarity": "common",
+      "base_value": 10,
+      "tags": ["ore", "metal", "basic_material"],
+      "category": "Raw Materials"
+    },
+    "Raw Crystal Shards": {
+      "description": "Unprocessed crystalline structures with minor energy conductive properties. Often found near spatial anomalies.",
+      "rarity": "uncommon",
+      "base_value": 15,
+      "tags": ["mineral", "crystal", "energy_related"],
+      "category": "Raw Materials"
+    },
+    "Exotic Gas Cloud Sample": {
+      "description": "A volatile sample collected from nebulae containing unusual isotopes. Potentially useful in advanced energy or propulsion.",
+      "rarity": "uncommon",
+      "base_value": 20,
+      "tags": ["gas", "exotic_isotope", "energy_related"],
+      "category": "Raw Materials"
+    },
+    "Titanium Ore Deposit": {
+      "description": "Naturally occurring ore rich in titanium. Prized for its strength-to-weight ratio after refining.",
+      "rarity": "uncommon",
+      "base_value": 25,
+      "tags": ["ore", "metal", "advanced_material"],
+      "category": "Raw Materials"
+    },
+    "Unstable Isotope Cluster": {
+      "description": "A small, faintly glowing rock emitting low-level radiation. Requires careful handling but contains potent energy potential.",
+      "rarity": "rare",
+      "base_value": 40,
+      "tags": ["ore", "radioactive", "energy_source"],
+      "category": "Raw Materials"
+    },
+    "Raw Bioluminescent Fungi": {
+      "description": "Strange fungi harvested from damp, dark corners of derelicts or exotic planets. Used in pharmaceuticals and specialized lighting.",
+      "rarity": "rare",
+      "base_value": 35,
+      "tags": ["biological", "organic", "consumable_source", "medical"],
+      "category": "Raw Materials"
+    },
+    "Precursor Alloy Fragment": {
+      "description": "A piece of an unknown, ancient alloy exhibiting unusual structural properties. Found only in Precursor ruins.",
+      "rarity": "rare",
+      "base_value": 60,
+      "tags": ["scrap", "metal", "precursor", "artifact_component"],
+      "category": "Raw Materials"
+    },
+    "Cryo-Ice Core": {
+      "description": "A sample drilled from deep within comets or ice moons, containing trapped gases and minerals from the early solar system.",
+      "rarity": "rare",
+      "base_value": 50,
+      "tags": ["ice", "gas", "mineral", "research_material"],
+      "category": "Raw Materials"
+    },
+    "Zero-G Plant Spores": {
+      "description": "Hardy spores capable of growing in microgravity. Cultivated for exotic foods or atmospheric processing.",
+      "rarity": "uncommon",
+      "base_value": 22,
+      "tags": ["biological", "organic", "consumable_source", "terraforming"],
+      "category": "Raw Materials"
+    },
+    "Charged Plasma Condensate": {
+      "description": "Semi-stable plasma trapped in electromagnetic fields, harvested from stellar phenomena. Extremely energetic.",
+      "rarity": "epic",
+      "base_value": 150,
+      "tags": ["plasma", "energy_source", "volatile"],
+      "category": "Raw Materials"
+    },
+    "Quantum Foam Residue": {
+      "description": "Trace amounts of exotic matter collected from localized spacetime distortions. Highly unpredictable but potentially revolutionary.",
+      "rarity": "epic",
+      "base_value": 200,
+      "tags": ["exotic_matter", "research_material", "unstable"],
+      "category": "Raw Materials"
+    },
+    "Void Crystal Matrix": {
+      "description": "A complex, naturally occurring lattice of Void Crystal, humming with contained energy. Found only in deep, uncharted space.",
+      "rarity": "legendary",
+      "base_value": 500,
+      "tags": ["crystal", "energy_source", "exotic"],
+      "category": "Raw Materials"
+    },
+    "Basic Alloy Ingot": {
+      "description": "Refined from common ores. Forms the backbone of most standard construction and hull plating.",
+      "rarity": "common",
+      "base_value": 25,
+      "tags": ["metal", "ingot", "construction_material"],
+      "category": "Refined Materials"
+    },
+    "Processed Silicon Wafer": {
+      "description": "Purified silicon sliced into wafers. Essential for manufacturing basic semiconductors and computer components.",
+      "rarity": "common",
+      "base_value": 30,
+      "tags": ["silicon", "electronics_material", "manufactured"],
+      "category": "Refined Materials"
+    },
+    "Standard Polymer Resin": {
+      "description": "A versatile plastic derived from refined hydrocarbons. Used for casings, insulation, and low-stress components.",
+      "rarity": "common",
+      "base_value": 20,
+      "tags": ["polymer", "construction_material", "manufactured"],
+      "category": "Refined Materials"
+    },
+    "Refined Hydrocarbons (Fuel Grade)": {
+      "description": "Processed gas suitable for standard ship drives and power generators. Relatively stable and efficient.",
+      "rarity": "common",
+      "base_value": 18,
+      "tags": ["fuel", "gas", "refined"],
+      "category": "Refined Materials"
+    },
+    "Conductive Wiring Bundle": {
+      "description": "Basic copper or aluminum wiring, insulated and bundled. Used for power transmission in simple systems.",
+      "rarity": "common",
+      "base_value": 28,
+      "tags": ["wiring", "electronics_material", "metal"],
+      "category": "Refined Materials"
+    },
+    "Tempered Plasteel Sheet": {
+      "description": "An improved alloy combining metal strength with polymer resilience. Standard for mid-grade hull plating and structural supports.",
+      "rarity": "uncommon",
+      "base_value": 45,
+      "tags": ["metal", "polymer", "alloy", "construction_material"],
+      "category": "Refined Materials"
+    },
+    "Purified Crystal Resonator": {
+      "description": "Refined crystal shards tuned to specific frequencies. Used in basic sensors and energy focusing arrays.",
+      "rarity": "uncommon",
+      "base_value": 50,
+      "tags": ["crystal", "electronics_material", "energy_related"],
+      "category": "Refined Materials"
+    },
+    "Enriched Isotope Fuel Rod": {
+      "description": "Processed isotopes formed into relatively stable fuel rods. Powers advanced ship reactors and certain high-energy weapons.",
+      "rarity": "rare",
+      "base_value": 100,
+      "tags": ["fuel", "radioactive", "energy_source"],
+      "category": "Refined Materials"
+    },
+    "Refined Titanium Plate": {
+      "description": "High-purity titanium plating offering excellent protection and heat resistance for its weight.",
+      "rarity": "uncommon",
+      "base_value": 70,
+      "tags": ["metal", "plate", "construction_material", "armor"],
+      "category": "Refined Materials"
+    },
+    "Bio-Enhancement Gel": {
+      "description": "A processed gel derived from bioluminescent fungi, used in medical treatments and cybernetic interfaces.",
+      "rarity": "rare",
+      "base_value": 90,
+      "tags": ["biological", "gel", "medical", "cybernetics"],
+      "category": "Refined Materials"
+    },
+    "Woven Carbon Nanomesh": {
+      "description": "Extremely strong, lightweight mesh created from carbon nanotubes. Used in advanced composites and armor.",
+      "rarity": "rare",
+      "base_value": 120,
+      "tags": ["nanomaterial", "mesh", "construction_material", "armor"],
+      "category": "Refined Materials"
+    },
+    "Cryo-Stabilized Gas": {
+      "description": "Rare gases extracted from ice cores, stabilized at extremely low temperatures. Used in advanced cooling systems and research.",
+      "rarity": "rare",
+      "base_value": 110,
+      "tags": ["gas", "coolant", "research_material"],
+      "category": "Refined Materials"
+    },
+    "Precursor Power Conduit": {
+      "description": "A section of refined Precursor alloy, seemingly designed to channel immense energy with zero loss. Its function is barely understood.",
+      "rarity": "epic",
+      "base_value": 250,
+      "tags": ["metal", "precursor", "conduit", "energy_related", "artifact_component"],
+      "category": "Refined Materials"
+    },
+    "Hyper-Dense Plating": {
+      "description": "An incredibly dense but workable material created under extreme pressures. Offers unparalleled protection but is very heavy.",
+      "rarity": "epic",
+      "base_value": 220,
+      "tags": ["metal", "plate", "armor", "heavy"],
+      "category": "Refined Materials"
+    },
+    "Stabilized Plasma Canister": {
+      "description": "Charged plasma carefully contained within portable magnetic bottles. Used as ammunition for plasma weaponry or burst energy sources.",
+      "rarity": "epic",
+      "base_value": 300,
+      "tags": ["plasma", "energy_source", "ammunition", "volatile"],
+      "category": "Refined Materials"
+    },
+    "Zero-Point Energy Tap": {
+      "description": "A device that seemingly draws minuscule amounts of energy from vacuum fluctuations, refined from Quantum Foam Residue. Highly experimental.",
+      "rarity": "legendary",
+      "base_value": 700,
+      "tags": ["energy_source", "exotic_tech", "experimental"],
+      "category": "Refined Materials"
+    },
+    "Perfected Crystal Lens": {
+      "description": "A flawless lens cut from a Void Crystal Matrix, capable of focusing energy or light with absolute precision.",
+      "rarity": "legendary",
+      "base_value": 1000,
+      "tags": ["crystal", "lens", "energy_related", "optics", "exotic_tech"],
+      "category": "Refined Materials"
+    },
+    "Cultivated Zero-G Algae": {
+      "description": "Nutrient-rich algae grown from Zero-G spores. A staple food source on stations and long-haul vessels.",
+      "rarity": "uncommon",
+      "base_value": 40,
+      "tags": ["biological", "food", "consumable"],
+      "category": "Refined Materials"
+    }
+  }

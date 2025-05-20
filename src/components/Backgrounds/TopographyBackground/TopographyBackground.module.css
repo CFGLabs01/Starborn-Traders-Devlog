@@ -1,0 +1,128 @@
+.topographyBackground {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -5; /* Behind starfield */
+  pointer-events: none;
+  /* Add background or pseudo-elements for effect later */
+}
+
+.starfield {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-space-dark);
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(19, 62, 124, 0.3) 0%, rgba(0, 0, 0, 0) 50%),
+    radial-gradient(circle at 80% 70%, rgba(42, 157, 143, 0.2) 0%, rgba(0, 0, 0, 0) 40%);
+}
+
+.starfield::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(1px 1px at 25px 5px, white 50%, transparent 100%),
+    radial-gradient(1px 1px at 50px 25px, white 50%, transparent 100%),
+    radial-gradient(1px 1px at 125px 20px, white 50%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 50px 75px, white 50%, transparent 100%),
+    radial-gradient(2px 2px at 175px 125px, white 50%, transparent 100%),
+    radial-gradient(2.5px 2.5px at 20px 120px, white 50%, transparent 100%),
+    radial-gradient(2px 2px at 100px 150px, white 50%, transparent 100%);
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  opacity: 0.4;
+  animation: twinkle 10s linear infinite;
+}
+
+.topographyLayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%232a9d8f' fill-opacity='0.1'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z'/%3E%3Cpath d='M6 5V0H5v5H0v1h5v94h1V6h94V5H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.2;
+}
+
+@keyframes twinkle {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+.topographySvg {
+  width: 100%;
+  height: 100%;
+  opacity: 0.5;
+  filter: blur(1px);
+}
+
+.topographicLinesContainer {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+.topographicLine {
+  stroke: rgba(150, 210, 255, 0.1);
+  stroke-width: 1px;
+  fill: none;
+  filter: drop-shadow(0 0 3px rgba(100, 200, 255, 0.1));
+}
+
+/* Subtle variation between lines */
+.topographicLine:nth-child(2n) {
+  stroke-width: 0.8px;
+  stroke: rgba(150, 210, 255, 0.08);
+}
+
+.topographicLine:nth-child(3n) {
+  stroke-width: 1.2px;
+  stroke: rgba(150, 210, 255, 0.12);
+}
+
+.starsContainer {
+  mix-blend-mode: screen;
+}
+
+.star {
+  fill: rgba(255, 255, 255, 0.6);
+  filter: blur(0.5px) drop-shadow(0 0 2px rgba(255, 255, 255, 0.3));
+}
+
+/* Subtle star variations */
+.star:nth-child(2n) {
+  fill: rgba(200, 240, 255, 0.5);
+}
+
+.star:nth-child(3n) {
+  fill: rgba(180, 220, 255, 0.4);
+}
+
+.star:nth-child(5n) {
+  fill: rgba(150, 200, 255, 0.5);
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .topographicLine {
+    stroke-width: 0.7px;
+  }
+  
+  .star {
+    r: 1.2; /* Smaller stars on mobile */
+  }
+}
+
+/* Add styles for the actual topographic lines later (SVG/Canvas) */

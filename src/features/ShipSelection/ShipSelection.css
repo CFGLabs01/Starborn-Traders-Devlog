@@ -1,0 +1,104 @@
+/* Apply general layout styles from main.css if available, or define here */
+
+.selection-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  color: #e0e0e0;
+  min-height: 100vh; /* Ensure it takes full viewport height */
+  /* background-color: #0a1014; /* Removed, handled by global styles or parent */
+  /* Make sure header spacing matches CharacterSelection */
+}
+
+.header-container {
+  text-align: center;
+  margin-bottom: 2rem; /* Consistent spacing */
+}
+
+.selection-title {
+  font-size: 2.5rem; /* Example size, adjust as needed */
+  margin-bottom: 0.5rem;
+  color: #66d9ef; /* Cyan color for heading */
+  text-shadow: 0 0 5px #66d9ef;
+  font-family: 'Orbitron', sans-serif; /* Example futuristic font */
+}
+
+.selection-subtitle {
+  font-size: 1.1rem;
+  color: #b0c4de; /* Light steel blue */
+  max-width: 600px;
+  margin: 0 auto 2rem auto; /* Center and add bottom margin */
+  font-family: 'Roboto Mono', monospace; /* Example mono font */
+}
+
+/* Card Grid Layout */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive grid */
+  gap: 1.5rem; /* Spacing between cards */
+  width: 100%;
+  max-width: 1000px; /* Adjust max-width as needed */
+  padding: 1rem;
+}
+
+/* Individual Ship Card Styling (some handled by Tailwind in JSX) */
+.ship-card {
+  /* Base styles defined in JSX via Tailwind */
+  /* Add specific non-Tailwind styles here if needed */
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; 
+}
+
+.ship-card:hover {
+  transform: translateY(-5px); /* Slight lift effect */
+}
+
+.ship-card img {
+  /* Tailwind classes handle sizing/object-fit */
+  /* Add any additional image styles here */
+  background-color: rgba(0, 0, 0, 0.2); /* Slight dark background for image */
+  border-radius: 4px;
+}
+
+/* Remove obsolete styles */
+/* .ship-selection-layout { ... } */
+/* .ship-list { ... } */
+/* .ship-details { ... } */
+/* .ship-image { ... } */
+
+/* Placeholder styling for the detail modal (mostly Tailwind in JSX) */
+.detail-modal-placeholder {
+  /* Styles mostly handled by Tailwind classes */
+}
+
+/* Styles for future stats/details sections (can be used inside modal) */
+.ship-stats, .ship-variant-details {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(147, 112, 219, 0.3); /* Use purple to match modal border */
+  width: 100%;
+  text-align: left; /* Align text left within the modal sections */
+}
+
+.ship-stats h3, .ship-variant-details h3 {
+  color: #a6e22e; /* Lime green */
+  margin-bottom: 1rem;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.ship-stats p, .ship-variant-details p {
+  margin-bottom: 0.5rem;
+  color: #b0b0b0;
+  font-family: 'Roboto Mono', monospace;
+}
+
+/* Footer styling handled by JSX structure + Tailwind on button */
+/* Remove button styles from here as they are now inline Tailwind */
+
+/* Add styles for the shared header classes if not globally defined */
+/* Ensure these match or are overridden by global styles */
+.header-container { /* Duplicated above, consolidating */
+  /* Styles defined above */
+}
+
+/* Other styles remain the same */ 
