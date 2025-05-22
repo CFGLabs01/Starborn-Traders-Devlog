@@ -18,14 +18,14 @@ const SelectionModal = ({
             {isOpen && (
                 <motion.div
                     className="modal-backdrop" // Style this in sharedSelection.css
-                    style={{ background: 'rgba(2, 6, 23, 0.2) !important' }} // Set desired background
                     onClick={onClose} 
                     variants={modalBackdropVariants} 
                     initial="hidden"
                     animate="visible"
                     exit="exit"
                     role="dialog" 
-                    aria-modal="true" 
+                    aria-modal="true"
+                    style={{ background: 'rgba(2, 6, 23, 0.2) !important' }} // Ensure this overrides framer-motion
                 >
                     {/* Panel - Keep relative positioning for absolute children */}
                     <motion.div

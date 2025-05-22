@@ -14,15 +14,12 @@ function MovingStars({ constantDriftSpeed = 0.1, ...props }) {
 
   useFrame((state, delta) => {
     if (groupRef.current) {
-      groupRef.current.position.copy(camera.position); // Group follows camera for parallax
+      groupRef.current.position.copy(camera.position); // Group follows camera
     }
     if (starsRef.current) {
-      // Stars drift constantly towards the camera (negative Z in their local space)
-      starsRef.current.position.z += constantDriftSpeed * delta;
-      // Optional: Reset stars if they drift too far behind the camera origin of the group
-      // This depends on the depth and radius of the stars
-      if (starsRef.current.position.z > (props.depth || 50) * 0.5) { // Reset if halfway through depth
-        starsRef.current.position.z = -(props.depth || 50) * 0.5; // Reset to back
+      starsRef.current.position.z += constantDriftSpeed * delta; // Stars drift locally
+      if (starsRef.current.position.z > (props.depth || 50) * 0.5) {
+        starsRef.current.position.z = -(props.depth || 50) * 0.5; // Reset
       }
     }
   });
@@ -47,15 +44,27 @@ const Controls = {
   pitchDown: 'pitchDown',
   rollLeft: 'rollLeft',
   rollRight: 'rollRight',
+  strafeUp: 'strafeUp',     // New, matches App.jsx
+  strafeDown: 'strafeDown'  // New, matches App.jsx
 };
 
-// Ship Component - Remove React.forwardRef and the ref parameter for now
+// Ship Component
 const Ship = ({ modelPath, initialRotationY = 0, baseSpeedStat = 5, agilityStat = 5 }) => {
   const { scene } = useGLTF(modelPath);
-  const shipPrimitiveRef = useRef(); // Local ref for the primitive if needed by ship itself
+  const shipPrimitiveRef = useRef(); 
   const thrusterLightRef = useRef();
-  const { camera } = useThree();
+  const { camera, gl } = useThree();
   const angularVelocity = useRef(new THREE.Vector3(0, 0, 0));
+  const velocity = useRef(new THREE.Vector3());
+
+  // Mouse input refs
+  const mouseMovementX = useRef(0);
+  const mouseMovementY = useRef(0);
+  const isPointerLocked = useRef(false);
+
+  // Gamepad refs
+  const gamepadRef = useRef(null); // Stores the connected gamepad object
+  const gamepadIndexRef = useRef(null); // Stores the index of the connected gamepad
 
   console.log(`[MainGameScene > Ship] Component created/re-rendered. modelPath: ${modelPath}, initialRotationY: ${initialRotationY}, baseSpeed: ${baseSpeedStat}, agility: ${agilityStat}`);
 
@@ -69,113 +78,234 @@ const Ship = ({ modelPath, initialRotationY = 0, baseSpeedStat = 5, agilityStat 
   const pitchDownPressed = useKeyboardControls(state => state[Controls.pitchDown]);
   const rollLeftPressed = useKeyboardControls(state => state[Controls.rollLeft]);
   const rollRightPressed = useKeyboardControls(state => state[Controls.rollRight]);
+  const strafeUpPressed = useKeyboardControls(state => state[Controls.strafeUp]);
+  const strafeDownPressed = useKeyboardControls(state => state[Controls.strafeDown]);
 
-  // Movement parameters - now derived from stats
-  // Define base values and scaling factors for stats
-  const baseMoveValue = 0.01; // Base speed unit per stat point
-  const baseRotationValue = 0.008; // Increased baseRotationValue for more responsive turning
+  // Movement parameters 
+  const baseMoveValue = 0.01; 
+  const baseRotationValue = 0.012; 
   const moveSpeed = useMemo(() => baseMoveValue * baseSpeedStat, [baseSpeedStat]);
   const rotationSensitivity = useMemo(() => baseRotationValue * agilityStat, [agilityStat]);
-  const boostMultiplier = 1.8; // Keep boost as a multiplier for now
+  const mouseSensitivity = 0.002;
+  const gamepadSensitivity = 0.025; // New: Gamepad sensitivity factor
+  const gamepadDeadZone = 0.15; // New: Gamepad dead zone
+  const boostMultiplier = 1.8; 
   const dampingFactor = 0.92;
   const rotationDamping = 0.90;
-
-  // State for velocity and rotation
-  const velocity = useRef(new THREE.Vector3());
+  const strafeSpeed = useMemo(() => moveSpeed * 0.8, [moveSpeed]);
 
   useEffect(() => {
-    if (shipPrimitiveRef.current) { // Use local ref
-      console.log(`[MainGameScene > Ship useEffect] Applying initialRotationY=${initialRotationY} to local shipPrimitiveRef. Current rotation.y before: ${shipPrimitiveRef.current.rotation.y}`);
+    if (shipPrimitiveRef.current) { 
       shipPrimitiveRef.current.rotation.y = initialRotationY;
-      console.log(`[MainGameScene > Ship useEffect] After applying, rotation.y: ${shipPrimitiveRef.current.rotation.y}`);
       if(angularVelocity.current) {
         angularVelocity.current.set(0,0,0);
       }
+      velocity.current.set(0,0,0); 
     }
-  }, [initialRotationY, shipPrimitiveRef]); // Depend on local ref
+  }, [initialRotationY, shipPrimitiveRef]); 
+
+  // Effect for mouse controls and pointer lock
+  useEffect(() => {
+    const handleMouseMove = (event) => {
+      if (isPointerLocked.current) {
+        mouseMovementX.current += event.movementX;
+        mouseMovementY.current += event.movementY;
+      }
+    };
+
+    const handlePointerLockChange = () => {
+      if (document.pointerLockElement === gl.domElement) {
+        isPointerLocked.current = true;
+        console.log('[Ship.jsx] Pointer Locked');
+      } else {
+        isPointerLocked.current = false;
+        console.log('[Ship.jsx] Pointer Unlocked');
+        mouseMovementX.current = 0;
+        mouseMovementY.current = 0;
+      }
+    };
+    
+    // Pointer lock request is handled in App.jsx via canvas click
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('pointerlockchange', handlePointerLockChange);
+    
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('pointerlockchange', handlePointerLockChange);
+      // Ensure pointer is unlocked if component unmounts while locked
+      if (document.pointerLockElement === gl.domElement) {
+        document.exitPointerLock();
+      }
+    };
+  }, [gl.domElement]);
+
+  // Effect for gamepad connection/disconnection
+  useEffect(() => {
+    const handleGamepadConnected = (event) => {
+      console.log('[Ship.jsx] Gamepad connected:', event.gamepad);
+      // Prefer the first connected gamepad if multiple are present and one isn't already selected
+      if (gamepadIndexRef.current === null) {
+        gamepadIndexRef.current = event.gamepad.index;
+        gamepadRef.current = event.gamepad; // Store the gamepad object
+        console.log(`[Ship.jsx] Gamepad ${event.gamepad.id} assigned to index ${event.gamepad.index}`);
+      }
+    };
+
+    const handleGamepadDisconnected = (event) => {
+      console.log('[Ship.jsx] Gamepad disconnected:', event.gamepad);
+      if (gamepadIndexRef.current === event.gamepad.index) {
+        gamepadIndexRef.current = null;
+        gamepadRef.current = null; // Clear the stored gamepad object
+        console.log(`[Ship.jsx] Gamepad at index ${event.gamepad.index} unassigned.`);
+      }
+    };
+
+    window.addEventListener('gamepadconnected', handleGamepadConnected);
+    window.addEventListener('gamepaddisconnected', handleGamepadDisconnected);
+
+    // Check for already connected gamepads
+    const gamepads = navigator.getGamepads();
+    for (let i = 0; i < gamepads.length; i++) {
+      if (gamepads[i]) {
+        handleGamepadConnected({ gamepad: gamepads[i] });
+        break; // Assign the first one found
+      }
+    }
+
+    return () => {
+      window.removeEventListener('gamepadconnected', handleGamepadConnected);
+      window.removeEventListener('gamepaddisconnected', handleGamepadDisconnected);
+    };
+  }, []);
+
 
   useFrame((state, delta) => {
-    if (!shipPrimitiveRef.current) return; // Use local ref
-    const ship = shipPrimitiveRef.current; // Use local ref
-    let currentThrustMagnitude = 0; // To control thruster light intensity
+    if (!shipPrimitiveRef.current) return; 
+    const ship = shipPrimitiveRef.current; 
+    let currentThrustMagnitude = 0; 
 
+    // --- Gamepad Input ---
+    let gamepadYaw = 0;
+    let gamepadPitch = 0;
+
+    if (gamepadIndexRef.current !== null) {
+      const gp = navigator.getGamepads()[gamepadIndexRef.current];
+      if (gp) {
+        gamepadRef.current = gp; // Keep ref updated
+        // Left stick: axes[0] for X (Yaw), axes[1] for Y (Pitch)
+        const rawGamepadYaw = gp.axes[0] || 0;
+        const rawGamepadPitch = gp.axes[1] || 0;
+
+        if (Math.abs(rawGamepadYaw) > gamepadDeadZone) {
+          gamepadYaw = rawGamepadYaw;
+        }
+        if (Math.abs(rawGamepadPitch) > gamepadDeadZone) {
+          gamepadPitch = rawGamepadPitch;
+        }
+      } else {
+         // Gamepad might have been disconnected without event firing (rare)
+         console.warn(`[Ship.jsx] Gamepad at index ${gamepadIndexRef.current} is null. Clearing.`);
+         gamepadIndexRef.current = null;
+         gamepadRef.current = null;
+      }
+    }
+    
+    // --- Rotation ---
+    const rotationImpulse = rotationSensitivity * delta * 60; 
+    // Keyboard rotation
+    if (pitchUpPressed) angularVelocity.current.x -= rotationImpulse;
+    if (pitchDownPressed) angularVelocity.current.x += rotationImpulse;
+    if (yawLeftPressed) angularVelocity.current.y += rotationImpulse;
+    if (yawRightPressed) angularVelocity.current.y -= rotationImpulse;
+    if (rollLeftPressed) angularVelocity.current.z += rotationImpulse;
+    if (rollRightPressed) angularVelocity.current.z -= rotationImpulse;
+
+    // Mouse rotation (if pointer is locked)
+    if (isPointerLocked.current) {
+      const effectiveMouseSensitivity = mouseSensitivity; 
+      angularVelocity.current.y -= mouseMovementX.current * effectiveMouseSensitivity; 
+      angularVelocity.current.x -= mouseMovementY.current * effectiveMouseSensitivity; 
+      
+      mouseMovementX.current = 0;
+      mouseMovementY.current = 0;
+    }
+
+    // Gamepad rotation (additive to keyboard/mouse for now, could be exclusive)
+    // Note: gamepad axes are typically -1 to 1. Positive Y on left stick is often "down".
+    angularVelocity.current.y += gamepadYaw * gamepadSensitivity * delta * 60; // Yaw
+    angularVelocity.current.x += gamepadPitch * gamepadSensitivity * delta * 60; // Pitch
+    
+    // Apply angular velocity
+    ship.rotateX(angularVelocity.current.x * delta);
+    ship.rotateY(angularVelocity.current.y * delta);
+    ship.rotateZ(angularVelocity.current.z * delta);
+    angularVelocity.current.multiplyScalar(rotationDamping);
+    
+    // --- Translation & Other Logic ---
     let currentThrust = 0;
     if (forwardPressed) {
       currentThrust = moveSpeed;
       currentThrustMagnitude = 1.0;
     }
-    if (backPressed) currentThrust = -moveSpeed * 0.6; // Reverse doesn't typically have strong forward thrusters
+    if (backPressed) currentThrust = -moveSpeed * 0.6; 
     
     if (boostPressed && forwardPressed) {
       currentThrust *= boostMultiplier;
-      currentThrustMagnitude = 2.5; // Higher intensity for boost
+      currentThrustMagnitude = 2.5; 
     }
 
-    // --- Rotation --- (Temporarily disable live rotation updates for debugging orientation)
-    const rotationImpulse = rotationSensitivity * delta * 60; // This was re-enabled by user
-    // if (pitchUpPressed) angularVelocity.current.x -= rotationImpulse;
-    // if (pitchDownPressed) angularVelocity.current.x += rotationImpulse;
-    // if (yawLeftPressed) angularVelocity.current.y += rotationImpulse;
-    // if (yawRightPressed) angularVelocity.current.y -= rotationImpulse;
-    // if (rollLeftPressed) angularVelocity.current.z += rotationImpulse;
-    // if (rollRightPressed) angularVelocity.current.z -= rotationImpulse;
-
-    // ship.rotateX(angularVelocity.current.x * delta);
-    // ship.rotateY(angularVelocity.current.y * delta);
-    // ship.rotateZ(angularVelocity.current.z * delta);
-    // angularVelocity.current.multiplyScalar(rotationDamping);
-
-    // --- Thruster Light Intensity ---
     if (thrusterLightRef.current) {
-      const baseIntensity = 1.5; // Base visible intensity when thrusting
-      const maxIntensity = 5.0;  // Max intensity for full boost
-      const offIntensity = 0.1;   // Dim glow when idle
+      const baseIntensity = 1.5; 
+      const maxIntensity = 5.0;  
+      const offIntensity = 0.1;   
       let targetIntensity = offIntensity;
 
       if (currentThrustMagnitude > 0) {
-        // Scale intensity: if currentThrustMagnitude is 1 (normal) -> baseIntensity, if 2.5 (boost) -> maxIntensity
         targetIntensity = baseIntensity + (maxIntensity - baseIntensity) * ((currentThrustMagnitude - 1.0) / (2.5 - 1.0));
-        targetIntensity = Math.max(baseIntensity, Math.min(targetIntensity, maxIntensity)); // Clamp for safety
-      } else if (currentThrust < 0) { // Small glow for reverse if desired
+        targetIntensity = Math.max(baseIntensity, Math.min(targetIntensity, maxIntensity)); 
+      } else if (currentThrust < 0) { 
         targetIntensity = 0.3;
       }
       
       thrusterLightRef.current.intensity = THREE.MathUtils.lerp(
         thrusterLightRef.current.intensity,
         targetIntensity,
-        0.15 // Smoothing factor
+        0.15 
       );
     }
 
-    // --- Translation --- 
-    const forwardVector = new THREE.Vector3(0, 0, -1);
-    forwardVector.applyQuaternion(ship.quaternion); // Get ship's current forward direction
-    velocity.current.add(forwardVector.multiplyScalar(currentThrust * delta * 60));
-    velocity.current.multiplyScalar(dampingFactor);
-    ship.position.add(velocity.current);
+    const actualDelta = delta * 60; 
 
-    // --- Camera Follow --- 
-    // More robust camera: fixed offset, looking at a point slightly in front of the ship
-    const cameraIdealOffset = new THREE.Vector3(0, 1.5, 4.5); // Offset from ship's center
-    const cameraIdealLookAt = new THREE.Vector3(0, 0.5, -10); // Point in front of ship to look at (local space)
+    const forwardVector = new THREE.Vector3(0, 0, -1);
+    forwardVector.applyQuaternion(ship.quaternion); 
+    const thrustComponent = forwardVector.multiplyScalar(currentThrust * actualDelta);
+    
+    let strafeComponentY = 0;
+    if (strafeUpPressed) strafeComponentY += strafeSpeed * actualDelta;
+    if (strafeDownPressed) strafeComponentY -= strafeSpeed * actualDelta;
+
+    velocity.current.add(thrustComponent); 
+    velocity.current.multiplyScalar(dampingFactor); 
+    
+    ship.position.add(velocity.current); 
+    ship.position.y += strafeComponentY; 
+    
+    const cameraIdealOffset = new THREE.Vector3(0, 1.5, 4.5); 
+    const cameraIdealLookAt = new THREE.Vector3(0, 0.5, -10); 
 
     const idealPosition = ship.localToWorld(cameraIdealOffset.clone());
     const idealLookAtTarget = ship.localToWorld(cameraIdealLookAt.clone());
 
     camera.position.lerp(idealPosition, 0.15);
     camera.lookAt(idealLookAtTarget);
-
-    // Optional: Clamp camera movement to avoid extreme angles if desired
-    // This can be complex with full 3D rotation; for now, rely on lerp and lookAt
   });
 
-  // Scale and position the thruster light relative to the ship model
-  // These values are guesses and will need adjustment based on your ship models
   const thrusterPosition = [0, 0.1, 1]; 
   const thrusterColor = "#66ccff";
 
   return (
-    <primitive object={scene} ref={shipPrimitiveRef} scale={1.0} position={[0, 0, 0]}> {/* Restored scale to 1.0 */}
+    <primitive object={scene} ref={shipPrimitiveRef} scale={1.0} position={[0, 0, 0]}> 
       <pointLight 
         ref={thrusterLightRef} 
         position={thrusterPosition} 
@@ -231,8 +361,10 @@ const MainGameScene = () => {
   const { camera } = useThree();
 
   useEffect(() => {
-    camera.position.set(0, 3, 12); // AAA-style third-person
-    camera.fov = 70;
+    camera.position.set(0, 2, 10); // Closer initial camera: Z from 20 to 10, Y from 5 to 2
+    camera.fov = 70; // Slightly reduced FoV from 75
+    camera.near = 0.1;
+    camera.far = 2000; // Ensure far plane can see distant stars
     camera.lookAt(0, 0, 0);
     camera.updateProjectionMatrix();
   }, [camera]);

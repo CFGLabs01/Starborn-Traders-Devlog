@@ -52,7 +52,7 @@ export const modalVariants = {
 };
 
 // Variants for backdrop fade
-export const modalBackdropVariants = {
+export const modalBackdropVariants = { 
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { duration: 0.3 } },
   exit: { opacity: 0, transition: { duration: 0.2 } },

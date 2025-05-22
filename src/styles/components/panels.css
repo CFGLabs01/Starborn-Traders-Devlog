@@ -2,13 +2,17 @@
 
 /* Full-screen backdrop (shared) - Ensure .modal-backdrop class is used in JSX */
 .modal-backdrop {
-  position: fixed; 
-  top: 0; left: 0; width: 100%; height: 100%;
-  display: flex; 
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
   align-items: center;
   justify-content: center;
-  z-index: var(--z-modal-backdrop); 
-  background-color: rgba(2, 6, 23, 0.2); /* Using defined var, original 0.2 alpha */
+  z-index: var(--z-modal-backdrop);
+  background-color: rgba(var(--rgb-rich-black), 0.2) !important; /* Test with !important */
+  backdrop-filter: blur(5px) !important; /* Test with !important */
   /* backdrop-filter: blur(12px); */ /* TEMPORARILY COMMENTED OUT */
   /* -webkit-backdrop-filter: blur(12px); */ /* TEMPORARILY COMMENTED OUT */
   /* padding: var(--spacing-md); */ /* TEMPORARILY COMMENTED OUT */

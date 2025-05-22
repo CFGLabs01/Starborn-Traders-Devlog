@@ -4,8 +4,15 @@ import { motion } from 'framer-motion';
 
 // Animation variant for the card itself (can be simpler)
 const cardVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
+    hidden: { opacity: 0, y: -50 }, // Start further up and invisible
+    visible: { 
+        opacity: 1, 
+        y: 0, 
+        transition: { 
+            duration: 0.5, 
+            ease: [0.6, 0.05, -0.01, 0.9] // Example of a custom ease
+        }
+    },
 };
 
 
@@ -25,7 +32,7 @@ const CharacterCard = ({ character, onSelect }) => {
             animate="visible"
             whileHover={{ scale: 1.03, transition: { duration: 0.15 } }} // Subtle hover scale
             whileTap={{ scale: 0.98 }} // Subtle tap scale
-            layout // Enable smooth layout changes if grid rearranges
+            // layout // Temporarily remove layout prop
         >
              {/* Image Container - Prioritize portrait, remove 3D model fallback */}
              <div className="w-full aspect-[3/4] mb-2 overflow-hidden rounded-md flex items-center justify-center bg-slate-800/50">
@@ -52,9 +59,10 @@ const CharacterCard = ({ character, onSelect }) => {
                 </p>
                 {/* Display key stats */}
                 <div className="text-xs text-slate-400 mt-1 flex justify-center space-x-2">
-                    <span>Pilot: {character.stats?.pilot || '-'}</span>
-                    <span>Mech: {character.stats?.mechanic || '-'}</span>
-                    <span>Trade: {character.stats?.trade || '-'}</span>
+                    <span>Pilot: {character.stats?.Piloting || '-'}</span>
+                    <span>Tech: {character.stats?.Tech || '-'}</span>
+                    <span>Combat: {character.stats?.Combat || '-'}</span>
+                    {/* You might want to add Influence and Perception here too, or choose the most relevant ones */}
                 </div>
             </div>
         </motion.div>

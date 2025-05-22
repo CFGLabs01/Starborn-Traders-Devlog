@@ -2,24 +2,36 @@
   "name": "starborne-internal",
   "private": true,
   "version": "0.0.1",
+  "type": "module",
   "description": "Starborne Traders Internal Monorepo",
   "scripts": {
-    "dev": "pnpm --filter ./packages/game-engine dev",
+    "dev": "vite",
     "build": "pnpm --filter \"./packages/**\" build",
     "test": "pnpm --filter \"./packages/**\" test",
     "lint": "pnpm --filter \"./packages/**\" lint",
     "sync:tokens": "echo \"Token sync script placeholder\""
   },
   "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.0",
+    "autoprefixer": "^10.4.21",
     "pnpm": "^8.0.0",
-    "vite": "^5.0.0",
+    "postcss": "^8.5.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tailwindcss": "^3.3.0",
     "typescript": "^5.0.0",
-    "@vitejs/plugin-react": "^4.2.0"
+    "vite": "^5.0.0",
+    "vite-plugin-restart": "^0.4.2"
   },
   "engines": {
     "node": ">=18"
+  },
+  "dependencies": {
+    "@react-three/drei": "9.102.6",
+    "@react-three/fiber": "8.16.0",
+    "framer-motion": "^12.12.1",
+    "react-icons": "^5.5.0",
+    "react-router-dom": "^7.6.0",
+    "three": "^0.176.0"
   }
 }

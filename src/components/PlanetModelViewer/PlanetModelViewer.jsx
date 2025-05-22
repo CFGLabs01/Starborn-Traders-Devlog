@@ -34,37 +34,64 @@ export function PlanetPreviewContent({ planetData }) {
   }
   console.log('[PlanetPreviewContent] Rendering with planetData:', planetData);
   const { modelPath, scale, name } = planetData; // Destructure needed values
+  const modelGroupRef = useRef(); // Ref for the group containing the PlanetModel
+
+  // This useFrame is for the overall group, if needed for additional animations later.
+  // The PlanetModel itself handles its own Y-axis rotation.
+  // useFrame((state, delta) => {
+  //   if (modelGroupRef.current) {
+  //     // Example: modelGroupRef.current.rotation.x += delta * 0.01; 
+  //   }
+  // });
 
   return (
     <>
-      {/* Basic Lighting - slightly adjusted */}
-      <ambientLight intensity={0.6} />
-      <directionalLight position={[10, 10, 10]} intensity={1.5} castShadow />
-      <pointLight position={[-10, -5, -10]} intensity={0.5} color='blue' /> {/* Corrected color from #blue to blue */}
-
-      {/* DEBUG BOX - can be removed later */}
-      {/* <mesh position={[0, 0, -2]} scale={[1,1,1]}>
-        <boxGeometry args={[1, 1, 1]} />
-        <meshBasicMaterial color="cyan" wireframe />
-      </mesh> */} 
+      {/* Enhanced Lighting for Planets */}
+      <ambientLight intensity={0.3} color={"#b0c4de"} /> {/* Softer, cool ambient (like starlight) */}
+      
+      {/* Main "Sun" Light - Stronger, slightly warm/orangey */}
+      <directionalLight 
+        position={[10, 5, 10]} 
+        intensity={2.2} 
+        color={"#ffedd5"} // Warm cream/pale orange
+        castShadow 
+        shadow-mapSize-width={1024}
+        shadow-mapSize-height={1024}
+      />
+      
+      {/* Fill/Bounce Light - Subtle Teal from the opposite side */}
+      <directionalLight 
+        position={[-8, -3, -5]} 
+        intensity={0.6} 
+        color={"#5eead4"} // Lighter Teal
+      />
+      
+      {/* Optional Rim/Accent Light */}
+      {/* <pointLight position={[0, 0, -15]} intensity={0.5} color={"#a5f3fc"} /> */}
 
       <Suspense fallback={<mesh><boxGeometry args={[0.1,0.1,0.1]}/><meshBasicMaterial color="gray" wireframe/></mesh>}>
-        <PlanetModel
-          modelPath={modelPath} // Use destructured modelPath
-          scale={scale || 0.5} // Use destructured scale, default to 0.5 if undefined (planets might be large)
-          position={[0, 0, 0]} 
-        />
+        <group ref={modelGroupRef}> {/* Added group for potential future collective transformations */}
+          <PlanetModel
+            modelPath={modelPath} 
+            scale={scale || 0.5} 
+            position={[0, 0, 0]} 
+            castShadow // Ensure planet model casts shadow
+            receiveShadow // Ensure planet model receives shadow
+          />
+        </group>
         <Preload all />
       </Suspense>
-      {/* OrbitControls for Planet Preview View */}
+      
       <OrbitControls
         enableZoom={true}
-        enablePan={true} // Enabled pan
-        autoRotate={true} 
-        autoRotateSpeed={0.2} // Slowed down auto-rotate further
-        minDistance={1.5} // Adjusted distances
+        enablePan={true} 
+        autoRotate={false} // PlanetModel handles its own Y rotation, disable here
+        // autoRotateSpeed={0.2} // Keep commented as autoRotate is false
+        minDistance={1.5} 
         maxDistance={15}
         target={[0, 0, 0]}
+        enableDamping={true} // Smoother interaction
+        dampingFactor={0.1}
       />
     </>
   );

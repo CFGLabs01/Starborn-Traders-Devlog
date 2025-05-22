@@ -26,7 +26,14 @@ function Model({ modelPath, animationName, ...props }) {
       console.log(`[Character Model] Action '${animationName}' found. Playing...`, action);
       action.reset().fadeIn(0.5).play();
     } else {
-      console.warn(`[Character Model] Explicitly: Action '${animationName}' NOT found.`);
+      // Attempt to play the first available animation if the requested one isn't found
+      const firstActionKey = Object.keys(actions)[0];
+      if (firstActionKey && actions[firstActionKey]) {
+        console.warn(`[Character Model] Explicitly: Action '${animationName}' NOT found. Playing first available action: '${firstActionKey}'`);
+        actions[firstActionKey].reset().fadeIn(0.5).play();
+      } else {
+        console.warn(`[Character Model] Explicitly: Action '${animationName}' NOT found, and no other actions available.`);
+      }
     }
 
     return () => {
@@ -51,60 +58,79 @@ function ModelLoadingFallback() {
 
 // Renamed and Exported: Scene Content for the character PREVIEW view
 export function CharacterPreviewContent({ modelPath, scale, animationName }) {
-  console.log('[CharacterPreviewContent] DEBUGGING - ModelPath:', modelPath, 'Scale Prop:', scale, 'AnimationName:', animationName);
+  console.log('[CharacterPreviewContent] Rendering Model - ModelPath:', modelPath, 'Scale Prop:', scale, 'AnimationName:', animationName);
   const contentGroupRef = useRef();
-  // const targetSettings = [0, 0.8, 0]; // OrbitControls target
-  // const modelYPosition = -0.95;
-  // const groupYRotationSpeed = -0.10; // Temporarily disable rotation
 
-  // useFrame((state, delta) => {
-  //   if (contentGroupRef.current) {
-  //     contentGroupRef.current.rotation.y += delta * groupYRotationSpeed;
-  //   }
-  // });
+  // Auto-rotation
+  useFrame((state, delta) => {
+    if (contentGroupRef.current) {
+      contentGroupRef.current.rotation.y += delta * 0.2; // Adjust speed as needed
+    }
+  });
 
   return (
     <>
-      {/* Debug Camera */}
-      <PerspectiveCamera makeDefault position={[0, 1, 5]} fov={50} />
+      <PerspectiveCamera makeDefault position={[0, 1.2, 3.5]} fov={45} /> 
       
-      {/* Simplified Debug Lighting */}
-      <ambientLight intensity={1.5} />
-      <directionalLight position={[5, 5, 5]} intensity={2.0} />
+      {/* Lighting Setup */}
+      <ambientLight intensity={0.4} color={"#e0f2fe"} /> {/* Soft cream ambient light */}
+      
+      {/* Key Light (Main) - Tealish */}
+      <directionalLight 
+        position={[3, 3, 2]} 
+        intensity={1.8} 
+        color={"#67e8f9"} // Teal
+        castShadow 
+        shadow-mapSize-width={1024}
+        shadow-mapSize-height={1024}
+        shadow-camera-far={50}
+        shadow-camera-left={-10}
+        shadow-camera-right={10}
+        shadow-camera-top={10}
+        shadow-camera-bottom={-10}
+      />
+      
+      {/* Fill Light - Soft Orange/Cream */}
+      <directionalLight 
+        position={[-3, 2, -2]} 
+        intensity={0.8} 
+        color={"#fed7aa"} // Pale Orange/Cream
+      />
+      
+      {/* Rim Light (Backlight) - Subtle Cream */}
+      <pointLight 
+        position={[0, 2, -3]} 
+        intensity={0.7} 
+        color={"#fef3c7"} // Cream
+        distance={10}
+        decay={1.5}
+      />
 
-      {/* Debug Box at model's intended position */}
-      <mesh position={[0, 0, 0]}> {/* Centered for simplicity */}
-        <boxGeometry args={[0.5, 0.5, 0.5]} />
-        <meshStandardMaterial color="magenta" wireframe />
-      </mesh>
-
-      <group ref={contentGroupRef} position={[0, 0, 0]}> {/* Centered group */}
-        <Suspense fallback={null}>
+      <group ref={contentGroupRef} position={[0, -0.1, 0]}> {/* Slight adjustment down for platform */}
+        <Suspense fallback={<ModelLoadingFallback />}>
           <Model 
             modelPath={modelPath}
-            scale={1.5} // Force a larger, fixed scale for debug
-            animationName={animationName}
-            castShadow // Assuming models are set up to cast shadows
-            position={[0,0,0]} // Ensure model is at group origin
+            scale={scale || 1.0}
+            animationName={animationName} // Pass the animation name
+            castShadow 
+            receiveShadow
+            position={[0, 0, 0]} 
           />
-          {/* <CharacterPlatform position={[0, -0.05, 0]} /> */}
-          {/* Temporarily remove platform if it might obscure things */}
+          {/* <CharacterPlatform receiveShadow castShadow /> */}{/* Add platform later if needed, ensure it interacts with shadows */}
           <Preload all />
         </Suspense>
       </group>
       
       <OrbitControls 
-        target={[0, 0.75, 0]} // Adjust target if model is at origin
+        target={[0, 0.85, 0]} // Adjusted target slightly higher for character focus
         enableZoom={true}
-        enablePan={true}
-        minDistance={1}
-        maxDistance={10} 
+        enablePan={false} // Disable panning for a cleaner preview
+        minDistance={1.5}
+        maxDistance={8} 
+        autoRotate={false} // Disable orbit controls auto-rotate, we have our own
+        enableDamping={true}
+        dampingFactor={0.1}
       />
-
-      <mesh>
-        <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color="hotpink" />
-      </mesh>
     </>
   );
 }

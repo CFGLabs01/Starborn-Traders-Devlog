@@ -39,18 +39,19 @@ const Controls = {
   pitchDown: 'pitchDown',
   rollLeft: 'rollLeft',
   rollRight: 'rollRight',
+  strafeUp: 'strafeUp',
+  strafeDown: 'strafeDown',
 };
 
 function App() {
   const [currentPhase, setCurrentPhase] = useState('title'); 
   
-  // Ref for the DOM element that the preview <View /> will track
-  const previewViewRef = useRef(); 
   // State to control what content the preview View should render
   const [previewContent, setPreviewContent] = useState(null);
-  const [previewKey, setPreviewKey] = useState(0); // Restore previewKey state
+  // NEW: State to hold the ref of the DOM element the View should track
+  const [activePreviewTarget, setActivePreviewTarget] = useState(null);
+  const [previewKey, setPreviewKey] = useState(0);
 
-  // Define controls map here using useMemo
   const controlsMap = useMemo(() => [
     { name: Controls.forward, keys: ['ArrowUp', 'KeyW'] },
     { name: Controls.back, keys: ['ArrowDown', 'KeyS'] },
@@ -61,6 +62,8 @@ function App() {
     { name: Controls.pitchDown, keys: ['KeyF'] },
     { name: Controls.rollLeft, keys: ['KeyQ'] },
     { name: Controls.rollRight, keys: ['KeyE'] },
+    { name: Controls.strafeUp, keys: ['Space'] },
+    { name: Controls.strafeDown, keys: ['ControlLeft', 'KeyC'] },
   ], []);
 
   useEffect(() => {
@@ -70,7 +73,8 @@ function App() {
   const handleSelectionComplete = (nextPhase) => {
     console.log(`[App.jsx] Transitioning from ${currentPhase} to ${nextPhase}`);
     setCurrentPhase(nextPhase);
-    setPreviewContent(null); // Clear preview when transitioning
+    setPreviewContent(null); 
+    setActivePreviewTarget(null); // Clear target on phase change
   };
 
   const startGame = () => {
@@ -78,15 +82,24 @@ function App() {
     setCurrentPhase('character');
   }
 
-  const showPreview = (content) => {
-    console.log('[App.jsx] showPreview called:', content);
-    setPreviewContent(content); 
-    setPreviewKey(k => k + 1); // Increment previewKey to force View remount
+  // MODIFIED: showPreview now accepts a targetRef
+  const showPreview = (content, targetRef) => {
+    console.log('[App.jsx] showPreview called with content and targetRef:', content, targetRef);
+    if (targetRef && targetRef.current) {
+      setPreviewContent(content); 
+      setActivePreviewTarget(targetRef); // Store the ref itself
+      setPreviewKey(k => k + 1); 
+    } else {
+      console.warn('[App.jsx] showPreview called without a valid targetRef.current. Preview will not be shown.');
+      setPreviewContent(null);
+      setActivePreviewTarget(null);
+    }
   };
 
   const hidePreview = () => {
     console.log('[App.jsx] hidePreview called.');
     setPreviewContent(null); 
+    setActivePreviewTarget(null); // Clear target on hide
   };
 
   const renderCurrentPhaseComponent = () => {
@@ -97,35 +110,44 @@ function App() {
         return (
           <CharacterSelection
             onSelectionComplete={handleSelectionComplete}
-            showPreview={showPreview}
+            showPreview={showPreview} // Pass modified showPreview
             hidePreview={hidePreview}
           />
         );
       case 'ship':
-        return <ShipSelection onSelectionComplete={handleSelectionComplete} showPreview={showPreview} hidePreview={hidePreview} />;
+        return (
+          <ShipSelection 
+            onSelectionComplete={handleSelectionComplete} 
+            showPreview={showPreview} // Pass modified showPreview
+            hidePreview={hidePreview} 
+          />
+        );
       case 'planet':
-        return <PlanetSelection onSelectionComplete={handleSelectionComplete} showPreview={showPreview} hidePreview={hidePreview} />;
+        return (
+          <PlanetSelection 
+            onSelectionComplete={handleSelectionComplete} 
+            showPreview={showPreview} // Pass modified showPreview
+            hidePreview={hidePreview} 
+          />
+        );
       case 'game':
-        // MainGameScene will render its content directly into the main canvas or a dedicated game View later
-        return null; // No separate component, its content will be driven by the 'game' phase inside the main Canvas
+        return null; 
       default:
         return <TitleScreen onStartGame={startGame} />;
     }
   };
 
-  // Update the preview view rendering logic
+  // MODIFIED: renderPreviewView now uses activePreviewTarget
   const renderPreviewView = () => {
-    if (!previewContent) return null;
-
-    if (!previewViewRef.current) {
-      console.warn('[App.jsx Canvas Render] PREVIEW VIEW: previewContent is set, BUT previewViewRef.current IS NULL. Preview will not render. This should be rare now.');
+    if (!previewContent || !activePreviewTarget || !activePreviewTarget.current) {
+      // console.log('[App.jsx Canvas Render] PREVIEW VIEW: No previewContent or activePreviewTarget.current. Preview will not render.');
       return null;
     }
 
-    console.log('[App.jsx Canvas Render] PREVIEW VIEW: previewViewRef.current IS SET. Rendering View component for type:', previewContent.type);
+    console.log('[App.jsx Canvas Render] PREVIEW VIEW: activePreviewTarget.current IS SET. Rendering View component for type:', previewContent.type);
     
     return (
-      <View track={previewViewRef} index={0} key={previewKey}>
+      <View track={activePreviewTarget} index={1} key={previewKey}> {/* Use activePreviewTarget, ensure index is > 0 if main canvas has index 0 */}
         {previewContent.type === 'character' && (
           <CharacterPreviewContent
             modelPath={previewContent.modelPath}
@@ -157,34 +179,7 @@ function App() {
           <div className="relative w-full h-screen overflow-hidden">
             {renderCurrentPhaseComponent()}
 
-            {/* Preview Container - HTML part - Always rendered, visibility controlled by style */}
-            <div 
-              ref={previewViewRef}
-              className="fixed z-[110]"
-              style={{
-                display: previewContent ? 'block' : 'none',
-                width: '400px',
-                height: '400px',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                background: 'rgba(255, 0, 0, 0.2)',
-                border: '2px solid red'
-              }}
-            >
-              {/* Inner div removed for this test, View will track the red div directly */}
-              {/* <div 
-                className="relative w-full h-full max-w-4xl max-h-[80vh] pointer-events-auto" 
-                style={{
-                  backgroundColor: 'rgba(0, 0, 255, 0.3)', 
-                  border: '2px solid yellow', 
-                  borderRadius: '1rem',
-                  overflow: 'hidden',
-                }}
-              /> */}
-            </div>
-
-            {/* Three.js Canvas */}
+            {/* Three.js Canvas - Main scene canvas, index 0 */}
             <Canvas 
               style={{ 
                 position: 'fixed', 
@@ -192,21 +187,35 @@ function App() {
                 left: 0, 
                 width: '100vw', 
                 height: '100vh', 
-                zIndex: 0, 
-                pointerEvents: 'none' 
+                zIndex: 0, // Main scene canvas
+                // Pointer events for canvas controlled by phase and preview state
+                pointerEvents: (currentPhase === 'game' || previewContent) ? 'auto' : 'none' 
               }}
               shadows
+              onPointerDown={(event) => {
+                if (currentPhase === 'game' && event.target.requestPointerLock) {
+                  console.log('[App.jsx] Attempting to lock pointer for game phase.');
+                  event.target.requestPointerLock()
+                    .catch(err => console.error('[App.jsx] Error requesting pointer lock:', err));
+                }
+              }}
+              // camera={{ position: [0,0,0]}} // Let MainGameScene control its camera
             >
-              {/* Ensure canvas background color is set */}
-              {/* <color attach="background" args={['#101015']} /> */}{/* Or '#000000' for pure black */}
+              {/* Global Stars - Background for all phases - Conditionally Rendered */}
+              {!previewContent && (
+                <>
+                  {/* Layer 1: More distant, smaller, slower stars - Reduced factor and speed for subtlety */}
+                  <DreiStars radius={150} depth={80} count={5000} factor={3} saturation={0} fade speed={0.05} />
+                  {/* Layer 2: Closer, slightly larger, faster twinkling stars - Reduced factor and speed for subtlety */}
+                  <DreiStars radius={90} depth={40} count={2500} factor={4} saturation={0} fade speed={0.1} />
+                </>
+              )}
               
-              {/* Layer 1: More distant, smaller, slower stars */}
-              <DreiStars radius={150} depth={80} count={2000} factor={3.5} saturation={0} fade speed={0.1} />
-              {/* Layer 2: Closer, slightly larger, faster twinkling stars */}
-              <DreiStars radius={90} depth={40} count={1000} factor={4.5} saturation={0} fade speed={0.2} />
-
               <Suspense fallback={null}>
-                {renderPreviewView()}
+                {/* Preview View - renders into modal's div, index 1 */}
+                {renderPreviewView()} 
+                
+                {/* Game Scene - only when currentPhase is 'game' */}
                 {currentPhase === 'game' && (
                   <KeyboardControls map={controlsMap}>
                     <MainGameScene />

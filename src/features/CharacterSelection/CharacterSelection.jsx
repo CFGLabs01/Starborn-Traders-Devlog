@@ -1,31 +1,57 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useGameState } from '../../context/GameStateContext';
 import CharacterCard from './CharacterCard';
 import { characters as characterData } from './characterData';
 import SelectionModal from '../../components/SelectionModal/SelectionModal';
 import CharacterPopup from './components/CharacterPopup';
 import NavigationArrowButton from '../../components/UI/NavigationArrowButton';
+import { motion } from 'framer-motion';
 
-const CharacterSelection = ({ onSelectionComplete, showPreview, hidePreview, previewHostRef }) => {
+// Container variants for staggering
+const gridContainerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        // transition: { // Temporarily remove staggerChildren
+        //     staggerChildren: 0.08, 
+        // },
+    },
+};
+
+const CharacterSelection = ({ onSelectionComplete, showPreview, hidePreview }) => {
+    console.log('[CharacterSelection.jsx] Loaded characterData:', characterData);
     const { setPlayerCharacter } = useGameState();
     const [selectedCharacterDetails, setSelectedCharacterDetails] = useState(null);
     const [showDetailsModal, setShowDetailsModal] = useState(false);
+    const modalPreviewBoxRef = useRef(null);
 
     const handleCharacterSelect = (character) => {
         console.log("[CharacterSelection.jsx] handleCharacterSelect called with:", character);
         setSelectedCharacterDetails(character);
         setShowDetailsModal(true);
-        if (showPreview && character.modelPath) {
-            showPreview({ 
-                type: 'character', 
-                modelPath: character.modelPath,
-                scale: character.scale || 1,
-                animationName: 'Armature|Idle|baselayer'
-            });
-        } else {
-            console.warn("[CharacterSelection.jsx] showPreview not available or modelPath missing for character:", character.id);
-        }
     };
+
+    useEffect(() => {
+        if (showDetailsModal && selectedCharacterDetails && modalPreviewBoxRef.current) {
+            if (showPreview && selectedCharacterDetails.modelPath) {
+                const idleModelPath = selectedCharacterDetails.modelPath.replace(/\.glb$/, 'Idle.glb');
+                console.log(`[CharacterSelection.jsx useEffect] Showing preview for ${selectedCharacterDetails.name} in ref. Path: ${idleModelPath}`);
+                showPreview(
+                    {
+                        type: 'character',
+                        modelPath: idleModelPath,
+                        scale: selectedCharacterDetails.scale || 1,
+                        animationName: 'Armature|Idle|baselayer',
+                    },
+                    modalPreviewBoxRef
+                );
+            } else {
+                console.warn("[CharacterSelection.jsx useEffect] Conditions not met to show preview or modelPath missing.");
+            }
+        } else if (!showDetailsModal && hidePreview) {
+            console.log("[CharacterSelection.jsx useEffect] Modal not shown or details cleared, hiding preview.");
+        }
+    }, [showDetailsModal, selectedCharacterDetails, modalPreviewBoxRef, showPreview, hidePreview]);
 
     const handleConfirmSelection = () => {
         if (selectedCharacterDetails) {
@@ -63,27 +89,23 @@ const CharacterSelection = ({ onSelectionComplete, showPreview, hidePreview, pre
         }
         const nextCharacter = characterData[nextIndex];
         setSelectedCharacterDetails(nextCharacter);
-        if (showPreview && nextCharacter.modelPath) {
-            console.log("[CharacterSelection.jsx] Navigating, showing preview for:", nextCharacter);
-            showPreview({ 
-                type: 'character', 
-                modelPath: nextCharacter.modelPath,
-                scale: nextCharacter.scale || 1,
-                animationName: 'Armature|Idle|baselayer'
-            });
-        }
     };
 
     const handleNextCharacter = () => navigateCharacter('next');
     const handlePreviousCharacter = () => navigateCharacter('previous');
 
     return (
-        <div className="flex flex-col items-center justify-center w-full h-screen px-4 py-8 text-center relative text-white bg-transparent">
+        <div className="flex flex-col items-center justify-start w-full min-h-screen px-4 py-16 text-center relative text-white bg-transparent">
             <div className="w-full flex flex-col items-center"> 
                 <h2 className="text-3xl font-bold mb-2 text-teal-300">SELECT YOUR CHARACTER</h2>
                 <p className="text-lg text-slate-400 mb-8">Choose the person you'll embody in your journey through the cosmos.</p>
                 
-                <div className="grid gap-6 justify-center justify-items-center selection-grid max-w-5xl mx-auto">
+                <motion.div
+                    className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-center justify-items-center selection-grid max-w-5xl mx-auto"
+                    variants={gridContainerVariants}
+                    initial="hidden"
+                    animate="visible"
+                >
                     {characterData.map((character) => (
                         <CharacterCard 
                             key={character.id}
@@ -91,7 +113,7 @@ const CharacterSelection = ({ onSelectionComplete, showPreview, hidePreview, pre
                             onSelect={() => handleCharacterSelect(character)}
                         />
                     ))}
-                </div>
+                </motion.div>
             </div>
 
             {showDetailsModal && selectedCharacterDetails && (
@@ -105,7 +127,7 @@ const CharacterSelection = ({ onSelectionComplete, showPreview, hidePreview, pre
                             onConfirm={handleConfirmSelection}
                             onPrevious={handlePreviousCharacter}
                             onNext={handleNextCharacter}
-                            previewHostRef={previewHostRef}
+                            previewHostRef={modalPreviewBoxRef}
                         />
                     </SelectionModal>
                 </>
