@@ -17,6 +17,7 @@ import ShipSelection from './features/ShipSelection/ShipSelection';
 import PlanetSelection from './features/PlanetSelection/PlanetSelection';
 import MainGameScene from './features/MainGameScene/MainGameScene'; 
 // EventManager and HudAlert will be conditionally rendered with MainGameScene content
+// import MinimalAnimationTest from './components/MinimalAnimationTest';
 
 // The old ThreeStarfield might need to be integrated into the main canvas or a specific view
 // import ThreeStarfield from './components/ThreeStarfield/ThreeStarfield';
@@ -51,6 +52,8 @@ function App() {
   // NEW: State to hold the ref of the DOM element the View should track
   const [activePreviewTarget, setActivePreviewTarget] = useState(null);
   const [previewKey, setPreviewKey] = useState(0);
+  // Quick Toggle for QA - preview visibility state
+  const [showPreviewToggle, setShowPreviewToggle] = useState(true);
 
   const controlsMap = useMemo(() => [
     { name: Controls.forward, keys: ['ArrowUp', 'KeyW'] },
@@ -69,6 +72,41 @@ function App() {
   useEffect(() => {
     console.log('[App.jsx] Current phase changed to:', currentPhase);
   }, [currentPhase]);
+
+  // Quick Toggle for QA - 'C' key toggle
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key.toLowerCase() === 'c' && !e.ctrlKey) { // Avoid conflict with Ctrl+C
+        setShowPreviewToggle(v => !v);
+        console.log('[App.jsx] Preview toggle:', !showPreviewToggle);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [showPreviewToggle]);
+
+  // DualShock Smoke Test - Optional gamepad detection
+  useEffect(() => {
+    const checkGamepad = () => {
+      const pad = navigator.getGamepads()[0];
+      if (pad) {
+        console.log('[App.jsx] DualShock connected:', pad.id, 'Axes:', pad.axes);
+        // Confirm right stick moves camera orbit - log right stick axes
+        if (pad.axes.length >= 4) {
+          const rightStickX = pad.axes[2];
+          const rightStickY = pad.axes[3];
+          if (Math.abs(rightStickX) > 0.1 || Math.abs(rightStickY) > 0.1) {
+            console.log('[App.jsx] Right stick movement detected:', { x: rightStickX, y: rightStickY });
+          }
+        }
+      }
+    };
+
+    // Check gamepad status periodically
+    const gamepadInterval = setInterval(checkGamepad, 1000);
+    return () => clearInterval(gamepadInterval);
+  }, []);
 
   const handleSelectionComplete = (nextPhase) => {
     console.log(`[App.jsx] Transitioning from ${currentPhase} to ${nextPhase}`);
@@ -139,7 +177,7 @@ function App() {
 
   // MODIFIED: renderPreviewView now uses activePreviewTarget
   const renderPreviewView = () => {
-    if (!previewContent || !activePreviewTarget || !activePreviewTarget.current) {
+    if (!previewContent || !activePreviewTarget || !activePreviewTarget.current || !showPreviewToggle) {
       // console.log('[App.jsx Canvas Render] PREVIEW VIEW: No previewContent or activePreviewTarget.current. Preview will not render.');
       return null;
     }
@@ -177,6 +215,7 @@ function App() {
       <EventProvider>
         <Router>
           <div className="relative w-full h-screen overflow-hidden">
+            {/* <MinimalAnimationTest /> */}
             {renderCurrentPhaseComponent()}
 
             {/* Three.js Canvas - Main scene canvas, index 0 */}

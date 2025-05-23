@@ -2,9 +2,9 @@ import React, { Suspense, useRef, useMemo, useEffect } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, useGLTF, Preload, useAnimations, PerspectiveCamera } from '@react-three/drei';
 // import { EffectComposer, Bloom } from '@react-three/postprocessing'; // Commented out for now
-import CharacterPlatform from '../CharacterPlatform/CharacterPlatform';
+import * as THREE from 'three';
 
-// Simple reusable Model loader
+// Simple reusable Model loader with material polish
 function Model({ modelPath, animationName, ...props }) {
   const group = useRef();
   const { scene, animations, error } = useGLTF(modelPath, true);
@@ -69,13 +69,13 @@ function ModelLoadingFallback() {
   return null;
 }
 
-// Renamed and Exported: Scene Content for the character PREVIEW view
-export function CharacterPreviewContent({ modelPath, scale, animationName }) {
-  console.log('[CharacterPreviewContent] Rendering Model - ModelPath:', modelPath, 'Scale Prop:', scale, 'AnimationName:', animationName);
+// Enhanced Character Preview Panel with improved lighting and animations
+export function CharacterPreviewPanel({ modelPath, scale, animationName }) {
+  console.log('[CharacterPreviewPanel] Rendering Model - ModelPath:', modelPath, 'Scale Prop:', scale, 'AnimationName:', animationName);
   const groupRef = useRef();
   const turnRef = useRef(); // For pedestal turntable if it exists
 
-  // Enable all camera layers - ensure camera layers are not restricted
+  // Enable all camera layers
   useThree(({ camera }) => camera.layers.enableAll());
 
   // Idle sway animation
@@ -106,34 +106,33 @@ export function CharacterPreviewContent({ modelPath, scale, animationName }) {
         intensity={0.6}
         color="#FF8733"
       />
-
+      
       {/* Idle Sway Animation Group */}
-      <group ref={groupRef} position={[0, -0.1, 0]}> {/* Slight adjustment down for platform */}
+      <group ref={groupRef} position={[0, -0.1, 0]}>
         <Suspense fallback={<ModelLoadingFallback />}>
           <Model 
             modelPath={modelPath}
             scale={scale || 1.0}
-            animationName={animationName} // Pass the animation name
+            animationName={animationName}
             castShadow 
             receiveShadow
             position={[0, 0, 0]} 
           />
-          {/* <CharacterPlatform receiveShadow castShadow /> */}{/* Add platform later if needed, ensure it interacts with shadows */}
           <Preload all />
         </Suspense>
       </group>
       
       <OrbitControls 
-        target={[0, 0.85, 0]} // Adjusted target slightly higher for character focus
+        target={[0, 0.85, 0]}
         enableZoom={true}
-        enablePan={false} // Disable panning for a cleaner preview
+        enablePan={false}
         minDistance={1.5}
         maxDistance={8} 
-        autoRotate={false} // Disable orbit controls auto-rotate, we have our own
+        autoRotate={false}
         enableDamping={true}
         dampingFactor={0.1}
       />
-
+      
       {/* EffectComposer with Bloom - Commented out for now */}
       {/* <EffectComposer>
            <Bloom ... />
@@ -142,5 +141,4 @@ export function CharacterPreviewContent({ modelPath, scale, animationName }) {
   );
 }
 
-// Main CharacterModelViewer component is no longer needed as App.jsx renders the content
-// export default CharacterModelViewer; 
+export default CharacterPreviewPanel; 
