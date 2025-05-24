@@ -1,0 +1,10 @@
+name: weight
+on: push
+jobs:
+  size:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm ci
+      - run: npm run build -- --analyze
+      - run: du -m dist | cut -f1 | grep -q -vE '^[0-4]$' 
