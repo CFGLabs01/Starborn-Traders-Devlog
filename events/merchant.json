@@ -1,0 +1,10 @@
+{
+  "id": "merchant_contact",
+  "title": "Merchant Vessel",
+  "prompt": "A trading ship hails you with an offer.",
+  "options": [
+    { "label": "Trade ore for fuel", "oreRequired": 8, "fuelGain": 15 },
+    { "label": "Trade ore for credits", "oreRequired": 10, "creditsGain": 250 },
+    { "label": "Decline trade" }
+  ]
+} 

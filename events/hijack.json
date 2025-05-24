@@ -1,0 +1,10 @@
+{
+  "id": "hijack_attempt",
+  "title": "Pirate Ambush",
+  "prompt": "Unknown vessels emerge from the asteroid field, weapons hot!",
+  "options": [
+    { "label": "Fight back", "healthCost": 25, "creditsGain": 150, "fuelCost": 10 },
+    { "label": "Surrender cargo", "oreRequired": 15, "creditsLoss": 100 },
+    { "label": "Attempt escape", "fuelCost": 20, "escapeChance": 0.7 }
+  ]
+} 

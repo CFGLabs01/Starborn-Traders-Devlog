@@ -1,0 +1,10 @@
+{
+  "id": "asteroid_probe",
+  "title": "Isolated Asteroid",
+  "prompt": "Scanners show high nickel content.",
+  "options": [
+    { "label": "Mine it", "fuelCost": 5, "ore": 12 },
+    { "label": "Scan only", "fuelCost": 1, "ore": 0 },
+    { "label": "Ignore" }
+  ]
+} 

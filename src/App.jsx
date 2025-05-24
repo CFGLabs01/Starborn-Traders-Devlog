@@ -17,7 +17,8 @@ import CharacterSelection from './features/CharacterSelection/CharacterSelection
 import ShipSelection from './features/ShipSelection/ShipSelection';
 import PlanetSelection from './features/PlanetSelection/PlanetSelection';
 import MainGameScene from './features/MainGameScene/MainGameScene';
-import GameHUD from './components/GameHUD/GameHUD'; 
+import GameHUD from './components/GameHUD/GameHUD';
+import EventModal from './components/EventModal/EventModal'; 
 // EventManager and HudAlert will be conditionally rendered with MainGameScene content
 // import MinimalAnimationTest from './components/MinimalAnimationTest';
 
@@ -84,6 +85,10 @@ function App() {
   const [previewKey, setPreviewKey] = useState(0);
   // Quick Toggle for QA - preview visibility state
   const [showPreviewToggle, setShowPreviewToggle] = useState(true);
+  
+  // Event system state
+  const [currentEvent, setCurrentEvent] = useState(null);
+  const [eventQueue, setEventQueue] = useState([]);
 
   const controlsMap = useMemo(() => [
     { name: Controls.forward, keys: ['ArrowUp', 'KeyW'] },
@@ -109,6 +114,17 @@ function App() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [showPreviewToggle]);
+
+  // Event system - trigger events during flight phase
+  useEffect(() => {
+    if (phase === 'flight' && !currentEvent) {
+      const timer = setTimeout(() => {
+        setCurrentEvent('asteroid_probe');
+      }, 5000); // Trigger asteroid event after 5 seconds
+
+      return () => clearTimeout(timer);
+    }
+  }, [phase, currentEvent]);
 
   const handleSelectionComplete = (nextPhase) => {
     usePhase.getState().set(nextPhase);
@@ -136,6 +152,20 @@ function App() {
     setPreviewContent(null); 
     setActivePreviewTarget(null);
   }, []);
+
+  const handleEventComplete = (option) => {
+    console.log('Event completed with option:', option);
+    setCurrentEvent(null);
+    
+    // Queue next event after a delay
+    setTimeout(() => {
+      if (Math.random() > 0.5) {
+        setCurrentEvent('merchant_contact');
+      } else {
+        setCurrentEvent('hijack_attempt');
+      }
+    }, 10000); // Next event in 10 seconds
+  };
 
   const renderCurrentPhaseComponent = () => {
     switch (phase) {
@@ -253,6 +283,15 @@ function App() {
             
             {/* Game HUD - only show during flight phase */}
             {phase === 'flight' && <GameHUD />}
+            
+            {/* Event Modal */}
+            {currentEvent && (
+              <EventModal
+                eventId={currentEvent}
+                onClose={() => setCurrentEvent(null)}
+                onComplete={handleEventComplete}
+              />
+            )}
           </div>
         </Router>
       </EventProvider>
