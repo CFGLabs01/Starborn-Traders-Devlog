@@ -14,6 +14,7 @@ import ShipCard from './ShipCard';
 // Import the icon component
 import NavigationArrowIcon from '../../components/UI/NavigationArrowButton';
 import { useClick } from '../../hooks/useClick';
+import AutoGrid from '../../components/AutoGrid';
 
 // REMOVED Shared Animation Variants - Not used here
 
@@ -99,7 +100,7 @@ const ShipSelection = ({ onSelectionComplete, showPreview, hidePreview }) => {
       <div className="w-full container mx-auto max-w-5xl flex flex-col items-center pt-8 pb-8 px-4">
         <h2 className="text-3xl font-bold mb-2 text-teal-300">SELECT YOUR SHIP</h2>
         <p className="text-lg text-slate-400 mb-8">Your vessel for navigating the void. Choose wisely.</p>
-        <div className="grid gap-6 justify-center justify-items-center selection-grid max-w-5xl mx-auto">
+        <AutoGrid>
            {shipData.map((ship) => (
                  <ShipCard 
                      key={ship.id}
@@ -107,7 +108,7 @@ const ShipSelection = ({ onSelectionComplete, showPreview, hidePreview }) => {
                      onSelect={() => handleShipSelect(ship)}
                  />
             ))}
-        </div>
+        </AutoGrid>
       </div> 
 
       {showDetailsModal && selectedShipDetails && (

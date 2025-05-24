@@ -6,6 +6,7 @@ import SelectionModal from '../../components/SelectionModal/SelectionModal';
 import CharacterPopup from './components/CharacterPopup';
 import NavigationArrowButton from '../../components/UI/NavigationArrowButton';
 import { motion } from 'framer-motion';
+import AutoGrid from '../../components/AutoGrid';
 
 // Container variants for staggering
 const gridContainerVariants = {
@@ -117,18 +118,20 @@ const CharacterSelection = ({ onSelectionComplete, showPreview, hidePreview }) =
                 <p className="text-lg text-slate-400 mb-8">Choose the person you'll embody in your journey through the cosmos.</p>
                 
                 <motion.div
-                    className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-center justify-items-center selection-grid max-w-5xl mx-auto"
                     variants={gridContainerVariants}
                     initial="hidden"
                     animate="visible"
+                    className="max-w-5xl mx-auto"
                 >
-                    {characterData.map((character) => (
-                        <CharacterCard 
-                            key={character.id}
-                            character={character}
-                            onSelect={() => handleCharacterSelect(character)}
-                        />
-                    ))}
+                    <AutoGrid>
+                        {characterData.map((character) => (
+                            <CharacterCard 
+                                key={character.id}
+                                character={character}
+                                onSelect={() => handleCharacterSelect(character)}
+                            />
+                        ))}
+                    </AutoGrid>
                 </motion.div>
             </div>
 

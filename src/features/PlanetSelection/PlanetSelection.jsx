@@ -7,6 +7,7 @@ import PlanetCard from './PlanetCard';
 import StatBar from '../../components/UI/StatBar';
 import NavigationArrowIcon from '../../components/UI/NavigationArrowButton';
 import { useClick } from '../../hooks/useClick';
+import AutoGrid from '../../components/AutoGrid';
 
 const PlanetSelection = ({ onSelectionComplete, showPreview, hidePreview }) => {
   const [selectedPlanetDetails, setSelectedPlanetDetails] = useState(null);
@@ -79,7 +80,7 @@ const PlanetSelection = ({ onSelectionComplete, showPreview, hidePreview }) => {
         <h2 className="text-3xl font-bold mb-2 text-teal-300">SELECT YOUR STARTING PLANET</h2>
         <p className="text-lg text-slate-400 mb-8">Where will your interstellar adventure begin?</p>
 
-        <div className="grid gap-6 justify-center justify-items-center selection-grid max-w-5xl mx-auto">
+        <AutoGrid>
           {planetData.map((planet) => (
             <PlanetCard 
               key={planet.id}
@@ -87,7 +88,7 @@ const PlanetSelection = ({ onSelectionComplete, showPreview, hidePreview }) => {
               onSelect={() => handlePlanetSelect(planet)}
             />
           ))}
-        </div>
+        </AutoGrid>
       </div>
 
       {showDetailsModal && selectedPlanetDetails && (
