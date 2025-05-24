@@ -243,24 +243,25 @@ function App() {
             {renderCurrentPhaseComponent()}
 
             {/* Three.js Canvas - Main scene canvas, index 0 */}
-            <Canvas 
-              style={{ 
-                position: 'fixed', 
-                top: 0, 
-                left: 0, 
-                width: '100vw', 
-                height: '100vh', 
-                zIndex: phase === 'flight' ? 1 : -1,
-                pointerEvents: phase === 'flight' ? 'auto' : 'none' 
-              }}
-              shadows
-              onPointerDown={(event) => {
-                if (phase === 'flight' && event.target.requestPointerLock) {
-                  event.target.requestPointerLock()
-                    .catch(err => console.error('[App.jsx] Error requesting pointer lock:', err));
-                }
-              }}
-            >
+            <div className="relative z-10">
+              <Canvas 
+                style={{ 
+                  position: 'fixed', 
+                  top: 0, 
+                  left: 0, 
+                  width: '100vw', 
+                  height: '100vh', 
+                  zIndex: phase === 'flight' ? 1 : -1,
+                  pointerEvents: phase === 'flight' ? 'auto' : 'none' 
+                }}
+                shadows
+                onPointerDown={(event) => {
+                  if (phase === 'flight' && event.target.requestPointerLock) {
+                    event.target.requestPointerLock()
+                      .catch(err => console.error('[App.jsx] Error requesting pointer lock:', err));
+                  }
+                }}
+              >
               {/* Global Stars - Background for all phases - Conditionally Rendered */}
               {!previewContent && (
                 <>
@@ -277,6 +278,7 @@ function App() {
                 )}
               </Suspense>
             </Canvas>
+            </div>
 
             {/* Neural Echo Indicator */}
             <NeuralEchoIndicator />
