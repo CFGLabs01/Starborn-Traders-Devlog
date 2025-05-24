@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useHud } from '../../state/hudStore';
 
 export default function GameHUD() {
-  const { health, maxHealth, fuel, maxFuel } = useHud();
+  const { health, maxHealth, fuel, maxFuel, ore, credits } = useHud();
   
   const healthPercentage = (health / maxHealth) * 100;
   const fuelPercentage = (fuel / maxFuel) * 100;
@@ -49,6 +49,13 @@ export default function GameHUD() {
         <div className="text-xs text-amber-400 font-mono mt-1 text-center">
           FUEL: {Math.round(fuel)}/{maxFuel}
         </div>
+      </div>
+
+      {/* Resource Counters */}
+      <div className="absolute bottom-28 left-1/2 -translate-x-1/2 flex gap-8 text-cream font-mono text-sm">
+        <span>⛏ {ore}</span>
+        <span>⚡ {fuel}</span>
+        <span>¤ {credits}</span>
       </div>
     </div>
   );

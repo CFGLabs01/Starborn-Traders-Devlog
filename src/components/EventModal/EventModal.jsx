@@ -16,7 +16,7 @@ const events = {
 
 export default function EventModal({ eventId, onClose, onComplete }) {
   const event = events[eventId];
-  const { takeDamage, consumeFuel, setFuel, fuel } = useHud();
+  const { takeDamage, consumeFuel, setFuel, fuel, addOre, addCredits } = useHud();
   const click = useClick();
 
   if (!event) {
@@ -34,6 +34,12 @@ export default function EventModal({ eventId, onClose, onComplete }) {
     }
     if (option.fuelGain) {
       setFuel(fuel + option.fuelGain);
+    }
+    if (option.ore) {
+      addOre(option.ore);
+    }
+    if (option.creditsGain) {
+      addCredits(option.creditsGain);
     }
     
     // Handle escape chance
