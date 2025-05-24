@@ -2,6 +2,7 @@ import React from 'react';
 import SelectionModal from '../SelectionModal/SelectionModal';
 import { useHud } from '../../state/hudStore';
 import { useClick } from '../../hooks/useClick';
+import { quantumRoll } from '../../utils/roll';
 
 // Import event data - in a real app this would be dynamic
 import asteroidEvent from '../../../events/asteroid.json';
@@ -36,7 +37,15 @@ export default function EventModal({ eventId, onClose, onComplete }) {
       setFuel(fuel + option.fuelGain);
     }
     if (option.ore) {
-      addOre(option.ore);
+      // Add quantum roll for mining success
+      const roll = quantumRoll();
+      const baseOre = option.ore;
+      const bonusOre = roll > 15 ? Math.floor(baseOre * 0.5) : 0; // 25% chance for 50% bonus
+      addOre(baseOre + bonusOre);
+      
+      if (bonusOre > 0) {
+        console.log(`[Event] Quantum roll ${roll}: Bonus ore found! +${bonusOre}`);
+      }
     }
     if (option.creditsGain) {
       addCredits(option.creditsGain);
