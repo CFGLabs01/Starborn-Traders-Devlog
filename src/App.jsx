@@ -1,4 +1,4 @@
-import React, { useState, useRef, Suspense, useEffect, useMemo } from 'react';
+import React, { useState, useRef, Suspense, useEffect, useMemo, useCallback } from 'react';
 import {
   BrowserRouter as Router,
   // Routes, // Routes might be managed differently or within Views
@@ -8,8 +8,9 @@ import { Canvas } from '@react-three/fiber'; // Import Canvas
 import { View, KeyboardControls, Stars as DreiStars, OrbitControls as DreiOrbitControls, Box as DreiBox, PerspectiveCamera } from '@react-three/drei'; // Import View, KeyboardControls, DreiStars, AND PerspectiveCamera
 
 import './styles/main.css'; 
-import { GameStateProvider } from './context/GameStateContext';
+import { GameStateProvider, useGameState } from './context/GameStateContext';
 import { EventProvider } from './context/EventContext';
+import { usePhase } from './state/phaseStore';
 
 import TitleScreen from './features/TitleScreen/TitleScreen';
 import CharacterSelection from './features/CharacterSelection/CharacterSelection';
@@ -44,8 +45,36 @@ const Controls = {
   strafeDown: 'strafeDown',
 };
 
+// Neural Echo HUD Indicator Component
+function NeuralEchoIndicator() {
+  const { getEchoEffects, neuralEcho } = useGameState();
+  
+  if (!getEchoEffects || !neuralEcho) return null;
+  
+  const echoEffects = getEchoEffects();
+  
+  if (echoEffects.hudIntensity === 0) return null;
+  
+  return (
+    <div className="fixed top-4 right-4 z-10 bg-black/70 backdrop-blur-sm rounded-lg px-3 py-2 border border-cyan-500/30">
+      <div className="text-xs text-cyan-300 font-mono">
+        Neural Echo: {echoEffects.echoTheme} | {Math.floor(echoEffects.hudIntensity * 100)}%
+      </div>
+      <div className="w-full h-1 bg-gray-700 rounded mt-1">
+        <div 
+          className={`h-full rounded transition-all duration-500 ${
+            echoEffects.echoTheme === 'hero' ? 'bg-blue-400' :
+            echoEffects.echoTheme === 'rogue' ? 'bg-red-400' : 'bg-cyan-400'
+          }`}
+          style={{ width: `${echoEffects.hudIntensity * 100}%` }}
+        />
+      </div>
+    </div>
+  );
+}
+
 function App() {
-  const [currentPhase, setCurrentPhase] = useState('title'); 
+  const { phase } = usePhase(); 
   
   // State to control what content the preview View should render
   const [previewContent, setPreviewContent] = useState(null);
@@ -70,15 +99,9 @@ function App() {
   ], []);
 
   useEffect(() => {
-    console.log('[App.jsx] Current phase changed to:', currentPhase);
-  }, [currentPhase]);
-
-  // Quick Toggle for QA - 'C' key toggle
-  useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key.toLowerCase() === 'c' && !e.ctrlKey) { // Avoid conflict with Ctrl+C
+      if (e.key.toLowerCase() === 'c' && !e.ctrlKey) {
         setShowPreviewToggle(v => !v);
-        console.log('[App.jsx] Preview toggle:', !showPreviewToggle);
       }
     };
 
@@ -86,62 +109,35 @@ function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [showPreviewToggle]);
 
-  // DualShock Smoke Test - Optional gamepad detection
-  useEffect(() => {
-    const checkGamepad = () => {
-      const pad = navigator.getGamepads()[0];
-      if (pad) {
-        console.log('[App.jsx] DualShock connected:', pad.id, 'Axes:', pad.axes);
-        // Confirm right stick moves camera orbit - log right stick axes
-        if (pad.axes.length >= 4) {
-          const rightStickX = pad.axes[2];
-          const rightStickY = pad.axes[3];
-          if (Math.abs(rightStickX) > 0.1 || Math.abs(rightStickY) > 0.1) {
-            console.log('[App.jsx] Right stick movement detected:', { x: rightStickX, y: rightStickY });
-          }
-        }
-      }
-    };
-
-    // Check gamepad status periodically
-    const gamepadInterval = setInterval(checkGamepad, 1000);
-    return () => clearInterval(gamepadInterval);
-  }, []);
-
   const handleSelectionComplete = (nextPhase) => {
-    console.log(`[App.jsx] Transitioning from ${currentPhase} to ${nextPhase}`);
-    setCurrentPhase(nextPhase);
+    usePhase.getState().set(nextPhase);
     setPreviewContent(null); 
-    setActivePreviewTarget(null); // Clear target on phase change
+    setActivePreviewTarget(null);
   };
 
   const startGame = () => {
-    console.log('[App.jsx] startGame called, setting phase to character');
-    setCurrentPhase('character');
+    usePhase.getState().set('character');
   }
 
-  // MODIFIED: showPreview now accepts a targetRef
-  const showPreview = (content, targetRef) => {
-    console.log('[App.jsx] showPreview called with content and targetRef:', content, targetRef);
+  // MODIFIED: showPreview now accepts a targetRef - Stabilized with useCallback
+  const showPreview = useCallback((content, targetRef) => {
     if (targetRef && targetRef.current) {
       setPreviewContent(content); 
-      setActivePreviewTarget(targetRef); // Store the ref itself
+      setActivePreviewTarget(targetRef);
       setPreviewKey(k => k + 1); 
     } else {
-      console.warn('[App.jsx] showPreview called without a valid targetRef.current. Preview will not be shown.');
       setPreviewContent(null);
       setActivePreviewTarget(null);
     }
-  };
+  }, []);
 
-  const hidePreview = () => {
-    console.log('[App.jsx] hidePreview called.');
+  const hidePreview = useCallback(() => {
     setPreviewContent(null); 
-    setActivePreviewTarget(null); // Clear target on hide
-  };
+    setActivePreviewTarget(null);
+  }, []);
 
   const renderCurrentPhaseComponent = () => {
-    switch (currentPhase) {
+    switch (phase) {
       case 'title':
         return <TitleScreen onStartGame={startGame} />;
       case 'character':
@@ -168,7 +164,7 @@ function App() {
             hidePreview={hidePreview} 
           />
         );
-      case 'game':
+      case 'flight':
         return null; 
       default:
         return <TitleScreen onStartGame={startGame} />;
@@ -178,14 +174,11 @@ function App() {
   // MODIFIED: renderPreviewView now uses activePreviewTarget
   const renderPreviewView = () => {
     if (!previewContent || !activePreviewTarget || !activePreviewTarget.current || !showPreviewToggle) {
-      // console.log('[App.jsx Canvas Render] PREVIEW VIEW: No previewContent or activePreviewTarget.current. Preview will not render.');
       return null;
     }
-
-    console.log('[App.jsx Canvas Render] PREVIEW VIEW: activePreviewTarget.current IS SET. Rendering View component for type:', previewContent.type);
     
     return (
-      <View track={activePreviewTarget} index={1} key={previewKey}> {/* Use activePreviewTarget, ensure index is > 0 if main canvas has index 0 */}
+      <View track={activePreviewTarget} index={1} key={previewKey}>
         {previewContent.type === 'character' && (
           <CharacterPreviewContent
             modelPath={previewContent.modelPath}
@@ -226,42 +219,36 @@ function App() {
                 left: 0, 
                 width: '100vw', 
                 height: '100vh', 
-                zIndex: 0, // Main scene canvas
-                // Pointer events for canvas controlled by phase and preview state
-                pointerEvents: (currentPhase === 'game' || previewContent) ? 'auto' : 'none' 
+                zIndex: previewContent ? 52 : 0,
+                pointerEvents: (phase === 'flight' || previewContent) ? 'auto' : 'none' 
               }}
               shadows
               onPointerDown={(event) => {
-                if (currentPhase === 'game' && event.target.requestPointerLock) {
-                  console.log('[App.jsx] Attempting to lock pointer for game phase.');
+                if (phase === 'flight' && event.target.requestPointerLock) {
                   event.target.requestPointerLock()
                     .catch(err => console.error('[App.jsx] Error requesting pointer lock:', err));
                 }
               }}
-              // camera={{ position: [0,0,0]}} // Let MainGameScene control its camera
             >
               {/* Global Stars - Background for all phases - Conditionally Rendered */}
               {!previewContent && (
                 <>
-                  {/* Layer 1: More distant, smaller, slower stars - Reduced factor and speed for subtlety */}
                   <DreiStars radius={150} depth={80} count={5000} factor={3} saturation={0} fade speed={0.05} />
-                  {/* Layer 2: Closer, slightly larger, faster twinkling stars - Reduced factor and speed for subtlety */}
                   <DreiStars radius={90} depth={40} count={2500} factor={4} saturation={0} fade speed={0.1} />
                 </>
               )}
-              
               <Suspense fallback={null}>
-                {/* Preview View - renders into modal's div, index 1 */}
-                {renderPreviewView()} 
-                
-                {/* Game Scene - only when currentPhase is 'game' */}
-                {currentPhase === 'game' && (
+                {renderPreviewView()}
+                {phase === 'flight' && (
                   <KeyboardControls map={controlsMap}>
                     <MainGameScene />
                   </KeyboardControls>
                 )}
               </Suspense>
             </Canvas>
+
+            {/* Neural Echo Indicator */}
+            <NeuralEchoIndicator />
           </div>
         </Router>
       </EventProvider>

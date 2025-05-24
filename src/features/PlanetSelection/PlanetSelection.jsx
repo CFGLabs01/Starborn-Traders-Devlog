@@ -39,8 +39,8 @@ const PlanetSelection = ({ onSelectionComplete, showPreview, hidePreview }) => {
       setStartingPlanet(selectedPlanetDetails);
       setShowDetailsModal(false);
       if (hidePreview) hidePreview();
-      console.log("[PlanetSelection.jsx] Calling onSelectionComplete('game')");
-      onSelectionComplete('game');
+      console.log("[PlanetSelection.jsx] Calling onSelectionComplete('flight')");
+      onSelectionComplete('flight');
     } else {
       console.warn('[PlanetSelection.jsx] handleConfirmSelection called but no planet selected.');
     }
