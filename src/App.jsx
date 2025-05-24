@@ -16,7 +16,8 @@ import TitleScreen from './features/TitleScreen/TitleScreen';
 import CharacterSelection from './features/CharacterSelection/CharacterSelection';
 import ShipSelection from './features/ShipSelection/ShipSelection';
 import PlanetSelection from './features/PlanetSelection/PlanetSelection';
-import MainGameScene from './features/MainGameScene/MainGameScene'; 
+import MainGameScene from './features/MainGameScene/MainGameScene';
+import GameHUD from './components/GameHUD/GameHUD'; 
 // EventManager and HudAlert will be conditionally rendered with MainGameScene content
 // import MinimalAnimationTest from './components/MinimalAnimationTest';
 
@@ -249,6 +250,9 @@ function App() {
 
             {/* Neural Echo Indicator */}
             <NeuralEchoIndicator />
+            
+            {/* Game HUD - only show during flight phase */}
+            {phase === 'flight' && <GameHUD />}
           </div>
         </Router>
       </EventProvider>

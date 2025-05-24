@@ -1,0 +1,26 @@
+<svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="frameGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a9396;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#94d2bd;stop-opacity:0.4" />
+    </linearGradient>
+  </defs>
+  <!-- Hexagonal frame -->
+  <polygon points="80,10 130,40 130,120 80,150 30,120 30,40" 
+           fill="none" 
+           stroke="url(#frameGradient)" 
+           stroke-width="2"/>
+  <!-- Inner hexagon -->
+  <polygon points="80,20 120,45 120,115 80,140 40,115 40,45" 
+           fill="#001219" 
+           fill-opacity="0.6"
+           stroke="#94d2bd" 
+           stroke-width="1"/>
+  <!-- Corner details -->
+  <circle cx="80" cy="15" r="3" fill="#94d2bd"/>
+  <circle cx="125" cy="42" r="3" fill="#94d2bd"/>
+  <circle cx="125" cy="118" r="3" fill="#94d2bd"/>
+  <circle cx="80" cy="145" r="3" fill="#94d2bd"/>
+  <circle cx="35" cy="118" r="3" fill="#94d2bd"/>
+  <circle cx="35" cy="42" r="3" fill="#94d2bd"/>
+</svg> 
