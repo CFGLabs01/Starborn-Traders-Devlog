@@ -141,7 +141,6 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px var(--glow-secondary);
   width: 90%; 
   max-width: 900px; 
-  max-height: 80vh; 
   overflow: visible; /* CHANGED from hidden to visible */
   color: var(--color-text-primary);
 }
@@ -182,8 +181,6 @@
 .modal-panel-content {
   position: relative;
   z-index: 1; /* Above pseudo-elements */
-  height: 100%;
-  max-height: 80vh; /* Match panel max-height */
   overflow-y: auto;
   padding: var(--spacing-xl); /* Keep existing side/bottom padding */
   padding-top: 5rem; /* Increased top padding significantly */

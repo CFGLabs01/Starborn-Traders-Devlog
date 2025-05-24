@@ -72,18 +72,34 @@ export const GameStateProvider = ({ children }) => {
   // Starting planet state (selected during setup)
   const [startingPlanet, setStartingPlanetInternal] = useState(savedState?.startingPlanet || null);
   
+  // 🧠 NEURAL ECHO SYSTEM - Living AI Memory Layer
+  const [neuralEcho, setNeuralEcho] = useState(savedState?.neuralEcho || {
+    tradeHistory: [],
+    battleLogs: [],
+    discoveryTags: [],
+    betrayalFlags: 0,
+    heroismFlags: 0,
+    factionFavor: {
+      Trade: 0,
+      Pirates: 0,
+      Military: 0,
+      Science: 0,
+      Diplomats: 0
+    },
+    echoScore: 0, // Total karma weight of player's legend
+    echoIntensity: 0, // How strongly the echo affects the world (0-10)
+    lastEchoUpdate: Date.now()
+  });
+  
   const setPlayerCharacter = (character) => {
-    console.log('[GameStateContext] Setting player character:', character);
     setPlayerCharacterInternal(character);
   };
 
   const setShip = (newShipData) => {
-    console.log('[GameStateContext] Setting ship:', newShipData);
     setShipInternal(prevShip => ({ ...prevShip, ...newShipData }));
   };
 
   const setStartingPlanet = (planet) => {
-    console.log('[GameStateContext] Setting starting planet:', planet);
     setStartingPlanetInternal(planet);
   };
   
@@ -91,7 +107,6 @@ export const GameStateProvider = ({ children }) => {
   useEffect(() => {
     // Only save if a character has been selected
     if (playerCharacter) {
-      console.log('[GameStateContext] Saving game state to localStorage.');
       const gameState = {
         playerCharacter,
         credits,
@@ -100,24 +115,23 @@ export const GameStateProvider = ({ children }) => {
         ship,
         gameProgress,
         gameTime,
-        startingPlanet // Add startingPlanet to saved state
+        startingPlanet,
+        neuralEcho
       };
       
       localStorage.setItem('starborneGameState', JSON.stringify(gameState));
     }
-    // Add startingPlanet to dependency array
-  }, [playerCharacter, credits, currentLocation, factionReputation, ship, gameProgress, gameTime, startingPlanet]);
+  }, [playerCharacter, credits, currentLocation, factionReputation, ship, gameProgress, gameTime, startingPlanet, neuralEcho]);
 
   // Function to update player's ship after character selection
   useEffect(() => {
     if (playerCharacter && !ship.name) {
       setShip({
-        ...ship,
         name: playerCharacter.shipName,
         class: playerCharacter.shipClass
       });
     }
-  }, [playerCharacter, ship]);
+  }, [playerCharacter?.shipName, playerCharacter?.shipClass, ship.name]);
   
   // Function to update credits
   const updateCredits = (amount) => {
@@ -240,10 +254,88 @@ export const GameStateProvider = ({ children }) => {
       discoveredLocations: []
     });
     setGameTime(0);
-    setStartingPlanet(null); // Reset starting planet on new game
+    setStartingPlanet(null);
+    setNeuralEcho({
+      tradeHistory: [],
+      battleLogs: [],
+      discoveryTags: [],
+      betrayalFlags: 0,
+      heroismFlags: 0,
+      factionFavor: { Trade: 0, Pirates: 0, Military: 0, Science: 0, Diplomats: 0 },
+      echoScore: 0,
+      echoIntensity: 0,
+      lastEchoUpdate: Date.now()
+    });
     
     // Clear saved game
     localStorage.removeItem('starborneGameState');
+  };
+
+  // 🧠 NEURAL ECHO FUNCTIONS - Living AI Memory System
+  
+  // Log player actions to build their neural echo
+  const logEchoAction = (actionType, data) => {
+    setNeuralEcho(prevEcho => {
+      const newEcho = { ...prevEcho };
+      const timestamp = Date.now();
+      
+      switch (actionType) {
+        case 'trade':
+          newEcho.tradeHistory.push({ ...data, timestamp });
+          if (data.rarity === 'rare') newEcho.discoveryTags.push(data.item);
+          newEcho.echoScore += data.value > 1000 ? 2 : 1;
+          break;
+          
+        case 'betray':
+          newEcho.betrayalFlags += 1;
+          newEcho.factionFavor[data.faction] -= 2;
+          newEcho.echoScore -= 3;
+          break;
+          
+        case 'hero':
+          newEcho.heroismFlags += 1;
+          newEcho.factionFavor[data.faction] += 2;
+          newEcho.echoScore += 5;
+          break;
+          
+        case 'battle':
+          newEcho.battleLogs.push({ ...data, timestamp });
+          newEcho.echoScore += data.victory ? 1 : -1;
+          break;
+          
+        case 'discovery':
+          newEcho.discoveryTags.push(data.discovery);
+          newEcho.echoScore += 3;
+          break;
+      }
+      
+      // Calculate echo intensity (0-10 scale)
+      const totalActions = newEcho.tradeHistory.length + newEcho.battleLogs.length + 
+                          newEcho.betrayalFlags + newEcho.heroismFlags;
+      newEcho.echoIntensity = Math.min(Math.floor(totalActions / 5), 10);
+      
+      newEcho.lastEchoUpdate = timestamp;
+      return newEcho;
+    });
+  };
+
+  // Get echo effects for HUD styling
+  const getEchoEffects = () => {
+    const { echoScore, echoIntensity, betrayalFlags, heroismFlags } = neuralEcho;
+    
+    return {
+      hudGlitch: betrayalFlags > 3,
+      hudHarmonic: heroismFlags > 3,
+      hudIntensity: echoIntensity / 10,
+      priceModifier: echoScore > 0 ? 1.1 : 0.9,
+      accessLevel: Math.floor(echoIntensity / 2), // 0-5 access levels
+      echoTheme: echoScore > 10 ? 'hero' : echoScore < -5 ? 'rogue' : 'neutral'
+    };
+  };
+
+  // Check if player has access to echo-gated content
+  const hasEchoAccess = (requiredLevel) => {
+    return Math.floor(neuralEcho.echoIntensity / 2) >= requiredLevel;
   };
 
   // Memoize context value to prevent unnecessary re-renders
@@ -266,8 +358,12 @@ export const GameStateProvider = ({ children }) => {
     gameTime,
     setGameTime,
     startingPlanet,
-    setStartingPlanet
-  }), [playerCharacter, credits, currentLocation, factionReputation, ship, gameProgress, gameTime, startingPlanet]);
+    setStartingPlanet,
+    neuralEcho,
+    logEchoAction,
+    getEchoEffects,
+    hasEchoAccess
+  }), [playerCharacter, credits, currentLocation, factionReputation, ship, gameProgress, gameTime, startingPlanet, neuralEcho]);
 
   return (
     <GameStateContext.Provider value={value}>

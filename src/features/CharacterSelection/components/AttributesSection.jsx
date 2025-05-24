@@ -8,9 +8,9 @@ const AttributesSection = ({ attributes, className = '' }) => {
   const formatLabel = (key) => key.charAt(0).toUpperCase() + key.slice(1);
 
   return (
-    // Attributes Section - Apply passed className
-    <div className={`bg-slate-800/95 p-4 rounded-2xl shadow-xl ${className}`}>
-      <h3 className="text-lg font-semibold text-teal-400 mb-2 font-display">Attributes</h3>
+    // Attributes Section - Apply passed className, remove hardcoded background
+    <div className={className}>
+      <h3 className="text-lg font-semibold text-tiffany_blue mb-2 font-display">Attributes</h3>
       <div className="space-y-1">
         {/* Iterate directly over the keys of the passed attributes object */}
         {attributes && Object.entries(attributes).map(([key, value]) => (
@@ -23,7 +23,7 @@ const AttributesSection = ({ attributes, className = '' }) => {
         ))}
         {/* Add a message if no attributes are found */}
         {!attributes || Object.keys(attributes).length === 0 && (
-          <p className="text-sm text-slate-500 italic">No attributes defined.</p>
+          <p className="text-sm text-tiffany_blue/60 italic">No attributes defined.</p>
         )}
       </div>
     </div>

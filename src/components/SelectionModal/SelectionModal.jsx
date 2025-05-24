@@ -17,7 +17,7 @@ const SelectionModal = ({
         <AnimatePresence>
             {isOpen && (
                 <motion.div
-                    className="modal-backdrop" // Style this in sharedSelection.css
+                    className="modal-backdrop"
                     onClick={onClose} 
                     variants={modalBackdropVariants} 
                     initial="hidden"
@@ -25,13 +25,18 @@ const SelectionModal = ({
                     exit="exit"
                     role="dialog" 
                     aria-modal="true"
-                    style={{ background: 'rgba(2, 6, 23, 0.2) !important' }} // Ensure this overrides framer-motion
+                    style={{ 
+                        background: 'rgba(0, 0, 0, 0.1)',
+                        backdropFilter: 'blur(2px)',
+                        zIndex: 30
+                    }}
                 >
                     {/* Panel - Keep relative positioning for absolute children */}
                     <motion.div
-                        className="modal-panel flex flex-col shadow-lg overflow-hidden" // Changed back to overflow-hidden
+                        className="modal-panel flex flex-col shadow-lg overflow-visible"
                         variants={modalVariants}
                         onClick={e => e.stopPropagation()} 
+                        style={{ zIndex: 31 }}
                     >
                         {/* Close Button (position absolutely within panel) */}
                         <button 

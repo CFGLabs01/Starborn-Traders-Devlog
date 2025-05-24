@@ -14,4 +14,34 @@
 
 /* @tailwind utilities; - Removed */
 
-/* Any remaining custom utilities or overrides would go here */ 
+/* Any remaining custom utilities or overrides would go here */
+
+/* FIXED: Custom Scrollbar for Character Popup */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 210, 189, 0.3) rgba(0, 18, 25, 0.1);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 18, 25, 0.1);
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(148, 210, 189, 0.3);
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 210, 189, 0.5);
+}
+
+/* Ensure smooth scrolling */
+.custom-scrollbar {
+  scroll-behavior: smooth;
+} 

@@ -10,12 +10,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: var(--z-modal-backdrop);
-  background-color: rgba(var(--rgb-rich-black), 0.2) !important; /* Test with !important */
-  backdrop-filter: blur(5px) !important; /* Test with !important */
-  /* backdrop-filter: blur(12px); */ /* TEMPORARILY COMMENTED OUT */
-  /* -webkit-backdrop-filter: blur(12px); */ /* TEMPORARILY COMMENTED OUT */
-  /* padding: var(--spacing-md); */ /* TEMPORARILY COMMENTED OUT */
+  z-index: 50;
+  background-color: rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(2px);
 }
 
 /* Frosted, edged popup panel (Character Details, potentially others) */

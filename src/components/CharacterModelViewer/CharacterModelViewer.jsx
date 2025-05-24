@@ -1,54 +1,72 @@
 import React, { Suspense, useRef, useMemo, useEffect, useState } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, useGLTF, Preload, useAnimations, PerspectiveCamera } from '@react-three/drei';
+import { Box3, Vector3 } from 'three';
 // import { EffectComposer, Bloom } from '@react-three/postprocessing'; // Commented out for now
 import { useGameState } from '../../context/GameStateContext';
 import CharacterPlatform from '../CharacterPlatform/CharacterPlatform';
 import ShowcaseRig from '../ShowcaseRig';
+import CharacterModelErrorBoundary from './ErrorBoundary';
 
-// Simple reusable Model loader
+// Store TARGET_HEIGHT so all models align
+const TARGET_HEIGHT = 1.8;
+
+// Simple reusable Model loader with animation support
 const Model = React.memo(({ modelPath, animationName, ...props }) => {
   const group = useRef();
   const { scene, animations, error } = useGLTF(modelPath, true);
-  const { actions, mixer } = useAnimations(animations, group);
+  const { actions } = useAnimations(animations, group);
 
+  // Play idle animation or first available animation
   useEffect(() => {
     if (error) {
       console.error(`[Character Model] Error loading ${modelPath}:`, error);
       return;
     }
+    
+    // Guard: if no animations, skip gracefully
     if (!actions || Object.keys(actions).length === 0) {
+      console.log(`[Character Model] No animations found for ${modelPath}`);
       return;
     }
 
-    const action = actions[animationName];
-    if (action) {
-      action.reset().fadeIn(0.5).play();
-    } else {
-      const firstActionKey = Object.keys(actions)[0];
-      if (firstActionKey && actions[firstActionKey]) {
-        actions[firstActionKey].reset().fadeIn(0.5).play();
-      }
+    // Try to find Idle animation, fallback to first available
+    const idle = actions['Idle'] ?? actions[animationName] ?? Object.values(actions)[0];
+    
+    if (idle) {
+      idle.reset().fadeIn(0.3).play();
+      console.log(`[Character Model] Playing animation: ${idle.getClip().name}`);
     }
 
     return () => {
-      if (action) {
-        action.fadeOut(0.5);
+      if (idle) {
+        idle.fadeOut(0.3);
       }
     };
-  }, [actions, animationName, error, modelPath, mixer, animations]);
+  }, [actions, animationName, error, modelPath]);
 
+  // Auto-scale and position model based on bounding box
   useEffect(() => {
-    if (scene) {
+    if (scene && group.current) {
       scene.traverse(o => {
         if (o.isMesh) {
-          o.geometry.center(); // Center the geometry for proper pivot
           if (o.material) {
             o.material.metalness = 0.6;
             o.material.roughness = 0.2;
           }
         }
       });
+
+      // Compute bounding box for auto-scaling
+      const box = new Box3().setFromObject(scene);
+      const height = box.max.y - box.min.y;
+      
+      if (height > 0) {
+        const scale = TARGET_HEIGHT / height;
+        group.current.scale.setScalar(scale);
+        group.current.position.y = -box.min.y * scale; // feet to 0
+        console.log(`[Character Model] Auto-scaled: height=${height.toFixed(2)}, scale=${scale.toFixed(2)}`);
+      }
     }
   }, [scene]);
 
@@ -179,12 +197,21 @@ const WireframePlatform = React.memo(({ radius = 1.2 }) => {
   );
 });
 
-// Renamed and Exported: Scene Content for the character PREVIEW view with ShowcaseRig
-export const CharacterPreviewContent = React.memo(({ modelPath, scale, animationName }) => {
+// Renamed and Exported: Scene Content for the character PREVIEW view with proper pivot
+export const CharacterPreviewContent = React.memo(({ modelPath, scale, animationName, autoRotate = true, rotationSpeed = 0.3 }) => {
   const groupRef = useRef();
+  const pedestalRef = useRef();  // meshes
+  const pivotRef = useRef();     // NEW group for rotation
 
   useThree(({ camera }) => {
     camera.layers.enableAll();
+  });
+
+  // Frame loop – rotate the pivot not the mesh
+  useFrame((_, delta) => {
+    if (autoRotate && pivotRef.current) {
+      pivotRef.current.rotation.y += delta * rotationSpeed;
+    }
   });
 
   // Memoize the animation name to prevent unnecessary re-renders
@@ -192,9 +219,15 @@ export const CharacterPreviewContent = React.memo(({ modelPath, scale, animation
     return animationName || 'Armature|Idle|baselayer';
   }, [animationName]);
 
+  // Camera positioning based on character height
+  const cameraPosition = useMemo(() => {
+    const characterHeight = TARGET_HEIGHT;
+    return [0, characterHeight * 0.8, characterHeight * 2];
+  }, []);
+
   return (
-    <>
-      <PerspectiveCamera makeDefault position={[0, 1.2, 3.5]} fov={45} />
+    <CharacterModelErrorBoundary>
+      <PerspectiveCamera makeDefault position={cameraPosition} fov={45} />
       <ambientLight intensity={0.4} color="#0A1320" />
       
       {/* Simplified lighting setup */}
@@ -206,11 +239,9 @@ export const CharacterPreviewContent = React.memo(({ modelPath, scale, animation
       <directionalLight position={[0, 0, -5]} intensity={0.6} color="#0A9396" />
 
       <group ref={groupRef} position={[0, -0.1, 0]}>
-        {/* Simplified Wireframe Platform */}
-        <WireframePlatform radius={1.3} />
-        
-        {/* Character Model with ShowcaseRig for smooth rotation and floating */}
-        <ShowcaseRig speed={0.5}>
+        {/* Pivot group for rotation */}
+        <group ref={pivotRef}>
+          {/* Character Model */}
           <Suspense fallback={<ModelLoadingFallback />}>
             <Model 
               modelPath={modelPath}
@@ -222,12 +253,23 @@ export const CharacterPreviewContent = React.memo(({ modelPath, scale, animation
             />
             <Preload all />
           </Suspense>
-        </ShowcaseRig>
+          
+          {/* Wireframe Platform - locked flat with original rotation */}
+          <mesh ref={pedestalRef} position={[0, 0, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+            <ringGeometry args={[1.0, 1.3, 64]} />
+            <meshBasicMaterial 
+              color="#0a9396"
+              wireframe={true} 
+              transparent={true} 
+              opacity={0.6}
+            />
+          </mesh>
+        </group>
       </group>
       
       {/* Simplified OrbitControls */}
       <OrbitControls 
-        target={[0, 0.85, 0]}
+        target={[0, TARGET_HEIGHT * 0.5, 0]}
         enableZoom={true}
         enablePan={false}
         minDistance={2.0}
@@ -239,7 +281,7 @@ export const CharacterPreviewContent = React.memo(({ modelPath, scale, animation
         maxPolarAngle={Math.PI * 0.8}
         rotateSpeed={0.5}
       />
-    </>
+    </CharacterModelErrorBoundary>
   );
 });
 

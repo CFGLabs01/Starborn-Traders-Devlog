@@ -2,15 +2,14 @@ import React from 'react';
 // import styles from './CharacterSelection.module.css'; // Removed unused import
 import { motion } from 'framer-motion';
 
-// Animation variant for the card itself (can be simpler)
-const cardVariants = {
-    hidden: { opacity: 0, y: -50 }, // Start further up and invisible
+// Animation variant for the card itself
+const cardVariantsStep1 = {
+    hidden: { opacity: 0, y: -50 }, // Changed back to Y-axis
     visible: { 
         opacity: 1, 
-        y: 0, 
+        y: 0, // Changed back to Y-axis
         transition: { 
-            duration: 0.5, 
-            ease: [0.6, 0.05, -0.01, 0.9] // Example of a custom ease
+            duration: 0.5 
         }
     },
 };
@@ -27,12 +26,12 @@ const CharacterCard = ({ character, onSelect }) => {
         <motion.div
             className="selection-card" // Use shared base class
             onClick={onSelect} 
-            variants={cardVariants} // Apply simple variant
+            variants={cardVariantsStep1} // Apply new variants
             initial="hidden"
             animate="visible"
-            whileHover={{ scale: 1.03, transition: { duration: 0.15 } }} // Subtle hover scale
-            whileTap={{ scale: 0.98 }} // Subtle tap scale
-            // layout // Temporarily remove layout prop
+            // whileHover={{ scale: 1.03, transition: { duration: 0.15 } }} // Still removed
+            // whileTap={{ scale: 0.98 }} // Still removed
+            // layout // Still removed
         >
              {/* Image Container - Prioritize portrait, remove 3D model fallback */}
              <div className="w-full aspect-[3/4] mb-2 overflow-hidden rounded-md flex items-center justify-center bg-slate-800/50">

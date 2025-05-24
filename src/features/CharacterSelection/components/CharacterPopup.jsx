@@ -21,6 +21,11 @@ const CharacterPopup = ({ characterDetails, onConfirm, onPrevious, onNext, isNav
     return null;
   }
 
+  // Connect handler for select button
+  const handleSelect = () => {
+    onConfirm?.(characterDetails);
+  };
+
   // Get current echo effects for demonstration
   const echoEffects = getEchoEffects ? getEchoEffects() : null;
 
@@ -44,19 +49,21 @@ const CharacterPopup = ({ characterDetails, onConfirm, onPrevious, onNext, isNav
   return (
     // FIXED: Fully transparent layout without dark background
     <div className="flex flex-col lg:flex-row h-full overflow-hidden bg-transparent backdrop-blur-sm">
-      {/* Left Column: Preview Area - SIMPLIFIED */}
+      {/* Left Column: Preview Area - FIXED with square aspect ratio */}
       <div className="w-full lg:w-[45%] flex-shrink-0 flex items-center justify-center p-4 relative"> 
-        <div 
-          ref={previewHostRef}
-          className="w-full h-full max-w-[300px] max-h-[300px] lg:max-w-full lg:max-h-[400px] relative bg-transparent rounded-2xl" 
-          style={{ 
-            minHeight: '300px',
-            backgroundColor: 'transparent',
-            border: '2px solid rgba(148, 210, 189, 0.3)',
-            borderRadius: '1rem',
-            boxShadow: '0 0 30px rgba(10, 147, 150, 0.2)'
-          }}
-        />
+        {/* Square flex box for perfect centering */}
+        <div className="w-full aspect-square flex items-center justify-center max-w-[400px]">
+          <div 
+            ref={previewHostRef}
+            className="w-full h-full relative bg-transparent rounded-2xl" 
+            style={{ 
+              backgroundColor: 'transparent',
+              border: '2px solid rgba(148, 210, 189, 0.3)',
+              borderRadius: '1rem',
+              boxShadow: '0 0 30px rgba(10, 147, 150, 0.2)'
+            }}
+          />
+        </div>
         
         {/* Character Name Overlay - FIXED to not block clicks */}
          <h2 className="absolute top-6 left-1/2 transform -translate-x-1/2 text-2xl font-bold text-tiffany_blue text-shadow-md z-10 bg-gradient-to-r from-rich_black/90 via-midnight_green/80 to-rich_black/90 backdrop-blur-md px-8 py-3 rounded-2xl font-display pointer-events-none border border-dark_cyan/30 shadow-2xl">
@@ -139,9 +146,9 @@ const CharacterPopup = ({ characterDetails, onConfirm, onPrevious, onNext, isNav
           )}
         </div>
 
-        {/* FIXED Button Container with proper z-index */}
-        <div className="w-full flex justify-center py-8 bg-rich_black/90 relative z-50">
-          <div className="flex items-center space-x-4 relative z-50">
+        {/* FIXED Button Container with proper z-index and centering */}
+        <div className="w-full flex justify-center py-8 bg-rich_black/90 relative z-20">
+          <div className="flex items-center space-x-4 relative z-20 mx-auto">
               {/* Previous Character Button - FIXED */}
               <button
                   className="ui-btn w-16 h-16 rounded-xl bg-midnight_green/80 hover:bg-dark_cyan/80 border-2 border-tiffany_blue/50 hover:border-tiffany_blue text-white transition-all duration-300 cursor-pointer"
@@ -156,8 +163,8 @@ const CharacterPopup = ({ characterDetails, onConfirm, onPrevious, onNext, isNav
               {/* SELECT BUTTON - FIXED */}
               <button
                   className="ui-btn px-8 py-4 bg-gradient-to-r from-dark_cyan to-tiffany_blue hover:from-tiffany_blue hover:to-vanilla text-rich_black font-bold rounded-2xl transition-all duration-300 text-lg cursor-pointer"
-                  onClick={() => click(() => onConfirm?.())}
-                  onPointerDown={() => click(() => onConfirm?.())}
+                  onClick={() => click(() => handleSelect())}
+                  onPointerDown={() => click(() => handleSelect())}
                   disabled={false}
               >
                   SELECT {characterDetails?.name || 'CHARACTER'}

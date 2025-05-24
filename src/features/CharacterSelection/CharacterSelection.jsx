@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useGameState } from '../../context/GameStateContext';
 import CharacterCard from './CharacterCard';
 import { characters as characterData } from './characterData';
@@ -19,68 +19,84 @@ const gridContainerVariants = {
 };
 
 const CharacterSelection = ({ onSelectionComplete, showPreview, hidePreview }) => {
-    console.log('[CharacterSelection.jsx] Loaded characterData:', characterData);
-    const { setPlayerCharacter } = useGameState();
+    const { setPlayerCharacter, logEchoAction } = useGameState();
     const [selectedCharacterDetails, setSelectedCharacterDetails] = useState(null);
     const [showDetailsModal, setShowDetailsModal] = useState(false);
     const modalPreviewBoxRef = useRef(null);
 
-    const handleCharacterSelect = (character) => {
-        console.log("[CharacterSelection.jsx] handleCharacterSelect called with:", character);
+    // Memoize the character select handler to prevent re-renders
+    const handleCharacterSelect = useCallback((character) => {
         setSelectedCharacterDetails(character);
         setShowDetailsModal(true);
-    };
+    }, []);
+
+    // Stable reference for showPreview effect
+    const selectedCharacterId = selectedCharacterDetails?.id;
+    const selectedCharacterModelPath = selectedCharacterDetails?.modelPath;
+    const selectedCharacterScale = selectedCharacterDetails?.scale;
 
     useEffect(() => {
-        if (showDetailsModal && selectedCharacterDetails && modalPreviewBoxRef.current) {
-            if (showPreview && selectedCharacterDetails.modelPath) {
-                const idleModelPath = selectedCharacterDetails.modelPath.replace(/\.glb$/, 'Idle.glb');
-                console.log(`[CharacterSelection.jsx useEffect] Showing preview for ${selectedCharacterDetails.name} in ref. Path: ${idleModelPath}`);
-                showPreview(
-                    {
-                        type: 'character',
-                        modelPath: idleModelPath,
-                        scale: selectedCharacterDetails.scale || 1,
-                        animationName: 'Armature|Idle|baselayer',
-                    },
-                    modalPreviewBoxRef
-                );
-            } else {
-                console.warn("[CharacterSelection.jsx useEffect] Conditions not met to show preview or modelPath missing.");
+        if (showDetailsModal && selectedCharacterDetails && modalPreviewBoxRef.current && showPreview) {
+            const idleModelPath = selectedCharacterModelPath?.endsWith('Idle.glb') 
+                ? selectedCharacterModelPath 
+                : selectedCharacterModelPath?.replace(/\.glb$/, ' Idle.glb');
+                
+            if (idleModelPath) {
+                const previewData = {
+                    type: 'character',
+                    modelPath: idleModelPath,
+                    scale: selectedCharacterScale || 1,
+                    animationName: 'Armature|Idle|baselayer'
+                };
+                
+                // Only call showPreview if we have a valid model path
+                showPreview(previewData, modalPreviewBoxRef);
             }
         } else if (!showDetailsModal && hidePreview) {
-            console.log("[CharacterSelection.jsx useEffect] Modal not shown or details cleared, hiding preview.");
+            hidePreview();
         }
-    }, [showDetailsModal, selectedCharacterDetails, modalPreviewBoxRef, showPreview, hidePreview]);
+    }, [showDetailsModal, selectedCharacterId, selectedCharacterModelPath, selectedCharacterScale, showPreview]);
+    
+    // Separate effect for cleanup when component unmounts
+    useEffect(() => {
+        return () => {
+            if (hidePreview) {
+                hidePreview();
+            }
+        };
+    }, [hidePreview]);
 
-    const handleConfirmSelection = () => {
+    const handleConfirmSelection = useCallback(() => {
         if (selectedCharacterDetails) {
-            console.log("[CharacterSelection.jsx] handleConfirmSelection called for:", selectedCharacterDetails);
             setPlayerCharacter(selectedCharacterDetails);
+            
+            // 🧠 LOG NEURAL ECHO: Character choice sets initial echo signature
+            if (logEchoAction) {
+                logEchoAction('discovery', {
+                    discovery: `chosen_${selectedCharacterDetails.faction.toLowerCase()}`,
+                    character: selectedCharacterDetails.name,
+                    faction: selectedCharacterDetails.faction
+                });
+            }
+            
             setShowDetailsModal(false);
             if (hidePreview) hidePreview();
-            console.log("[CharacterSelection.jsx] Calling onSelectionComplete('ship')");
             onSelectionComplete('ship');
-        } else {
-            console.warn("[CharacterSelection.jsx] handleConfirmSelection called but no character selected.");
         }
-    };
+    }, [selectedCharacterDetails, setPlayerCharacter, logEchoAction, hidePreview, onSelectionComplete]);
 
-    const handleCloseModal = () => {
-        console.log("[CharacterSelection.jsx] handleCloseModal called.");
+    const handleCloseModal = useCallback(() => {
         setShowDetailsModal(false);
         setSelectedCharacterDetails(null);
         if (hidePreview) hidePreview();
-    };
+    }, [hidePreview]);
 
-    const navigateCharacter = (direction) => {
-        if (!selectedCharacterDetails) {
-            console.log("[CharacterSelection.jsx] navigateCharacter called but no character selected.");
-            return;
-        }
-        console.log(`[CharacterSelection.jsx] navigateCharacter called with direction: ${direction}`);
+    const navigateCharacter = useCallback((direction) => {
+        if (!selectedCharacterDetails) return;
+        
         const currentIndex = characterData.findIndex(c => c.id === selectedCharacterDetails.id);
         if (currentIndex === -1) return;
+        
         let nextIndex;
         if (direction === 'next') {
             nextIndex = (currentIndex + 1) % characterData.length;
@@ -89,10 +105,10 @@ const CharacterSelection = ({ onSelectionComplete, showPreview, hidePreview }) =
         }
         const nextCharacter = characterData[nextIndex];
         setSelectedCharacterDetails(nextCharacter);
-    };
+    }, [selectedCharacterDetails]);
 
-    const handleNextCharacter = () => navigateCharacter('next');
-    const handlePreviousCharacter = () => navigateCharacter('previous');
+    const handleNextCharacter = useCallback(() => navigateCharacter('next'), [navigateCharacter]);
+    const handlePreviousCharacter = useCallback(() => navigateCharacter('previous'), [navigateCharacter]);
 
     return (
         <div className="flex flex-col items-center justify-start w-full min-h-screen px-4 py-16 text-center relative text-white bg-transparent">
