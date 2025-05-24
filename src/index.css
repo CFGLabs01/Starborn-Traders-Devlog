@@ -1,5 +1,6 @@
 /* Import shared styles FIRST */
 @import './styles/sharedSelection.css';
+@import './styles/buttons.css';
 
 /* Then Tailwind directives */
 @tailwind base;

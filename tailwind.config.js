@@ -41,7 +41,12 @@ export default {
   ],
   theme: {
     extend: {
-      colors: newGameColors, // Use the new detailed color palette
+      colors: {
+        ...newGameColors, // Use the new detailed color palette
+        teal: { DEFAULT: '#0a9396', 500:'#0a9396' },
+        deepBlue: { DEFAULT: '#001f3f' },
+        cream: { DEFAULT: '#e9d8a6' },
+      },
       backdropBlur: {
         DEFAULT: '8px',
         xs: '2px',
