@@ -6,11 +6,13 @@ import useEscapeKey from '../../hooks/useEscapeKey.js';
 import PlanetCard from './PlanetCard';
 import StatBar from '../../components/UI/StatBar';
 import NavigationArrowIcon from '../../components/UI/NavigationArrowButton';
+import { useClick } from '../../hooks/useClick';
 
 const PlanetSelection = ({ onSelectionComplete, showPreview, hidePreview }) => {
   const [selectedPlanetDetails, setSelectedPlanetDetails] = useState(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const { setStartingPlanet } = useGameState();
+  const click = useClick();
   const modalPreviewBoxRef = useRef(null);
 
   const handlePlanetSelect = (planet) => {
@@ -153,23 +155,26 @@ const PlanetSelection = ({ onSelectionComplete, showPreview, hidePreview }) => {
                 <div className="mt-auto pt-6 flex flex-col items-center"> 
                   <div className="flex justify-center items-center space-x-12">
                     <button 
-                      className="button button--icon-navarrow rounded-full disabled:opacity-50 disabled:cursor-not-allowed" 
-                      onClick={handlePreviousPlanet} 
+                      className="ui-btn button button--icon-navarrow rounded-full disabled:opacity-50 disabled:cursor-not-allowed" 
+                      onClick={() => click(() => handlePreviousPlanet())}
+                      onPointerDown={() => click(() => handlePreviousPlanet())}
                       disabled={planetData.length <= 1}
                       aria-label="Previous Planet"
                     >
                       <NavigationArrowIcon direction="left" />
                     </button>
                     <button
-                      onClick={handleConfirmSelection}
-                      className="button button--confirm rounded-full"
+                      className="ui-btn button button--confirm rounded-full"
+                      onClick={() => click(() => handleConfirmSelection())}
+                      onPointerDown={() => click(() => handleConfirmSelection())}
                       disabled={!selectedPlanetDetails}
                     >
                       Select {selectedPlanetDetails.name}
                     </button>
                     <button 
-                      className="button button--icon-navarrow rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
-                      onClick={handleNextPlanet} 
+                      className="ui-btn button button--icon-navarrow rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
+                      onClick={() => click(() => handleNextPlanet())}
+                      onPointerDown={() => click(() => handleNextPlanet())}
                       disabled={planetData.length <= 1}
                       aria-label="Next Planet"
                     >

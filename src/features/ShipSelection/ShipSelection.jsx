@@ -13,12 +13,14 @@ import useEscapeKey from '../../hooks/useEscapeKey.js';
 import ShipCard from './ShipCard'; 
 // Import the icon component
 import NavigationArrowIcon from '../../components/UI/NavigationArrowButton';
+import { useClick } from '../../hooks/useClick';
 
 // REMOVED Shared Animation Variants - Not used here
 
 // Removed previewHostRef from props as it will be created and managed internally
 const ShipSelection = ({ onSelectionComplete, showPreview, hidePreview }) => {
-  const { setShip } = useGameState(); 
+  const { setShip } = useGameState();
+  const click = useClick(); 
   const [selectedShipDetails, setSelectedShipDetails] = useState(null); 
   const [showDetailsModal, setShowDetailsModal] = useState(false); 
   const modalPreviewBoxRef = useRef(null); // Create ref for the modal's preview div
@@ -144,23 +146,26 @@ const ShipSelection = ({ onSelectionComplete, showPreview, hidePreview }) => {
                         <div className="mt-auto pt-6 flex flex-col items-center"> 
                           <div className="flex justify-center items-center space-x-12"> 
                             <button 
-                              className="button button--confirm rounded-full p-3 disabled:opacity-50 disabled:cursor-not-allowed" 
-                              onClick={handlePreviousShip} 
+                              className="ui-btn button button--confirm rounded-full p-3 disabled:opacity-50 disabled:cursor-not-allowed" 
+                              onClick={() => click(() => handlePreviousShip())}
+                              onPointerDown={() => click(() => handlePreviousShip())}
                               disabled={shipData.length <= 1}
                               aria-label="Previous Ship"
                             >
                               <NavigationArrowIcon direction="left" />
                             </button>
                             <button
-                              onClick={handleConfirmSelection}
-                              className="button button--confirm rounded-full"
+                              className="ui-btn button button--confirm rounded-full"
+                              onClick={() => click(() => handleConfirmSelection())}
+                              onPointerDown={() => click(() => handleConfirmSelection())}
                               disabled={!selectedShipDetails}
                             >
                               Select {selectedShipDetails?.name || 'Ship'}
                             </button>
                             <button 
-                              className="button button--confirm rounded-full p-3 disabled:opacity-50 disabled:cursor-not-allowed"
-                              onClick={handleNextShip} 
+                              className="ui-btn button button--confirm rounded-full p-3 disabled:opacity-50 disabled:cursor-not-allowed"
+                              onClick={() => click(() => handleNextShip())}
+                              onPointerDown={() => click(() => handleNextShip())}
                               disabled={shipData.length <= 1}
                               aria-label="Next Ship"
                             >
