@@ -33,24 +33,28 @@ const SelectionModal = ({
                 >
                     {/* Panel - Keep relative positioning for absolute children */}
                     <motion.div
-                        className="modal-panel flex flex-col shadow-lg overflow-visible"
+                        className="modal-panel p-8 sm:p-10 lg:p-12 relative rounded-3xl bg-rich_black/40 backdrop-blur-md flex flex-col shadow-lg overflow-hidden"
                         variants={modalVariants}
                         onClick={e => e.stopPropagation()} 
-                        style={{ zIndex: 31 }}
+                        style={{ 
+                            zIndex: 31,
+                            width: 'clamp(300px, 90vw, 1200px)',
+                            maxHeight: '85vh',
+                            marginTop: '5vh',
+                            marginBottom: '5vh'
+                        }}
                     >
                         {/* Close Button (position absolutely within panel) */}
                         <button 
                             onClick={onClose} 
-                            // Use more specific button classes, positioned top-right
-                            className="absolute top-4 right-4 z-20 button button--icon button--close text-white hover:text-accent-cyan text-2xl"
+                            className="absolute top-4 right-4 text-2xl leading-none text-white hover:text-accent-cyan z-20"
                             aria-label="Close details"
                         >
-                            &times;
+                            ×
                         </button>
                         
-                        {/* Content Area (apply padding and scrolling here) */}
-                        {/* This div uses modal-panel-content class for styling */}
-                        <div className="p-8 md:p-10 lg:p-12 flex flex-col gap-6 w-[min(90vw,480px)] custom-scrollbar">
+                        {/* Content Area with proper scrolling */}
+                        <div className="flex-1 overflow-y-auto custom-scrollbar">
                             {children} {/* Render content passed from parent */}
                         </div>
                     </motion.div>

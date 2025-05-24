@@ -28,6 +28,10 @@ const ShipSelection = ({ onSelectionComplete, showPreview, hidePreview }) => {
 
   const handleShipSelect = (ship) => {
     console.log("[ShipSelection.jsx] handleShipSelect called with:", ship);
+    if (!ship?.stats) {
+      console.error('Missing stats for ship:', ship);
+      return;
+    }
     setSelectedShipDetails(ship);
     setShowDetailsModal(true);
     if (showPreview && ship.modelPath) {
@@ -114,70 +118,78 @@ const ShipSelection = ({ onSelectionComplete, showPreview, hidePreview }) => {
       {showDetailsModal && selectedShipDetails && (
          <>
             <SelectionModal isOpen={showDetailsModal} onClose={handleCloseModal}>
-                <div className="flex flex-col h-full overflow-hidden"> 
-                    <div className="w-full h-[65%] flex-shrink-0 relative p-4 bg-black/30"> 
-                        {/* Assign the created ref to this div */}
-                        <div ref={modalPreviewBoxRef} style={{ width: '100%', height: '100%', position: 'relative' }} />
-                        <h3 className="absolute top-4 left-1/2 transform -translate-x-1/2 text-xl font-bold text-white text-shadow-md z-10 bg-black/30 backdrop-blur-sm px-4 py-1 rounded-md pointer-events-none">
-                            {selectedShipDetails.name}
-                        </h3>
+                <div className="w-full h-full p-6">
+                  {/* Two-column layout */}
+                  <div className="grid grid-cols-2 gap-8 h-full">
+                    {/* Left Column - Content */}
+                    <div className="flex flex-col gap-6 overflow-y-auto custom-scrollbar pr-4">
+                      <div className="text-center"> 
+                        <h2 className="text-2xl font-bold text-white text-center font-display mb-2">
+                          {selectedShipDetails.name}
+                        </h2>
+                        <p className="text-lg text-amber-400 font-light italic">{selectedShipDetails.class}</p>
+                      </div>
+                      
+                      <div className="bg-gradient-to-br from-rich_black/30 via-midnight_green/10 to-rich_black/40 backdrop-blur-sm border border-tiffany_blue/15 rounded-2xl p-6">
+                         <h3 className="text-xl font-semibold text-teal-400 mb-2 border-b border-teal-600/50 pb-1">Description</h3>
+                         <p className="text-sm text-slate-300 mb-1">{selectedShipDetails.description}</p>
+                      </div>
+                      
+                      <div className="bg-gradient-to-br from-rich_black/30 via-midnight_green/10 to-rich_black/40 backdrop-blur-sm border border-tiffany_blue/15 rounded-2xl p-6">
+                         <h3 className="text-xl font-semibold text-teal-400 mb-3 border-b border-teal-600/50 pb-1">Specifications</h3>
+                         <div className="grid grid-cols-2 gap-4 text-sm">
+                            <div className="flex justify-between">
+                              <span className="text-slate-400">Hull Integrity:</span>
+                              <span className="text-white font-mono">{selectedShipDetails.stats?.integrity || 'N/A'}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-slate-400">Speed:</span>
+                              <span className="text-white font-mono">{selectedShipDetails.stats?.speed || 'N/A'}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-slate-400">Cargo:</span>
+                              <span className="text-white font-mono">{selectedShipDetails.stats?.capacity || 'N/A'}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-slate-400">Weapons:</span>
+                              <span className="text-white font-mono">{selectedShipDetails.stats?.firepower || 'N/A'}</span>
+                            </div>
+                         </div>
+                      </div>
+                      
+                      <div className="flex gap-4 justify-center mt-6">
+                         <button
+                            className="ui-btn px-8 py-4 bg-gradient-to-r from-slate-600 to-slate-500 hover:from-slate-500 hover:to-slate-400 text-white font-semibold rounded-xl transition-all duration-300"
+                            onClick={handleCloseModal}
+                         >
+                            Back
+                         </button>
+                         <button
+                            className="ui-btn px-8 py-4 bg-gradient-to-r from-dark_cyan to-tiffany_blue hover:from-tiffany_blue hover:to-vanilla text-rich_black font-bold rounded-xl transition-all duration-300 text-lg"
+                            onClick={() => click(handleConfirmSelection)}
+                            onPointerDown={() => click(handleConfirmSelection)}
+                         >
+                            SELECT SHIP
+                         </button>
+                      </div>
                     </div>
-                    <div className="w-full flex-grow flex flex-col p-6 space-y-6 overflow-y-auto custom-scrollbar"> 
-                        <div className="text-center"> 
-                          <p className="text-lg text-amber-400 font-light italic">{selectedShipDetails.class}</p>
-                        </div>
-                        <div>
-                           <h3 className="text-xl font-semibold text-teal-400 mb-2 border-b border-teal-600/50 pb-1">Description</h3>
-                           <p className="text-sm text-slate-300 mb-1">{selectedShipDetails.description}</p>
-                        </div>
-                        <div>
-                          <h3 className="text-xl font-semibold text-teal-400 mb-3 border-b border-teal-600/50 pb-1">Ship Statistics</h3>
-                          <div className="space-y-4"> 
-                            {selectedShipDetails.stats && Object.entries(selectedShipDetails.stats).map(([statName, statValue]) => (
-                                <StatBar 
-                                    key={statName}
-                                    label={statName.charAt(0).toUpperCase() + statName.slice(1)} 
-                                    value={statValue}
-                                    maxValue={10} 
-                                    statName={statName} 
-                                />
-                            ))}
-                          </div>
-                        </div>
-                        <div className="mt-auto pt-6 flex flex-col items-center"> 
-                          <div className="flex justify-center items-center space-x-12"> 
-                            <button 
-                              className="ui-btn button button--confirm rounded-full p-3 disabled:opacity-50 disabled:cursor-not-allowed" 
-                              onClick={() => click(() => handlePreviousShip())}
-                              onPointerDown={() => click(() => handlePreviousShip())}
-                              disabled={shipData.length <= 1}
-                              aria-label="Previous Ship"
-                            >
-                              <NavigationArrowIcon direction="left" />
-                            </button>
-                            <button
-                              className="ui-btn button button--confirm rounded-full"
-                              onClick={() => click(() => handleConfirmSelection())}
-                              onPointerDown={() => click(() => handleConfirmSelection())}
-                              disabled={!selectedShipDetails}
-                            >
-                              Select {selectedShipDetails?.name || 'Ship'}
-                            </button>
-                            <button 
-                              className="ui-btn button button--confirm rounded-full p-3 disabled:opacity-50 disabled:cursor-not-allowed"
-                              onClick={() => click(() => handleNextShip())}
-                              onPointerDown={() => click(() => handleNextShip())}
-                              disabled={shipData.length <= 1}
-                              aria-label="Next Ship"
-                            >
-                              <NavigationArrowIcon direction="right" />
-                            </button>
-                          </div>
-                        </div>
-                    </div> 
-                </div> 
+
+                    {/* Right Column - 3D Model Preview */}
+                    <div className="flex flex-col justify-center items-center">
+                      <div 
+                        ref={modalPreviewBoxRef} 
+                        className="w-full h-full relative bg-transparent border-2 border-tiffany_blue/30 rounded-2xl" 
+                        style={{ 
+                          backgroundColor: 'transparent',
+                          boxShadow: '0 0 30px rgba(10, 147, 150, 0.2)',
+                          minHeight: '400px'
+                        }} 
+                      />
+                    </div>
+                  </div>
+                </div>
             </SelectionModal>
-        </> 
+         </>
       )} 
     </div> 
   );

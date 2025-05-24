@@ -55,6 +55,9 @@ export default {
         lg: '12px',
         xl: '16px',
       },
+      fontFamily: {
+        ui: ['Rajdhani', 'sans-serif'],
+      },
       // You can add other theme extensions here (fonts, animations, etc.)
     },
   },

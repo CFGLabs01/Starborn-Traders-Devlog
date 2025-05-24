@@ -47,123 +47,84 @@ const CharacterPopup = ({ characterDetails, onConfirm, onPrevious, onNext, isNav
   };
 
   return (
-    <div className="flex flex-col h-full justify-between">
-      <div 
-        ref={previewHostRef}
-        className="basis-1/2 flex-shrink-0 w-full relative bg-transparent" 
-        style={{ 
-          backgroundColor: 'transparent',
-          border: '2px solid rgba(148, 210, 189, 0.3)',
-          borderRadius: '1rem',
-          boxShadow: '0 0 30px rgba(10, 147, 150, 0.2)'
-        }}
-      />
+    <div className="w-full h-full">
+      {/* Title Header */}
+      <h2 className="w-full mb-6 rounded-xl bg-rich_black/60 py-3 text-center text-xl font-bold tracking-wide text-white">
+        {characterDetails.name}
+      </h2>
       
-      {/* Text blocks */}
-      <div className="flex-1 p-6 overflow-y-auto custom-scrollbar">
-        <BackgroundSection
-          shortBio={characterDetails.shortBio}
-          longBio={characterDetails.longBio}
-          faction={characterDetails.faction}
-          origin={characterDetails.origin}
-          className="bg-gradient-to-br from-rich_black/30 via-midnight_green/10 to-rich_black/40 backdrop-blur-sm border border-tiffany_blue/15 rounded-2xl p-6 shadow-xl transition-all duration-300 hover:border-tiffany_blue/30 hover:shadow-2xl hover:shadow-tiffany_blue/10 hover:transform hover:translate-y-[-2px] hover:bg-gradient-to-br hover:from-rich_black/40 hover:via-midnight_green/20 hover:to-rich_black/50"
-        />
-        <AttributesSection
-          attributes={characterDetails.stats}
-          className="mt-6 bg-gradient-to-br from-rich_black/30 via-midnight_green/10 to-rich_black/40 backdrop-blur-sm border border-tiffany_blue/15 rounded-2xl p-6 shadow-xl transition-all duration-300 hover:border-tiffany_blue/30 hover:shadow-2xl hover:shadow-tiffany_blue/10 hover:transform hover:translate-y-[-2px] hover:bg-gradient-to-br hover:from-rich_black/40 hover:via-midnight_green/20 hover:to-rich_black/50"
-        />
-        <AbilitiesSection
-          abilities={characterDetails.specialAbilities}
-          className="mt-6 bg-gradient-to-br from-rich_black/30 via-midnight_green/10 to-rich_black/40 backdrop-blur-sm border border-tiffany_blue/15 rounded-2xl p-6 shadow-xl transition-all duration-300 hover:border-tiffany_blue/30 hover:shadow-2xl hover:shadow-tiffany_blue/10 hover:transform hover:translate-y-[-2px] hover:bg-gradient-to-br hover:from-rich_black/40 hover:via-midnight_green/20 hover:to-rich_black/50"
-        />
-        
-        {/* 🧠 Neural Echo Panel - Enhanced transparency with hover effects */}
-        {echoEffects && neuralEcho && (neuralEcho.echoScore !== 0 || neuralEcho.echoIntensity > 0) && (
-          <div className="mt-6 p-6 bg-gradient-to-br from-rich_black/40 via-midnight_green/20 to-rich_black/50 backdrop-blur-md rounded-2xl border border-dark_cyan/20 shadow-xl transition-all duration-300 hover:border-dark_cyan/40 hover:shadow-2xl hover:shadow-dark_cyan/10 hover:transform hover:translate-y-[-2px] hover:bg-gradient-to-br hover:from-rich_black/50 hover:via-midnight_green/30 hover:to-rich_black/60">
-            <h3 className="text-lg font-semibold text-tiffany_blue mb-3">Neural Echo Status</h3>
-            <div className="grid grid-cols-2 gap-4 text-sm">
-              <div>
-                <span className="text-tiffany_blue/70">Echo Score:</span>
-                <span className={`ml-2 font-mono ${neuralEcho.echoScore > 0 ? 'text-tiffany_blue' : 'text-red-300'}`}>
-                  {neuralEcho.echoScore}
-                </span>
-              </div>
-              <div>
-                <span className="text-tiffany_blue/70">Intensity:</span>
-                <span className="ml-2 font-mono text-orange-300">{neuralEcho.echoIntensity}/10</span>
-              </div>
-              <div>
-                <span className="text-tiffany_blue/70">Theme:</span>
-                <span className={`ml-2 font-mono ${
-                  echoEffects.echoTheme === 'hero' ? 'text-blue-300' : 
-                  echoEffects.echoTheme === 'rogue' ? 'text-red-300' : 'text-slate-300'
-                }`}>
-                  {echoEffects.echoTheme}
-                </span>
-              </div>
-              <div>
-                <span className="text-tiffany_blue/70">Access Level:</span>
-                <span className="ml-2 font-mono text-yellow-300">{echoEffects.accessLevel}/5</span>
-              </div>
-            </div>
-            
-            {/* Echo Test Buttons - Enhanced */}
-            <div className="mt-4 flex gap-2">
-              <button 
-                onClick={() => testEchoAction('hero')}
-                className="px-3 py-1 bg-gradient-to-r from-blue-600/40 to-blue-500/30 text-blue-300 rounded-lg text-xs hover:from-blue-600/60 hover:to-blue-500/50 transition-all duration-300 border border-blue-400/20"
-              >
-                +Hero
-              </button>
-              <button 
-                onClick={() => testEchoAction('betray')}
-                className="px-3 py-1 bg-gradient-to-r from-red-600/40 to-red-500/30 text-red-300 rounded-lg text-xs hover:from-red-600/60 hover:to-red-500/50 transition-all duration-300 border border-red-400/20"
-              >
-                +Betray
-              </button>
-              <button 
-                onClick={() => testEchoAction('trade')}
-                className="px-3 py-1 bg-gradient-to-r from-orange-600/40 to-orange-500/30 text-orange-300 rounded-lg text-xs hover:from-orange-600/60 hover:to-orange-500/50 transition-all duration-300 border border-orange-400/20"
-              >
-                +Trade
-              </button>
-            </div>
+      {/* Two-column layout */}
+      <div className="grid grid-cols-2 gap-8 h-full">
+        {/* Left Column - Content */}
+        <div className="flex flex-col gap-6 overflow-y-auto custom-scrollbar pr-4">
+          <Header name={characterDetails.name} />
+          
+          <BackgroundSection
+            shortBio={characterDetails.shortBio}
+            longBio={characterDetails.longBio}
+            faction={characterDetails.faction}
+            origin={characterDetails.origin}
+            className="bg-gradient-to-br from-rich_black/30 via-midnight_green/10 to-rich_black/40 backdrop-blur-sm border border-tiffany_blue/15 rounded-2xl p-6 shadow-xl transition-all duration-300 hover:border-tiffany_blue/30 hover:shadow-2xl hover:shadow-tiffany_blue/10 hover:transform hover:translate-y-[-2px] hover:bg-gradient-to-br hover:from-rich_black/40 hover:via-midnight_green/20 hover:to-rich_black/50"
+          />
+          
+          <AttributesSection
+            attributes={characterDetails.stats}
+            className="bg-gradient-to-br from-rich_black/30 via-midnight_green/10 to-rich_black/40 backdrop-blur-sm border border-tiffany_blue/15 rounded-2xl p-6 shadow-xl transition-all duration-300 hover:border-tiffany_blue/30 hover:shadow-2xl hover:shadow-tiffany_blue/10 hover:transform hover:translate-y-[-2px] hover:bg-gradient-to-br hover:from-rich_black/40 hover:via-midnight_green/20 hover:to-rich_black/50"
+          />
+          
+          <AbilitiesSection
+            abilities={characterDetails.specialAbilities}
+            className="bg-gradient-to-br from-rich_black/30 via-midnight_green/10 to-rich_black/40 backdrop-blur-sm border border-tiffany_blue/15 rounded-2xl p-6 shadow-xl transition-all duration-300 hover:border-tiffany_blue/30 hover:shadow-2xl hover:shadow-tiffany_blue/10 hover:transform hover:translate-y-[-2px] hover:bg-gradient-to-br hover:from-rich_black/40 hover:via-midnight_green/20 hover:to-rich_black/50"
+          />
+
+          {/* Selection buttons at bottom of left column */}
+          <div className="flex gap-4 justify-center items-center mt-6">
+            {/* Previous Character Button */}
+            <button
+                className="ui-arrow"
+                onClick={() => click(() => onPrevious?.())}
+                onPointerDown={() => click(() => onPrevious?.())}
+                disabled={false}
+                aria-label="Previous Character"
+            >
+              <NavigationArrowIcon direction="left" />
+            </button>
+
+            {/* SELECT BUTTON */}
+            <button
+                className="ui-btn px-8 py-4 text-lg"
+                onClick={() => click(() => handleSelect())}
+                onPointerDown={() => click(() => handleSelect())}
+                disabled={false}
+            >
+                SELECT {characterDetails?.name || 'CHARACTER'}
+            </button>
+
+            {/* Next Character Button */}
+            <button
+                className="ui-arrow"
+                onClick={() => click(() => onNext?.())}
+                onPointerDown={() => click(() => onNext?.())}
+                disabled={false}
+                aria-label="Next Character"
+            >
+              <NavigationArrowIcon direction="right" />
+            </button>
           </div>
-        )}
-      </div>
+        </div>
 
-      <div className="flex gap-4 justify-center items-center mt-6">
-        {/* Previous Character Button */}
-        <button
-            className="ui-btn w-16 h-16 rounded-xl bg-midnight_green/80 hover:bg-dark_cyan/80 border-2 border-tiffany_blue/50 hover:border-tiffany_blue text-white transition-all duration-300 cursor-pointer"
-            onClick={() => click(() => onPrevious?.())}
-            onPointerDown={() => click(() => onPrevious?.())}
-            disabled={false}
-            aria-label="Previous Character"
-        >
-          <NavigationArrowIcon direction="left" />
-        </button>
-
-        {/* SELECT BUTTON */}
-        <button
-            className="ui-btn px-8 py-4 bg-gradient-to-r from-dark_cyan to-tiffany_blue hover:from-tiffany_blue hover:to-vanilla text-rich_black font-bold rounded-2xl transition-all duration-300 text-lg cursor-pointer"
-            onClick={() => click(() => handleSelect())}
-            onPointerDown={() => click(() => handleSelect())}
-            disabled={false}
-        >
-            SELECT {characterDetails?.name || 'CHARACTER'}
-        </button>
-
-        {/* Next Character Button */}
-        <button
-            className="ui-btn w-16 h-16 rounded-xl bg-midnight_green/80 hover:bg-dark_cyan/80 border-2 border-tiffany_blue/50 hover:border-tiffany_blue text-white transition-all duration-300 cursor-pointer"
-            onClick={() => click(() => onNext?.())}
-            onPointerDown={() => click(() => onNext?.())}
-            disabled={false}
-            aria-label="Next Character"
-        >
-          <NavigationArrowIcon direction="right" />
-        </button>
+        {/* Right Column - 3D Model Preview */}
+        <div className="flex flex-col justify-center items-center">
+          <div 
+            ref={previewHostRef}
+            className="w-full h-full relative bg-transparent border-2 border-tiffany_blue/30 rounded-2xl" 
+            style={{ 
+              backgroundColor: 'transparent',
+              boxShadow: '0 0 30px rgba(10, 147, 150, 0.2)',
+              minHeight: '400px'
+            }}
+          />
+        </div>
       </div>
     </div>
   );

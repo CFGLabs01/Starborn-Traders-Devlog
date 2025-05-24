@@ -1,4 +1,5 @@
 /* Custom imports restored */
+@import '_tokens.css';
 @import 'theme.css';
 @import 'base.css';
 
@@ -19,29 +20,42 @@
 /* FIXED: Custom Scrollbar for Character Popup */
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: rgba(148, 210, 189, 0.3) rgba(0, 18, 25, 0.1);
+  scrollbar-color: rgba(148, 210, 189, 0.6) rgba(0, 18, 25, 0.2);
 }
 
 .custom-scrollbar::-webkit-scrollbar {
-  width: 8px;
+  width: 12px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: rgba(0, 18, 25, 0.1);
-  border-radius: 4px;
+  background: rgba(0, 18, 25, 0.3);
+  border-radius: 6px;
+  border: 1px solid rgba(148, 210, 189, 0.1);
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(148, 210, 189, 0.3);
-  border-radius: 4px;
+  background: linear-gradient(180deg, rgba(148, 210, 189, 0.6), rgba(10, 147, 150, 0.8));
+  border-radius: 6px;
+  border: 1px solid rgba(148, 210, 189, 0.3);
   transition: background 0.3s ease;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(148, 210, 189, 0.5);
+  background: linear-gradient(180deg, rgba(148, 210, 189, 0.8), rgba(10, 147, 150, 1));
+  border-color: rgba(148, 210, 189, 0.5);
 }
 
 /* Ensure smooth scrolling */
 .custom-scrollbar {
   scroll-behavior: smooth;
+}
+
+/* Reusable button classes */
+.ui-btn {
+  @apply rounded-full bg-[--c-teal] px-6 py-3 text-[--c-cream] font-semibold tracking-wide
+         hover:bg-[--c-cyan] transition;
+}
+
+.ui-arrow {
+  @apply ui-btn w-10 h-10 p-0 flex items-center justify-center;
 } 

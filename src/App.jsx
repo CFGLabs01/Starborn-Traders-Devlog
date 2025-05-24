@@ -11,6 +11,7 @@ import './styles/main.css';
 import { GameStateProvider, useGameState } from './context/GameStateContext';
 import { EventProvider } from './context/EventContext';
 import { usePhase } from './state/phaseStore';
+import BackgroundStars from './components/BackgroundStars';
 
 import TitleScreen from './features/TitleScreen/TitleScreen';
 import CharacterSelection from './features/CharacterSelection/CharacterSelection';
@@ -115,14 +116,29 @@ function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [showPreviewToggle]);
 
-  // Event system - trigger events during flight phase
+  // Event system - trigger events during flight phase with proper tutorial sequence
   useEffect(() => {
     if (phase === 'flight' && !currentEvent) {
-      const timer = setTimeout(() => {
-        setCurrentEvent('asteroid_probe');
-      }, 5000); // Trigger asteroid event after 5 seconds
+      // Tutorial sequence: 3 events in specific order with long intervals
+      const tutorialEvents = ['asteroid_probe', 'merchant_contact', 'hijack_attempt'];
+      const completedEvents = JSON.parse(localStorage.getItem('completedTutorialEvents') || '[]');
+      
+      if (completedEvents.length < 3) {
+        const nextEventIndex = completedEvents.length;
+        const nextEvent = tutorialEvents[nextEventIndex];
+        
+        // Much longer intervals: 2-3 minutes between events
+        const delay = nextEventIndex === 0 ? 30000 : 120000; // 30s for first, 2min for others
+        
+        const timer = setTimeout(() => {
+          console.log(`[App.jsx] Triggering tutorial event ${nextEventIndex + 1}/3: ${nextEvent}`);
+          setCurrentEvent(nextEvent);
+        }, delay);
 
-      return () => clearTimeout(timer);
+        return () => clearTimeout(timer);
+      } else {
+        console.log('[App.jsx] Tutorial events completed. Free flight mode active.');
+      }
     }
   }, [phase, currentEvent]);
 
@@ -155,16 +171,24 @@ function App() {
 
   const handleEventComplete = (option) => {
     console.log('Event completed with option:', option);
+    
+    // Track completed tutorial events
+    const completedEvents = JSON.parse(localStorage.getItem('completedTutorialEvents') || '[]');
+    if (currentEvent && !completedEvents.includes(currentEvent)) {
+      completedEvents.push(currentEvent);
+      localStorage.setItem('completedTutorialEvents', JSON.stringify(completedEvents));
+      console.log(`[App.jsx] Tutorial event completed: ${currentEvent}. Progress: ${completedEvents.length}/3`);
+    }
+    
     setCurrentEvent(null);
     
-    // Queue next event after a delay
-    setTimeout(() => {
-      if (Math.random() > 0.5) {
-        setCurrentEvent('merchant_contact');
-      } else {
-        setCurrentEvent('hijack_attempt');
-      }
-    }, 10000); // Next event in 10 seconds
+    // Only queue next event if tutorial isn't complete
+    if (completedEvents.length < 3) {
+      console.log(`[App.jsx] Next tutorial event will trigger automatically after delay.`);
+    } else {
+      console.log(`[App.jsx] Tutorial sequence complete! Player now has free flight time.`);
+      // Future: Implement random events with much longer intervals (5-10 minutes)
+    }
   };
 
   const renderCurrentPhaseComponent = () => {
@@ -239,6 +263,9 @@ function App() {
       <EventProvider>
         <Router>
           <div className="relative w-full h-screen overflow-hidden">
+            {/* Background Stars - Always visible */}
+            <BackgroundStars />
+            
             {/* <MinimalAnimationTest /> */}
             {renderCurrentPhaseComponent()}
 
@@ -262,13 +289,6 @@ function App() {
                   }
                 }}
               >
-              {/* Global Stars - Background for all phases - Conditionally Rendered */}
-              {!previewContent && (
-                <>
-                  <DreiStars radius={150} depth={80} count={5000} factor={3} saturation={0} fade speed={0.05} />
-                  <DreiStars radius={90} depth={40} count={2500} factor={4} saturation={0} fade speed={0.1} />
-                </>
-              )}
               <Suspense fallback={null}>
                 {renderPreviewView()}
                 {phase === 'flight' && (

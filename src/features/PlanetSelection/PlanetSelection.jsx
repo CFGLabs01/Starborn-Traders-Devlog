@@ -94,97 +94,84 @@ const PlanetSelection = ({ onSelectionComplete, showPreview, hidePreview }) => {
       {showDetailsModal && selectedPlanetDetails && (
         <>
           <SelectionModal isOpen={showDetailsModal} onClose={handleCloseModal}>
-            <div className="flex flex-col lg:flex-row overflow-hidden h-full">
-              <div className="w-full lg:w-[45%] flex items-center justify-center p-4 relative bg-black/20">
-                <div 
-                  ref={modalPreviewBoxRef} 
-                  style={{ 
-                    width: '100%', 
-                    height: '300px', 
-                    position: 'absolute', 
-                    top: '50%', 
-                    left: '50%', 
-                    transform: 'translate(-50%, -50%)',
-                  }} 
-                />
-                <h2 className="absolute top-6 left-1/2 transform -translate-x-1/2 text-2xl font-bold text-white text-shadow-md z-10 bg-black/30 backdrop-blur-sm px-6 py-2 rounded-lg font-display pointer-events-none">
-                  {selectedPlanetDetails.name}
-                </h2>
-              </div>
-              <div className="w-full lg:w-[55%] flex flex-col p-6 space-y-4 overflow-y-auto custom-scrollbar">
-                <p className="text-sm text-slate-300 italic mb-4">
-                  {selectedPlanetDetails.description || `Details for ${selectedPlanetDetails.name}.`}
-                </p>
-                <div>
-                  <h3 className="text-xl font-semibold text-teal-400 mb-3 border-b border-teal-600/50 pb-1">Planetary Statistics</h3>
-                  {selectedPlanetDetails.stats ? (
-                    <div className="space-y-2"> 
-                      {Object.entries(selectedPlanetDetails.stats).map(([key, value]) => (
-                        <StatBar 
-                          key={key} 
-                          label={key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())} 
-                          value={value} 
-                          maxValue={10} 
-                        />
+            <div className="w-full h-full p-6">
+              {/* Two-column layout */}
+              <div className="grid grid-cols-2 gap-8 h-full">
+                {/* Left Column - Content */}
+                <div className="flex flex-col gap-6 overflow-y-auto custom-scrollbar pr-4">
+                  <div className="text-center">
+                    <h2 className="text-2xl font-bold text-white text-center font-display mb-2">
+                      {selectedPlanetDetails.name}
+                    </h2>
+                    <p className="text-lg text-amber-400 font-light italic">{selectedPlanetDetails.type}</p>
+                  </div>
+                  
+                  <div className="bg-gradient-to-br from-rich_black/30 via-midnight_green/10 to-rich_black/40 backdrop-blur-sm border border-tiffany_blue/15 rounded-2xl p-6">
+                    <h3 className="text-xl font-semibold text-teal-400 mb-2 border-b border-teal-600/50 pb-1">Overview</h3>
+                    <p className="text-sm text-slate-300 mb-4">{selectedPlanetDetails.description}</p>
+                    
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Population:</span>
+                        <span className="text-white font-mono">{selectedPlanetDetails.population}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Government:</span>
+                        <span className="text-white font-mono">{selectedPlanetDetails.government}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Economy:</span>
+                        <span className="text-white font-mono">{selectedPlanetDetails.economy}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Tech Level:</span>
+                        <span className="text-white font-mono">{selectedPlanetDetails.techLevel}</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-gradient-to-br from-rich_black/30 via-midnight_green/10 to-rich_black/40 backdrop-blur-sm border border-tiffany_blue/15 rounded-2xl p-6">
+                    <h3 className="text-xl font-semibold text-teal-400 mb-3 border-b border-teal-600/50 pb-1">Trade Resources</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedPlanetDetails.resources.map((resource, index) => (
+                        <span key={index} className="px-3 py-1 bg-teal-500/20 text-teal-300 rounded-full text-sm border border-teal-500/30">
+                          {resource}
+                        </span>
                       ))}
                     </div>
-                  ) : (
-                    <p className="text-sm text-slate-500 italic">Statistics not available.</p>
-                  )}
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-teal-400 mb-2 mt-4 border-b border-teal-600/50 pb-1">Notable Features</h3>
-                  {selectedPlanetDetails.notableFeatures && selectedPlanetDetails.notableFeatures.length > 0 ? (
-                      <ul className="text-sm text-slate-300 list-disc list-inside space-y-1 mb-3">
-                        {selectedPlanetDetails.notableFeatures.map((feature, index) => <li key={index}>{feature}</li>)}
-                      </ul>
-                  ) : (
-                       <p className="text-sm text-slate-500 italic mb-3">No unique features listed.</p>
-                  )}
-                  <h4 className="text-lg font-semibold text-teal-400 mb-1">Primary Imports</h4>
-                  <p className="text-sm text-slate-300 mb-3">
-                    {selectedPlanetDetails.importItems?.join(', ') || 'None specified'}
-                  </p>
-                  <h4 className="text-lg font-semibold text-teal-400 mb-1">Primary Exports</h4>
-                  <p className="text-sm text-slate-300 mb-3">
-                    {selectedPlanetDetails.exportItems?.join(', ') || 'None specified'}
-                  </p>
-                  <p className="text-xs text-slate-500 italic mt-2">
-                    Note: Specific commodity availability and pricing may fluctuate based on market conditions and player actions.
-                  </p>
-                </div>
-                <div className="mt-auto pt-6 flex flex-col items-center"> 
-                  <div className="flex justify-center items-center space-x-12">
-                    <button 
-                      className="ui-btn button button--icon-navarrow rounded-full disabled:opacity-50 disabled:cursor-not-allowed" 
-                      onClick={() => click(() => handlePreviousPlanet())}
-                      onPointerDown={() => click(() => handlePreviousPlanet())}
-                      disabled={planetData.length <= 1}
-                      aria-label="Previous Planet"
+                  </div>
+                  
+                  <div className="flex gap-4 justify-center mt-6">
+                    <button
+                      className="ui-btn px-8 py-4 bg-gradient-to-r from-slate-600 to-slate-500 hover:from-slate-500 hover:to-slate-400 text-white font-semibold rounded-xl transition-all duration-300"
+                      onClick={handleCloseModal}
                     >
-                      <NavigationArrowIcon direction="left" />
+                      Back
                     </button>
                     <button
-                      className="ui-btn button button--confirm rounded-full"
-                      onClick={() => click(() => handleConfirmSelection())}
-                      onPointerDown={() => click(() => handleConfirmSelection())}
-                      disabled={!selectedPlanetDetails}
+                      className="ui-btn px-8 py-4 bg-gradient-to-r from-dark_cyan to-tiffany_blue hover:from-tiffany_blue hover:to-vanilla text-rich_black font-bold rounded-xl transition-all duration-300 text-lg"
+                      onClick={() => click(handleConfirmSelection)}
+                      onPointerDown={() => click(handleConfirmSelection)}
                     >
-                      Select {selectedPlanetDetails.name}
-                    </button>
-                    <button 
-                      className="ui-btn button button--icon-navarrow rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
-                      onClick={() => click(() => handleNextPlanet())}
-                      onPointerDown={() => click(() => handleNextPlanet())}
-                      disabled={planetData.length <= 1}
-                      aria-label="Next Planet"
-                    >
-                      <NavigationArrowIcon direction="right" />
+                      BEGIN HERE
                     </button>
                   </div>
                 </div>
-              </div> 
-            </div> 
+
+                {/* Right Column - 3D Model Preview */}
+                <div className="flex flex-col justify-center items-center">
+                  <div 
+                    ref={modalPreviewBoxRef} 
+                    className="w-full h-full relative bg-transparent border-2 border-tiffany_blue/30 rounded-2xl" 
+                    style={{ 
+                      backgroundColor: 'transparent',
+                      boxShadow: '0 0 30px rgba(10, 147, 150, 0.2)',
+                      minHeight: '400px'
+                    }} 
+                  />
+                </div>
+              </div>
+            </div>
           </SelectionModal>
         </>
       )}

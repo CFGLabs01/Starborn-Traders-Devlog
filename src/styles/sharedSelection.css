@@ -139,10 +139,12 @@
   position: relative; 
   z-index: var(--z-modal); 
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px var(--glow-secondary);
-  width: 90%; 
-  max-width: 900px; 
-  overflow: visible; /* CHANGED from hidden to visible */
+  width: clamp(300px, 90vw, 1200px); 
+  max-height: 85vh; /* Reduced from 90vh for better fit */
+  overflow: hidden; /* Keep hidden to prevent issues */
   color: var(--color-text-primary);
+  margin-top: 2.5vh; /* Add margin to keep away from top */
+  margin-bottom: 2.5vh; /* Add margin to keep away from bottom */
 }
 
 /* Pseudo-element for Hex Pattern Background */
@@ -182,6 +184,6 @@
   position: relative;
   z-index: 1; /* Above pseudo-elements */
   overflow-y: auto;
-  padding: var(--spacing-xl); /* Keep existing side/bottom padding */
-  padding-top: 5rem; /* Increased top padding significantly */
+  padding: 2rem;
+  width: min(90vw, 480px);
 } 

@@ -48,8 +48,10 @@ const Model = React.memo(({ modelPath, animationName, ...props }) => {
   // Auto-scale and position model based on bounding box
   useEffect(() => {
     if (scene && group.current) {
+      // Center all mesh geometries
       scene.traverse(o => {
         if (o.isMesh) {
+          o.geometry.center();
           if (o.material) {
             o.material.metalness = 0.6;
             o.material.roughness = 0.2;
@@ -241,29 +243,31 @@ export const CharacterPreviewContent = React.memo(({ modelPath, scale, animation
       <group ref={groupRef} position={[0, -0.1, 0]}>
         {/* Pivot group for rotation */}
         <group ref={pivotRef}>
-          {/* Character Model */}
-          <Suspense fallback={<ModelLoadingFallback />}>
-            <Model 
-              modelPath={modelPath}
-              scale={scale || 1.0}
-              animationName={finalAnimationName}
-              castShadow 
-              receiveShadow
-              position={[0, 0.1, 0]} 
-            />
-            <Preload all />
-          </Suspense>
-          
-          {/* Wireframe Platform - locked flat with original rotation */}
-          <mesh ref={pedestalRef} position={[0, 0, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-            <ringGeometry args={[1.0, 1.3, 64]} />
-            <meshBasicMaterial 
-              color="#0a9396"
-              wireframe={true} 
-              transparent={true} 
-              opacity={0.6}
-            />
-          </mesh>
+          <ShowcaseRig>
+            {/* Wireframe Platform - locked flat with original rotation */}
+            <mesh ref={pedestalRef} position={[0, -1.25, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+              <ringGeometry args={[1.0, 1.3, 64]} />
+              <meshBasicMaterial 
+                color="#0a9396"
+                wireframe={true} 
+                transparent={true} 
+                opacity={0.6}
+              />
+            </mesh>
+            
+            {/* Character Model */}
+            <Suspense fallback={<ModelLoadingFallback />}>
+              <Model 
+                modelPath={modelPath}
+                scale={scale || 1.0}
+                animationName={finalAnimationName}
+                castShadow 
+                receiveShadow
+                position={[0, -1.25, 0]} 
+              />
+              <Preload all />
+            </Suspense>
+          </ShowcaseRig>
         </group>
       </group>
       
