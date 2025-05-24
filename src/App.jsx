@@ -250,8 +250,8 @@ function App() {
                 left: 0, 
                 width: '100vw', 
                 height: '100vh', 
-                zIndex: previewContent ? 52 : 0,
-                pointerEvents: (phase === 'flight' || previewContent) ? 'auto' : 'none' 
+                zIndex: phase === 'flight' ? 1 : -1,
+                pointerEvents: phase === 'flight' ? 'auto' : 'none' 
               }}
               shadows
               onPointerDown={(event) => {

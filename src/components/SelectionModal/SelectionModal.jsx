@@ -50,7 +50,7 @@ const SelectionModal = ({
                         
                         {/* Content Area (apply padding and scrolling here) */}
                         {/* This div uses modal-panel-content class for styling */}
-                        <div className="modal-panel-content custom-scrollbar">
+                        <div className="p-8 md:p-10 lg:p-12 flex flex-col gap-6 w-[min(90vw,480px)] custom-scrollbar">
                             {children} {/* Render content passed from parent */}
                         </div>
                     </motion.div>
